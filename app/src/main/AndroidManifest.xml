@@ -28,21 +28,23 @@
         <activity
             android:name=".MapController"
             android:label="@string/title_activity_map_controller" >
-
         </activity>
-
         <activity
             android:name=".Landing"
             android:label="@string/title_activity_landing" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".User"
             android:label="@string/title_activity_user" >
+        </activity>
+        <activity
+            android:name=".Provider"
+            android:label="@string/title_activity_provider" >
         </activity>
     </application>
 

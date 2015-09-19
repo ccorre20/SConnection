@@ -1,40 +1,22 @@
 package co.edu.eafit.pi1.sconnection;
 
-import android.content.Intent;
-import android.sax.StartElementListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-public class Landing extends AppCompatActivity {
-
-    private Button b, b2;
+public class Provider extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing);
-        b = (Button) findViewById(R.id.button_user);
-        b2 = (Button) findViewById(R.id.button_provider);
-    }
-
-    public void userClick(View view){
-        Intent i = new Intent(this, User.class);
-        startActivity(i);
-    }
-
-    public void providerClick(View view){
-        Intent i = new Intent(this, Provider.class);
-        startActivity(i);
+        setContentView(R.layout.activity_provider);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_landing, menu);
+        getMenuInflater().inflate(R.menu.menu_, menu);
         return true;
     }
 
