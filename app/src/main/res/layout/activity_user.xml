@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="co.edu.eafit.pi1.sconnection.User">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/user"
+        android:id="@+id/Top_User_txt"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/establish_conn"
+        android:id="@+id/conn_Button"
+        android:layout_marginTop="32dp"
+        android:layout_below="@+id/Top_User_txt"
+        android:layout_centerHorizontal="true"
+        android:onClick="connClickListener" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:indeterminate="false"
+        android:layout_below="@+id/Progress_txt"
+        android:layout_alignStart="@+id/conn_Button"
+        android:layout_alignEnd="@+id/conn_Button"
+        android:max="100"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/Progress_txt"
+        android:layout_below="@+id/conn_Button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:visibility="invisible"
+        android:text="@string/Error" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:id="@+id/button_cancel"
+        android:layout_below="@+id/progressBar"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:enabled="false"
+        android:onClick="cancelClickListener" />
+
+</RelativeLayout>

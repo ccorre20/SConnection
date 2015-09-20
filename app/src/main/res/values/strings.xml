@@ -2,6 +2,26 @@
     <string name="app_name">SConnection</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="user">Usuario</string>
+    <string name="provider">Proveedor</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_map_controller">Map</string>
+    <string name="title_activity_landing_gral">Landing_gral</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="title_activity_landing">Landing</string>
+    <string name="title_activity_user">User</string>
+    <string name="title_activity_provider">Provider</string>
+
+    <string name="establish_conn">Iniciar Verificacion</string>
+
+    <string name="creating_server">Creando Servidor</string>
+    <string name="waiting_for_connection">Esperando Conexion</string>
+    <string name="recieveing_data">Esperando Datos</string>
+    <string name="connection_complete">Confirmados los datos</string>
+    <string name="Error">Hubo un error</string>
+    <string name="cancel">Cancelar</string>
 </resources>
+
