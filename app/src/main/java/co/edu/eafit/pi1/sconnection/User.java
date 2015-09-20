@@ -1,7 +1,5 @@
 package co.edu.eafit.pi1.sconnection;
 
-import android.app.FragmentManager;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,11 +18,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
+
+import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
 
 public class User extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -35,6 +33,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
     private LatLng user, provider;
     private MapFragment mapFragment;
     private GoogleMap map;
+    private LocationServiceManager locationServiceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +47,57 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
         task = null;
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_frag);
         mapFragment.getMapAsync(this);
-        user = new LatLng(0,0);
+        user = null;
+        provider = null;
+    }
+
+    public void setProvider(LatLng provider){
+        this.provider = provider;
+    }
+
+    @Override
+    protected void onStart(){
+        locationServiceManager = new LocationServiceManager(this);
+        locationServiceManager.googleApiClient();
+        locationServiceManager.connect();
+        super.onStart();
     }
 
     public void mapClickListener(View view){
-        map.addMarker(new MarkerOptions().title("Hola").position(user));
+        if(user != null) {
+            map.addMarker(new MarkerOptions()
+                    .title("User")
+                    .position(user));
+        }else{
+            while(!locationServiceManager.mGoogleApiClient.isConnected()){
+                 locationServiceManager.connect();
+            }
+            String [] locUser = locationServiceManager
+                            .getCoordinates()
+                            .substring(0,locationServiceManager.getCoordinates().length()-3)
+                            .split("s");
+            if(locUser.length == 2){
+                user = new LatLng(Double.parseDouble(locUser[0]),Double.parseDouble(locUser[1]));
+                mapClickListener(view);
+            }else{
+                user = null;
+            }
+        }
+        if(provider != null) {
+            map.addMarker(new MarkerOptions()
+                    .title("Provider")
+                    .position(provider));
+        }
     }
 
     public void connClickListener(View view){
-        task = new getDataTask(progressBar, progressTxt, resultTxt, b, b2, provider);
+        task = new getDataTask(
+                progressBar,
+                progressTxt,
+                resultTxt,
+                b,
+                b2,
+                this);
         task.execute();
     }
 
@@ -80,15 +121,23 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
         private Button b, b2;
         private int status;
         private String result, publish;
+        private User user;
 
-        public getDataTask(ProgressBar progressBar, TextView progressTxt, TextView resultTxt, Button b, Button b2, LatLng provider){
+        public getDataTask(
+                ProgressBar progressBar,
+                TextView progressTxt,
+                TextView resultTxt,
+                Button b,
+                Button b2,
+                User user){
             this.progressBar = progressBar;
             this.progressTxt = progressTxt;
             this.resultTxt = resultTxt;
-            this.provider = provider;
+            provider = null;
             this.b = b;
             this.b2 = b2;
             status = 0;
+            this.user = user;
         }
 
         protected void onPreExecute() {
@@ -127,7 +176,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
                     }
                     publish += result;
                     Log.v("publish", result);
-                    if(result.contains("---")){
+                    if(result.contains("sss")){
                         break;
                     }
                 }
@@ -217,6 +266,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
             progressBar.setVisibility(View.INVISIBLE);
             progressBar.setEnabled(false);
             progressTxt.setText("Done");
+
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -231,12 +281,12 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
 
             resultTxt.setText("GEOLOCALIZADO");
             publish = publish.substring(0, publish.length()-3);
-            String [] parts = publish.split("-");
+            String [] parts = publish.split("s");
             String lat = parts[0];
             String lng = parts[1];
             provider = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+            user.setProvider(provider);
         }
-
     }
 
     @Override

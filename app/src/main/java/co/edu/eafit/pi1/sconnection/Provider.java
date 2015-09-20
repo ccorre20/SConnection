@@ -1,14 +1,15 @@
 package co.edu.eafit.pi1.sconnection;
 
-import android.content.Context;
+import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
+
 import android.content.IntentSender;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,12 +20,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Provider extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class Provider extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener*/ {
 
     private GoogleApiClient mGoogleApiClient;
     private Location lastKnownLocation;
     private String latitude, longitude;
+    private LocationServiceManager locationServiceManager;
 
     // Bool to track whether the app is already resolving an error
     private boolean mResolvingError = false;
@@ -36,11 +38,23 @@ public class Provider extends AppCompatActivity implements GoogleApiClient.Conne
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider);
-
+        /*
         if(!mResolvingError){
             mGoogleApiClient.connect();
         }
+        */
+    }
 
+    @Override
+    protected void onStart(){
+        locationServiceManager = new LocationServiceManager(this);
+        locationServiceManager.googleApiClient();
+        locationServiceManager.connect();
+        super.onStart();
+    }
+
+
+    public void execute(View view){
         ClientSender clientSender = new ClientSender("10.0.2.2",8880);
         clientSender.setMessage(getCoordinates());
         clientSender.execute();
@@ -70,12 +84,15 @@ public class Provider extends AppCompatActivity implements GoogleApiClient.Conne
 
     @Override
     protected void onStop(){
+        locationServiceManager.onStop();
+        /*
         mGoogleApiClient.disconnect();
+        */
         super.onStop();
     }
 
     /**************************** Google API connection *******************************************/
-
+    /*
     @Override
     public void onConnected(Bundle connectionHint){
         lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -100,9 +117,9 @@ public class Provider extends AppCompatActivity implements GoogleApiClient.Conne
             mResolvingError = true;
         }
     }
-
+    */
     /**************************** Google API connection *******************************************/
-
+    /*
     private synchronized void googleApiClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -110,9 +127,16 @@ public class Provider extends AppCompatActivity implements GoogleApiClient.Conne
                 .addApi(LocationServices.API)
                 .build();
     }
+    */
 
     private String getCoordinates(){
+        while(!locationServiceManager.mGoogleApiClient.isConnected()){
+            locationServiceManager.connect();
+        }
+        return locationServiceManager.getCoordinates();
+        /*
         return longitude + '-' + latitude + "---";
+        */
     }
 
     class ClientSender extends AsyncTask<Void, Void, Void>{
