@@ -52,7 +52,6 @@ public class Provider extends AppCompatActivity {
 
         private String serverAddress;
         private int serverPort;
-        private TextView text;
         private String message;
         private String response;
 
@@ -65,9 +64,7 @@ public class Provider extends AppCompatActivity {
         public void setMessage(String message){this.message = message;}
 
         @Override
-        public void onPreExecute(){
-            super.onPreExecute();
-        }
+        public void onPreExecute(){super.onPreExecute();}
 
         @Override
         protected Void doInBackground(Void... v){
@@ -92,6 +89,5 @@ public class Provider extends AppCompatActivity {
             }
             return null;
         }
-
     }
 }
