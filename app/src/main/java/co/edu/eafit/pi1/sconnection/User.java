@@ -57,6 +57,7 @@ public class User extends AppCompatActivity {
     }
 
     private void ConnServer() throws Exception {
+        //TODO:Fix Sockets
         this.b2.setVisibility(View.VISIBLE);
         this.b2.setEnabled(true);
         this.progressBar.setVisibility(View.VISIBLE);
