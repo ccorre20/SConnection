@@ -81,7 +81,6 @@ public class User extends AppCompatActivity {
             publishProgress(0);
             ServerSocket ss = null;
             DataInputStream dis = null;
-            DataOutputStream dos = null;
             Socket s = null;
             try {
                 ss = new ServerSocket(8888);
