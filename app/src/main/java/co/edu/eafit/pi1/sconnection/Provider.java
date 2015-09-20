@@ -131,8 +131,8 @@ public class Provider extends AppCompatActivity implements GoogleApiClient.Conne
         public void setMessage(String message){this.message = message;}
 
         private String getLocation(){
-
-        };
+            return null;
+        }
 
         @Override
         public void onPreExecute(){super.onPreExecute();}
