@@ -1,5 +1,6 @@
 package co.edu.eafit.pi1.sconnection;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
@@ -19,12 +26,15 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-public class User extends AppCompatActivity {
+public class User extends AppCompatActivity implements OnMapReadyCallback {
 
     private Button b, b2;
     private ProgressBar progressBar;
     private TextView progressTxt, resultTxt;
     private getDataTask task;
+    private LatLng user, provider;
+    private MapFragment mapFragment;
+    private GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +46,17 @@ public class User extends AppCompatActivity {
         progressTxt = (TextView) findViewById(R.id.Progress_txt);
         resultTxt = (TextView) findViewById(R.id.textView2);
         task = null;
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_frag);
+        mapFragment.getMapAsync(this);
+        user = new LatLng(0,0);
+    }
+
+    public void mapClickListener(View view){
+        map.addMarker(new MarkerOptions().title("Hola").position(user));
     }
 
     public void connClickListener(View view){
-        task = new getDataTask(progressBar, progressTxt, resultTxt, b, b2);
+        task = new getDataTask(progressBar, progressTxt, resultTxt, b, b2, provider);
         task.execute();
     }
 
@@ -50,18 +67,25 @@ public class User extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.map = googleMap;
+    }
+
     private class getDataTask extends AsyncTask<Void, Integer, Void> {
 
+        private LatLng provider;
         private ProgressBar progressBar;
         private TextView progressTxt, resultTxt;
         private Button b, b2;
         private int status;
         private String result, publish;
 
-        public getDataTask(ProgressBar progressBar, TextView progressTxt, TextView resultTxt, Button b, Button b2){
+        public getDataTask(ProgressBar progressBar, TextView progressTxt, TextView resultTxt, Button b, Button b2, LatLng provider){
             this.progressBar = progressBar;
             this.progressTxt = progressTxt;
             this.resultTxt = resultTxt;
+            this.provider = provider;
             this.b = b;
             this.b2 = b2;
             status = 0;
@@ -205,7 +229,12 @@ public class User extends AppCompatActivity {
             b2.setVisibility(View.INVISIBLE);
             Log.v("test", publish);
 
-            resultTxt.setText(publish);
+            resultTxt.setText("GEOLOCALIZADO");
+            publish = publish.substring(0, publish.length()-3);
+            String [] parts = publish.split("-");
+            String lat = parts[0];
+            String lng = parts[1];
+            provider = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         }
 
     }

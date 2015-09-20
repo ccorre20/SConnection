@@ -23,5 +23,6 @@
     <string name="connection_complete">Confirmados los datos</string>
     <string name="Error">Hubo un error</string>
     <string name="cancel">Cancelar</string>
+    <string name="Ver_posiciones">MAPA</string>
 </resources>
 

@@ -21,7 +21,7 @@ public class Provider extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider);
         ClientSender clientSender = new ClientSender("10.0.2.2",8880);
-        clientSender.setMessage("Hola-mundo---");
+        clientSender.setMessage("0.0-0.0---");
         clientSender.execute();
     }
 
