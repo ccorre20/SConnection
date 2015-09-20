@@ -1,9 +1,19 @@
 package co.edu.eafit.pi1.sconnection;
 
+import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Formatter;
 
 public class Provider extends AppCompatActivity {
 
@@ -11,6 +21,8 @@ public class Provider extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider);
+        ClientSender clientSender = new ClientSender("127.0.0.1",8888);
+        clientSender.setMessage("Hola desde el cliente");
     }
 
     @Override
@@ -33,5 +45,62 @@ public class Provider extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    class ClientSender extends AsyncTask<Void, Void, Void>{
+
+        private String serverAddress;
+        private int serverPort;
+        private TextView text;
+        private String message;
+        private String response;
+
+        public ClientSender(String serverAddress, int serverPort){
+            this.serverAddress = serverAddress;
+            this.serverPort = serverPort;
+            this.response = "";
+        }
+
+        public void setMessage(String message){this.message = message;}
+
+        @Override
+        public void onPreExecute(){
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... v){
+            Socket s = null;
+            DataOutputStream dos = null;
+            PrintWriter out = null;
+            try{
+                s = new Socket(serverAddress, serverPort);
+                dos = new DataOutputStream(s.getOutputStream());
+
+                out = new PrintWriter(dos);
+                out.println(message);
+                out.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally{
+                if(s != null){
+                    try{s.close();}
+                    catch (IOException ioe){ioe.printStackTrace(); response = ioe.toString();}
+                }
+                if (dos != null){
+                    try{dos.close();}
+                    catch (IOException ioe){ioe.printStackTrace(); response = ioe.toString();}
+                }
+                if (out != null){
+                    out.close();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v){
+            text.setText(this.response);
+        }
     }
 }
