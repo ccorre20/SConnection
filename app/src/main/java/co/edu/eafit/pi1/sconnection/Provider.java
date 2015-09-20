@@ -21,8 +21,9 @@ public class Provider extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider);
-        ClientSender clientSender = new ClientSender("127.0.0.1",8888);
-        clientSender.setMessage("Hola desde el cliente");
+        ClientSender clientSender = new ClientSender("10.0.2.2",8880);
+        clientSender.setMessage("Hola-mundo---");
+        clientSender.execute();
     }
 
     @Override
@@ -76,10 +77,7 @@ public class Provider extends AppCompatActivity {
             try{
                 s = new Socket(serverAddress, serverPort);
                 dos = new DataOutputStream(s.getOutputStream());
-
-                out = new PrintWriter(dos);
-                out.println(message);
-                out.flush();
+                dos.writeUTF(message);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally{
@@ -91,16 +89,9 @@ public class Provider extends AppCompatActivity {
                     try{dos.close();}
                     catch (IOException ioe){ioe.printStackTrace(); response = ioe.toString();}
                 }
-                if (out != null){
-                    out.close();
-                }
             }
             return null;
         }
 
-        @Override
-        protected void onPostExecute(Void v){
-            text.setText(this.response);
-        }
     }
 }

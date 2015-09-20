@@ -23,7 +23,7 @@ public class User extends AppCompatActivity {
 
     private Button b, b2;
     private ProgressBar progressBar;
-    private TextView progressTxt;
+    private TextView progressTxt, resultTxt;
     private getDataTask task;
 
     @Override
@@ -34,11 +34,12 @@ public class User extends AppCompatActivity {
         b2 = (Button) findViewById(R.id.button_cancel);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressTxt = (TextView) findViewById(R.id.Progress_txt);
+        resultTxt = (TextView) findViewById(R.id.textView2);
         task = null;
     }
 
     public void connClickListener(View view){
-        task = new getDataTask(progressBar, progressTxt, b, b2);
+        task = new getDataTask(progressBar, progressTxt, resultTxt, b, b2);
         task.execute();
     }
 
@@ -52,14 +53,15 @@ public class User extends AppCompatActivity {
     private class getDataTask extends AsyncTask<Void, Integer, Void> {
 
         private ProgressBar progressBar;
-        private TextView progressTxt;
+        private TextView progressTxt, resultTxt;
         private Button b, b2;
         private int status;
         private String result, publish;
 
-        public getDataTask(ProgressBar progressBar, TextView progressTxt, Button b, Button b2){
+        public getDataTask(ProgressBar progressBar, TextView progressTxt, TextView resultTxt, Button b, Button b2){
             this.progressBar = progressBar;
             this.progressTxt = progressTxt;
+            this.resultTxt = resultTxt;
             this.b = b;
             this.b2 = b2;
             status = 0;
@@ -88,7 +90,7 @@ public class User extends AppCompatActivity {
                 Log.v("test", e.getMessage());
             }
             try {
-                ss.setSoTimeout(5000);
+                ss.setSoTimeout(30000);
                 s = ss.accept();
                 dis = new DataInputStream(s.getInputStream());
                 publishProgress(50);
@@ -101,6 +103,7 @@ public class User extends AppCompatActivity {
                         return null;
                     }
                     publish += result;
+                    Log.v("publish", result);
                     if(result.contains("---")){
                         break;
                     }
@@ -110,7 +113,7 @@ public class User extends AppCompatActivity {
                 Log.v("test", "timeout");
                 this.cancel(true);
             }catch (Exception e){
-                Log.v("test", e.getMessage());
+                Log.v("test", e.toString());
                 this.cancel(true);
             } finally {
                 if(s != null){
@@ -201,8 +204,9 @@ public class User extends AppCompatActivity {
             b.setEnabled(true);
             b2.setEnabled(false);
             b2.setVisibility(View.INVISIBLE);
-
             Log.v("test", publish);
+
+            resultTxt.setText(publish);
         }
 
     }
