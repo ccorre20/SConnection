@@ -1,6 +1,6 @@
 package co.edu.eafit.pi1.sconnection;
 
-import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,19 +12,28 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-public class User extends AppCompatActivity {
+import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
+
+public class User extends AppCompatActivity implements OnMapReadyCallback {
 
     private Button b, b2;
     private ProgressBar progressBar;
     private TextView progressTxt, resultTxt;
     private getDataTask task;
+    private LatLng user, provider;
+    private GoogleMap map;
+    private LocationServiceManager locationServiceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +45,70 @@ public class User extends AppCompatActivity {
         progressTxt = (TextView) findViewById(R.id.Progress_txt);
         resultTxt = (TextView) findViewById(R.id.textView2);
         task = null;
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_frag);
+        mapFragment.getMapAsync(this);
+        user = null;
+        provider = null;
+    }
+
+    public void setProvider(LatLng provider){
+        this.provider = provider;
+    }
+
+    @Override
+    protected void onStart(){
+        locationServiceManager = new LocationServiceManager(this);
+        locationServiceManager.googleApiClient();
+        locationServiceManager.connect();
+        super.onStart();
+    }
+
+    public void mapClickListener(View view){
+        if(user != null) {
+            map.addMarker(new MarkerOptions()
+                    .title("User")
+                    .position(user));
+        }else{
+            while(!locationServiceManager.mGoogleApiClient.isConnected()){
+                 locationServiceManager.connect();
+            }
+            String [] locUser = locationServiceManager
+                            .getCoordinates()
+                            .substring(0,locationServiceManager.getCoordinates().length()-3)
+                            .split("s");
+            if(locUser.length == 2){
+                user = new LatLng(Double.parseDouble(locUser[0]),Double.parseDouble(locUser[1]));
+                mapClickListener(view);
+            }else{
+                user = null;
+            }
+        }
+        if(provider != null) {
+            map.addMarker(new MarkerOptions()
+                    .title("Provider")
+                    .position(provider));
+        }
+
+        if(user != null && provider != null){
+            float [] dist = new float[1];
+            Location.distanceBetween(
+                    user.latitude,
+                    user.longitude,
+                    provider.latitude,
+                    provider.longitude,
+                    dist);
+            resultTxt.setText(Float.toString(dist[0]));
+        }
     }
 
     public void connClickListener(View view){
-        task = new getDataTask(progressBar, progressTxt, resultTxt, b, b2);
+        task = new getDataTask(
+                progressBar,
+                progressTxt,
+                resultTxt,
+                b,
+                b2,
+                this);
         task.execute();
     }
 
@@ -50,21 +119,36 @@ public class User extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.map = googleMap;
+    }
+
     private class getDataTask extends AsyncTask<Void, Integer, Void> {
 
+        private LatLng provider;
         private ProgressBar progressBar;
         private TextView progressTxt, resultTxt;
         private Button b, b2;
         private int status;
         private String result, publish;
+        private User user;
 
-        public getDataTask(ProgressBar progressBar, TextView progressTxt, TextView resultTxt, Button b, Button b2){
+        public getDataTask(
+                ProgressBar progressBar,
+                TextView progressTxt,
+                TextView resultTxt,
+                Button b,
+                Button b2,
+                User user){
             this.progressBar = progressBar;
             this.progressTxt = progressTxt;
             this.resultTxt = resultTxt;
+            provider = null;
             this.b = b;
             this.b2 = b2;
             status = 0;
+            this.user = user;
         }
 
         protected void onPreExecute() {
@@ -81,7 +165,6 @@ public class User extends AppCompatActivity {
             publishProgress(0);
             ServerSocket ss = null;
             DataInputStream dis = null;
-            DataOutputStream dos = null;
             Socket s = null;
             try {
                 ss = new ServerSocket(8888);
@@ -90,7 +173,11 @@ public class User extends AppCompatActivity {
                 Log.v("test", e.getMessage());
             }
             try {
-                ss.setSoTimeout(30000);
+                if(ss != null) {
+                    ss.setSoTimeout(30000);
+                }else{
+                    return null;
+                }
                 s = ss.accept();
                 dis = new DataInputStream(s.getInputStream());
                 publishProgress(50);
@@ -104,7 +191,7 @@ public class User extends AppCompatActivity {
                     }
                     publish += result;
                     Log.v("publish", result);
-                    if(result.contains("---")){
+                    if(result.contains("sss")){
                         break;
                     }
                 }
@@ -194,6 +281,7 @@ public class User extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
             progressBar.setEnabled(false);
             progressTxt.setText("Done");
+
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -206,9 +294,14 @@ public class User extends AppCompatActivity {
             b2.setVisibility(View.INVISIBLE);
             Log.v("test", publish);
 
-            resultTxt.setText(publish);
+            resultTxt.setText("GEOLOCALIZADO");
+            publish = publish.substring(0, publish.length()-3);
+            String [] parts = publish.split("s");
+            String lat = parts[0];
+            String lng = parts[1];
+            provider = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+            user.setProvider(provider);
         }
-
     }
 
     @Override

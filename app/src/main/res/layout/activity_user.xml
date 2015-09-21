@@ -65,8 +65,29 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/textView2"
-        android:layout_below="@+id/button_cancel"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="131dp" />
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/Top_User_txt" />
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/map_frag"
+        android:layout_below="@+id/map_btn"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Ver_posiciones"
+            android:id="@+id/map_btn"
+        android:onClick="mapClickListener"
+            android:enabled="true"
+            android:visibility="visible"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/progressBar" />
 
 </RelativeLayout>
