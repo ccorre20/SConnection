@@ -65,8 +65,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/textView2"
-            android:layout_above="@+id/map_btn"
-            android:layout_centerHorizontal="true" />
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/Top_User_txt" />
 
     <fragment
         android:layout_width="wrap_content"
@@ -84,10 +84,10 @@
             android:layout_height="wrap_content"
             android:text="@string/Ver_posiciones"
             android:id="@+id/map_btn"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:onClick="mapClickListener"
+        android:onClick="mapClickListener"
             android:enabled="true"
-            android:visibility="visible" />
+            android:visibility="visible"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/progressBar" />
 
 </RelativeLayout>

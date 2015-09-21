@@ -1,5 +1,6 @@
 package co.edu.eafit.pi1.sconnection;
 
+import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,7 +32,6 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
     private TextView progressTxt, resultTxt;
     private getDataTask task;
     private LatLng user, provider;
-    private MapFragment mapFragment;
     private GoogleMap map;
     private LocationServiceManager locationServiceManager;
 
@@ -45,7 +45,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
         progressTxt = (TextView) findViewById(R.id.Progress_txt);
         resultTxt = (TextView) findViewById(R.id.textView2);
         task = null;
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_frag);
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map_frag);
         mapFragment.getMapAsync(this);
         user = null;
         provider = null;
@@ -87,6 +87,17 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
             map.addMarker(new MarkerOptions()
                     .title("Provider")
                     .position(provider));
+        }
+
+        if(user != null && provider != null){
+            float [] dist = new float[1];
+            Location.distanceBetween(
+                    user.latitude,
+                    user.longitude,
+                    provider.latitude,
+                    provider.longitude,
+                    dist);
+            resultTxt.setText(Float.toString(dist[0]));
         }
     }
 
@@ -162,7 +173,11 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
                 Log.v("test", e.getMessage());
             }
             try {
-                ss.setSoTimeout(30000);
+                if(ss != null) {
+                    ss.setSoTimeout(30000);
+                }else{
+                    return null;
+                }
                 s = ss.accept();
                 dis = new DataInputStream(s.getInputStream());
                 publishProgress(50);
