@@ -1,15 +1,16 @@
 <resources>
-    <string name="app_name">SConnection</string>
+    <string name="app_name">SC</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="user">Usuario</string>
     <string name="provider">Proveedor</string>
-    <string name="Ver_posiciones">Ver Posiciones</string>
+    <string name="verPos">Ver Posiciones</string>
     <string name="action_settings">Settings</string>
     <string name="connect">Conectar</string>
     <string name="action_search">buscar</string>
     <string name="title_activity_map_controller">Map</string>
     <string name="title_activity_landing_gral">Landing_gral</string>
+    <string name="Nada">---</string>
 
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -26,5 +27,7 @@
     <string name="connection_complete">Confirmados los datos</string>
     <string name="Error">Hubo un error</string>
     <string name="cancel">Cancelar</string>
+    <string name="None">Large Text</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
 

@@ -11,14 +11,10 @@ import android.widget.Button;
 
 public class Landing extends AppCompatActivity {
 
-    private Button b, b2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
-        b = (Button) findViewById(R.id.button_user);
-        b2 = (Button) findViewById(R.id.button_provider);
     }
 
     public void userClick(View view){

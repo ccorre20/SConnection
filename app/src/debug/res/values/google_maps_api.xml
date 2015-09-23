@@ -13,7 +13,5 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
     string in this file.
     Error
     -->
-    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
-        AIzaSyA8n4D_XMVQ7KvjUB7y1IvvRejOZPMCKac
-    </string>
+    <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">AIzaSyDflkYOmv8QKjsxv21vPFjiFsBmrQ6AcsI</string>
 </resources>
