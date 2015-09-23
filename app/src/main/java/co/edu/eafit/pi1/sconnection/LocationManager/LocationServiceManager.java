@@ -75,7 +75,7 @@ public class LocationServiceManager implements
 
     public void connect(){
         if(!mResolvingError){
-                mGoogleApiClient.connect();
+            mGoogleApiClient.connect();
         }
     }
 
