@@ -1,8 +1,8 @@
 package co.edu.eafit.pi1.sconnection;
 
-import android.app.AlertDialog;
+import android.app.IntentService;
 import android.content.Intent;
-import android.sax.StartElementListener;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,43 +11,80 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
-import co.edu.eafit.pi1.sconnection.Connection.RegisterConnection;
+import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
+import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
 
-public class Landing extends AppCompatActivity {
+public class Landing extends AppCompatActivity implements Receiver {
 
     EditText uname;
+    Button login;
+    CSResultReceiver mReceiver;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
         uname = (EditText)findViewById(R.id.editText_username);
+        login  = (Button) findViewById(R.id.button_login);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+    }
+
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+        Intent i = null;
+
+        switch (resultCode){
+            case LoginConnectionService.STATUS_RUNNING:{
+                progressBar.setVisibility(View.VISIBLE);
+                break;
+            }
+            case LoginConnectionService.STATUS_FINISHED:{
+                String res = resultData.getString("user_t");
+                if(res.equals("user")){
+                    i = new Intent(this, User.class);
+                } else {
+                    i = new Intent(this, Provider.class);
+                }
+                progressBar.setVisibility(View.INVISIBLE);
+                break;
+            }
+            case LoginConnectionService.STATUS_GENERAL_ERROR:{
+
+                break;
+            }
+            case LoginConnectionService.STATUS_NAME_ERROR:{
+
+                break;
+            }
+            case LoginConnectionService.STATUS_NETWORK_ERROR:{
+
+                break;
+            }
+        }
+
+        if(i != null){
+            startActivity(i);
+        }
     }
 
     public void userClick(View view){
-        RegisterConnection con = new RegisterConnection();
-        StringBuffer params = new StringBuffer();
-        String type = "";
+        login.setEnabled(false);
+        mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, LoginConnectionService.class);
+        Log.d("NAME", uname.getText().toString());
+        intent.putExtra("username", uname.getText().toString());
+        intent.putExtra("mReceiver", mReceiver);
 
-        params.append("?login=true&name=");
-        params.append(uname.getText().toString());
-
-        try {
-            type = con.sendGet(params.toString());
-        } catch (Exception e){e.printStackTrace();}
-
-        if(type.equals("user")){
-            Intent i = new Intent(this, User.class);
-            startActivity(i);
-        }
-
+        startService(intent);
     }
 
-    public void providerClick(View view){
-        Intent i = new Intent(this, Provider.class);
-        startActivity(i);
+    public void nameClick(View view){
+        uname.getText().clear();
     }
 
     @Override
@@ -71,4 +108,5 @@ public class Landing extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

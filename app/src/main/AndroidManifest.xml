@@ -46,6 +46,11 @@
             android:name=".Provider"
             android:label="@string/title_activity_provider" >
         </activity>
+
+        <service
+            android:name=".Connection.Services.LoginConnectionService"
+            android:exported="false" />
+
     </application>
 
 </manifest>
