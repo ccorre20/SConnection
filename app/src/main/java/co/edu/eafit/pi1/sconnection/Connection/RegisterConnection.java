@@ -1,7 +1,6 @@
-package connection;
+package co.edu.eafit.pi1.sconnection.Connection;
 
-import android.webkit.WebSettings;
-import android.webkit.WebView;
+import android.app.AlertDialog;
 
 import org.json.JSONObject;
 
@@ -20,6 +19,7 @@ public class RegisterConnection {
     private StringBuffer url;
 
     public RegisterConnection(){
+        url = new StringBuffer();
         url.append("https://sc-b.herokuapp.com/api/v1/users/");
     }
 

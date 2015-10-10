@@ -1,25 +1,48 @@
 package co.edu.eafit.pi1.sconnection;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.sax.StartElementListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import co.edu.eafit.pi1.sconnection.Connection.RegisterConnection;
 
 public class Landing extends AppCompatActivity {
+
+    EditText uname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
+        uname = (EditText)findViewById(R.id.editText_username);
     }
 
     public void userClick(View view){
-        Intent i = new Intent(this, User.class);
-        startActivity(i);
+        RegisterConnection con = new RegisterConnection();
+        StringBuffer params = new StringBuffer();
+        String type = "";
+
+        params.append("?login=true&name=");
+        params.append(uname.getText().toString());
+
+        try {
+            type = con.sendGet(params.toString());
+        } catch (Exception e){e.printStackTrace();}
+
+        if(type.equals("user")){
+            Intent i = new Intent(this, User.class);
+            startActivity(i);
+        }
+
     }
 
     public void providerClick(View view){
