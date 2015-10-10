@@ -7,23 +7,65 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button_user"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="143dp"
-        android:text="@string/user"
+        android:id="@+id/button_login"
+        android:text="@string/login"
         android:clickable="true"
         android:enabled="true"
-        android:onClick="userClick"/>
+        android:onClick="userClick"
+        android:layout_below="@+id/editText_username"
+        android:layout_alignStart="@+id/textView"
+        android:layout_marginTop="36dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/provider"
-        android:id="@+id/button_provider"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
+        android:text="@string/join"
+        android:id="@+id/button_join"
         android:clickable="true"
         android:enabled="true"
-        android:onClick="providerClick"/>
+        android:layout_marginTop="88dp"
+        android:layout_below="@+id/button_login"
+        android:layout_centerHorizontal="true"
+        android:onClick="registerClick" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="@string/username"
+        android:ems="10"
+        android:id="@+id/editText_username"
+        android:layout_marginTop="40dp"
+        android:textColor="@android:color/darker_gray"
+        android:editable="true"
+        android:typeface="normal"
+        android:textAlignment="center"
+        android:singleLine="true"
+        android:clickable="true"
+        android:layout_below="@+id/progressBar2"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/login"
+        android:id="@+id/textView"
+        android:layout_marginTop="54dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar2"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:visibility="invisible"
+        android:indeterminate="true"
+        android:indeterminateBehavior="cycle"
+        android:indeterminateOnly="true" />
 
 </RelativeLayout>
