@@ -105,29 +105,6 @@ public class LoginConnectionService extends IntentService {
         return response;
     }
 
-    private boolean sendPost (String urlParams) throws Exception{
-        URL url = new URL(this.url.toString());
-        HttpURLConnection con = (HttpURLConnection)url.openConnection();
-
-        // Request Header
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Accept", "application/json");
-        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        con.setRequestProperty("http.agent", "");
-
-        //Send post request
-        con.setDoOutput(true);
-        DataOutputStream dos = new DataOutputStream(con.getOutputStream());
-        dos.writeBytes(urlParams);
-        dos.flush();
-        dos.close();
-
-        int responseCode = con.getResponseCode();
-
-        // Return true if request was done successfully
-        return responseCode == 200 || responseCode == 201;
-    }
-
     private String getJSON(InputStream inputStream) throws IOException {
         StringBuffer json = new StringBuffer();
         BufferedReader in = new BufferedReader(

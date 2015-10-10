@@ -22,10 +22,11 @@
         android:text="@string/join"
         android:id="@+id/button_join"
         android:clickable="true"
-        android:enabled="false"
+        android:enabled="true"
         android:layout_marginTop="88dp"
         android:layout_below="@+id/button_login"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="registerClick" />
 
     <EditText
         android:layout_width="wrap_content"
