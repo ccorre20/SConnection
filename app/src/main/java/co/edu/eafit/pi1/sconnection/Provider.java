@@ -2,6 +2,7 @@ package co.edu.eafit.pi1.sconnection;
 
 import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,8 +26,6 @@ import java.net.Socket;
 
 public class Provider extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener*/ {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,12 @@ public class Provider extends AppCompatActivity /*implements GoogleApiClient.Con
     }
 
     public void arrivedClickListener(View view){
+        Context context = getApplicationContext();
+        CharSequence text = "Confirmando llegada...";
+        int duration = Toast.LENGTH_LONG;
 
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
     public void servicesClickListener(View view){
@@ -80,6 +85,4 @@ public class Provider extends AppCompatActivity /*implements GoogleApiClient.Con
     protected void onStop(){
         super.onStop();
     }
-
-
 }
