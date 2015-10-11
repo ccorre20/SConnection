@@ -9,6 +9,7 @@ import android.widget.TextView;
 public class ProviderProfile extends AppCompatActivity {
 
     String username;
+    Bundle extra;
     TextView userProvider;
 
     @Override
@@ -16,7 +17,10 @@ public class ProviderProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_profile);
 
-        username = savedInstanceState.getString("username");
+
+        extra = getIntent().getExtras();
+        if (extra != null)
+            username = extra.getString("username");
 
         userProvider = (TextView)findViewById(R.id.unameProvider);
         userProvider.setText(username);

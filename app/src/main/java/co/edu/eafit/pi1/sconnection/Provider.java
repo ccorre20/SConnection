@@ -28,13 +28,16 @@ public class Provider extends AppCompatActivity /*implements GoogleApiClient.Con
         GoogleApiClient.OnConnectionFailedListener*/ {
 
     String username;
+    Bundle extra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider);
 
-        username = savedInstanceState.getString("username");
+        extra = getIntent().getExtras();
+        if (extra != null)
+            username = extra.getString("username");
     }
 
     @Override
