@@ -27,10 +27,14 @@ import java.net.Socket;
 public class Provider extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener*/ {
 
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider);
+
+        username = savedInstanceState.getString("username");
     }
 
     @Override
@@ -40,6 +44,7 @@ public class Provider extends AppCompatActivity /*implements GoogleApiClient.Con
 
     public void profileClickListener(View view){
         Intent i = new Intent(this, ProviderProfile.class);
+        i.putExtra("username", username);
         startActivity(i);
     }
 

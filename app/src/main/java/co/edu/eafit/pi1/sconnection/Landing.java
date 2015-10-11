@@ -57,8 +57,10 @@ public class Landing extends AppCompatActivity implements Receiver {
                 String res = resultData.getString("user_t");
                 if(res.equals("user")){
                     i = new Intent(this, User.class);
+                    i.putExtra("username", uname.getText().toString());
                 } else {
                     i = new Intent(this, Provider.class);
+                    i.putExtra("username", uname.getText().toString());
                 }
                 progressBar.setVisibility(View.INVISIBLE);
                 break;

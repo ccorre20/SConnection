@@ -4,13 +4,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class ProviderProfile extends AppCompatActivity {
+
+    String username;
+    TextView userProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_profile);
+
+        username = savedInstanceState.getString("username");
+
+        userProvider = (TextView)findViewById(R.id.unameProvider);
+        userProvider.setText(username);
     }
 
     @Override
