@@ -3,6 +3,7 @@ package co.edu.eafit.pi1.sconnection.Connection.Services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v7.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Timer;
 
 import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
 import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
@@ -40,6 +42,11 @@ public class GetLocationConnectionService extends IntentService{
         url.append("https://sc-b.herokuapp.com/api/v1/locations/?name=");
         uname = new String();
         locationServiceManager = new LocationServiceManager(appCompatActivity);
+    }
+
+    public GetLocationConnectionService(){
+        super(GetLocationConnectionService.class.getName());
+        this.stopSelf();
     }
 
     @Override

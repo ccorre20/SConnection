@@ -3,6 +3,7 @@ package co.edu.eafit.pi1.sconnection.Connection.Services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v7.app.AppCompatActivity;
 import java.io.DataOutputStream;
@@ -22,9 +23,12 @@ public class SetLocationConnectionService extends IntentService {
     public static final int STATUS_NAME_ERROR       = 3;
     public static final int STATUS_GENERAL_ERROR    = 4;
 
-    String uname;
-    StringBuffer url;
-    LocationServiceManager locationServiceManager;
+    private final int FIVE_SECONDS = 5000;
+
+    private String uname;
+    private StringBuffer url;
+    private Handler handler;
+    private LocationServiceManager locationServiceManager;
 
     public SetLocationConnectionService(AppCompatActivity appCompatActivity){
         super(SetLocationConnectionService.class.getName());
@@ -32,13 +36,18 @@ public class SetLocationConnectionService extends IntentService {
         url = new StringBuffer();
         url.append("https://sc-b.herokuapp.com/api/v1/locations/");
         locationServiceManager = new LocationServiceManager(appCompatActivity);
+        handler = new Handler();
+    }
+
+    public SetLocationConnectionService(){
+        super(SetLocationConnectionService.class.getName());
+        this.stopSelf();
     }
 
     @Override
     public void onHandleIntent(Intent intent){
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
         uname = intent.getStringExtra("username");
-        boolean result;
         StringBuffer postParams = new StringBuffer();
         postParams.append("name=" + uname);
 
@@ -46,8 +55,6 @@ public class SetLocationConnectionService extends IntentService {
         while(!locationServiceManager.mGoogleApiClient.isConnected()){
             locationServiceManager.connect();
         }
-
-        Bundle bundle = new Bundle();
 
         if (!uname.isEmpty()){
             receiver.send(STATUS_RUNNING, Bundle.EMPTY);
@@ -58,19 +65,29 @@ public class SetLocationConnectionService extends IntentService {
 
             if (location.length == 2){
                 postParams.append("&latitude=" + location[0] + "&longitude=" + location[1]);
-                try {
-                    result = sendPost(postParams.toString());
-                    bundle.putBoolean("done", result);
-                    receiver.send(STATUS_FINISHED, bundle);
-                } catch (IOException ioe){
-                    receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
-                    ioe.printStackTrace();
-                }
+                scheduleSendLocation(postParams.toString());
             }
+            receiver.send(STATUS_FINISHED, Bundle.EMPTY);
         }else{
             receiver.send(STATUS_NAME_ERROR, Bundle.EMPTY);
         }
     }
+
+    private void scheduleSendLocation(final String postParams){
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    sendPost(postParams);
+                    handler.postDelayed(this, FIVE_SECONDS);
+                } catch(IOException ioe){
+                    handler.removeCallbacksAndMessages(null);
+                    ioe.printStackTrace();
+                }
+            }
+        }, FIVE_SECONDS);
+    }
+
 
     private boolean sendPost (String urlParams) throws IOException {
         URL url = new URL(this.url.toString());

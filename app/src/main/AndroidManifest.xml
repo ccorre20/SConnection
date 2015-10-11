@@ -33,6 +33,7 @@
             android:label="@string/title_activity_landing" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,14 +49,29 @@
         <service
             android:name=".Connection.Services.LoginConnectionService"
             android:exported="false" />
-
         <service
             android:name=".Connection.Services.RegisterConnectionService"
+            android:exported="false" />
+
+        <service
+            android:name=".Connection.Services.SetLocationConnectionService"
+            android:exported="false" />
+
+        <service
+            android:name=".Connection.Services.GetLocationConnectionService"
             android:exported="false" />
 
         <activity
             android:name=".Register"
             android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name=".ProviderProfile"
+            android:label="@string/title_activity_provider_profile" >
+        </activity>
+        <activity
+            android:name=".ProviderServices"
+            android:label="@string/title_activity_provider_services" >
         </activity>
     </application>
 

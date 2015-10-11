@@ -40,5 +40,10 @@
     <string name="register_radio_user">Usuario</string>
     <string name="register_radio_provider">Proveedor</string>
     <string name="register_button">Registrarse</string>
+    <string name="profile">Perfil</string>
+    <string name="see_services">Ver servicios</string>
+    <string name="arrived">Confirmar llegada</string>
+    <string name="title_activity_provider_profile">ProviderProfile</string>
+    <string name="title_activity_provider_services">ProviderServices</string>
 </resources>
 
