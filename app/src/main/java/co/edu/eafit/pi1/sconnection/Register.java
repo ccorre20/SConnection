@@ -1,6 +1,5 @@
 package co.edu.eafit.pi1.sconnection;
 
-import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -9,104 +8,84 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.RadioButton;
 
 import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
+import co.edu.eafit.pi1.sconnection.Connection.Services.RegisterConnectionService;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
 
-public class Landing extends AppCompatActivity implements Receiver {
+public class Register extends AppCompatActivity implements Receiver {
 
-    EditText uname;
-    Button login;
     CSResultReceiver mReceiver;
-    ProgressBar progressBar;
+    EditText username_text;
+    RadioButton r1, r2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing);
-        uname = (EditText)findViewById(R.id.editText_username);
-        login  = (Button) findViewById(R.id.button_login);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+        setContentView(R.layout.activity_register);
+        username_text = (EditText) findViewById(R.id.username_text);
+        r1 = (RadioButton) findViewById(R.id.radioButton);
+        r2 = (RadioButton) findViewById(R.id.radioButton2);
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        uname.setOnClickListener(new View.OnClickListener(){
+        username_text.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                uname.getText().clear();
+                username_text.getText().clear();
             }
         });
     }
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
-        Intent i = null;
 
         switch (resultCode){
-            case LoginConnectionService.STATUS_RUNNING:{
-                progressBar.setVisibility(View.VISIBLE);
+            case RegisterConnectionService.STATUS_RUNNING:{
                 break;
             }
-            case LoginConnectionService.STATUS_FINISHED:{
-                String res = resultData.getString("user_t");
-                if(res.equals("user")){
-                    i = new Intent(this, User.class);
-                } else {
-                    i = new Intent(this, Provider.class);
-                }
-                progressBar.setVisibility(View.INVISIBLE);
+            case RegisterConnectionService.STATUS_FINISHED:{
+                this.finish();
                 break;
             }
-            case LoginConnectionService.STATUS_GENERAL_ERROR:{
+            case RegisterConnectionService.STATUS_GENERAL_ERROR:{
 
                 break;
             }
-            case LoginConnectionService.STATUS_NAME_ERROR:{
-
-                break;
-            }
-            case LoginConnectionService.STATUS_NETWORK_ERROR:{
+            case RegisterConnectionService.STATUS_NAME_ERROR:{
 
                 break;
             }
         }
 
-        if(i != null){
-            startActivity(i);
-        }
     }
 
-    public void userClick(View view){
-        login.setEnabled(false);
+    public void doRegisterClick(View view){
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
-        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, LoginConnectionService.class);
-        Log.d("NAME", uname.getText().toString());
-        intent.putExtra("username", uname.getText().toString());
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, RegisterConnectionService.class);
+        intent.putExtra("username", username_text.getText().toString());
         intent.putExtra("mReceiver", mReceiver);
+        String type = "user";
+        if(r1.isChecked()){
+            type = "user";
+        } else if(r2.isChecked()) {
+            type = "provider";
+        }
+        intent.putExtra("type", type);
 
         startService(intent);
-    }
-
-    public void registerClick(View view){
-        Intent i = new Intent(this, Register.class);
-        startActivity(i);
-    }
-
-    public void nameClick(View view){
-        uname.getText().clear();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_landing, menu);
+        getMenuInflater().inflate(R.menu.menu_register, menu);
         return true;
     }
 

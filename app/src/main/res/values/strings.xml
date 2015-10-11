@@ -11,7 +11,7 @@
     <string name="title_activity_map_controller">Map</string>
     <string name="title_activity_landing_gral">Landing_gral</string>
     <string name="Nada">---</string>
-    <string name="username">Nombre de usuario</string>
+    <string name="username">usuario</string>
     <string name="user">Usuario</string>
     <string name="provider">Proveedor</string>
 
@@ -32,5 +32,18 @@
     <string name="cancel">Cancelar</string>
     <string name="None">Large Text</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="register_title">Registrarse</string>
+    <string name="register_username">Nombre de Usuario:</string>
+    <string name="register_username_edittext">usuario</string>
+    <string name="register_user_t">Tipo de Usuario:</string>
+    <string name="register_radio_user">Usuario</string>
+    <string name="register_radio_provider">Proveedor</string>
+    <string name="register_button">Registrarse</string>
+    <string name="profile">Perfil</string>
+    <string name="see_services">Ver servicios</string>
+    <string name="arrived">Confirmar llegada</string>
+    <string name="title_activity_provider_profile">ProviderProfile</string>
+    <string name="title_activity_provider_services">ProviderServices</string>
 </resources>
 
