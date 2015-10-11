@@ -19,7 +19,6 @@ import java.net.URL;
 import java.util.Timer;
 
 import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
-import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
 
 /**
  * Created by tflr on 10/11/15.
@@ -34,14 +33,12 @@ public class GetLocationConnectionService extends IntentService{
 
     private StringBuffer url;
     private String uname;
-    LocationServiceManager locationServiceManager;
 
     public GetLocationConnectionService(AppCompatActivity appCompatActivity){
         super(GetLocationConnectionService.class.getName());
         url = new StringBuffer();
         url.append("https://sc-b.herokuapp.com/api/v1/locations/?name=");
         uname = new String();
-        locationServiceManager = new LocationServiceManager(appCompatActivity);
     }
 
     public GetLocationConnectionService(){
@@ -58,10 +55,6 @@ public class GetLocationConnectionService extends IntentService{
 
         String[] result = new String[2];
 
-        locationServiceManager.googleApiClient();
-        while(!locationServiceManager.mGoogleApiClient.isConnected()){
-            locationServiceManager.connect();
-        }
 
         if(!uname.isEmpty()){
             receiver.send(STATUS_RUNNING, Bundle.EMPTY);
