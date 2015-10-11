@@ -63,7 +63,7 @@ public class LocationServiceManager implements
         }
     }
 
-    /**************************** Google API connection *******************************************/
+    /**************************** /Google API connection ******************************************/
 
     public void googleApiClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(appCompatActivity)
