@@ -5,7 +5,8 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
-    tools:context="co.edu.eafit.pi1.sconnection.Provider">
+    tools:context="co.edu.eafit.pi1.sconnection.Provider"
+    android:id="@+id/">
 
     <Button
         android:layout_width="wrap_content"
