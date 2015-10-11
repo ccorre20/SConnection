@@ -44,6 +44,11 @@ public class GetLocationConnectionService extends IntentService{
         locationServiceManager = new LocationServiceManager(appCompatActivity);
     }
 
+    public GetLocationConnectionService(){
+        super(GetLocationConnectionService.class.getName());
+        this.stopSelf();
+    }
+
     @Override
     protected void onHandleIntent(Intent intent){
 

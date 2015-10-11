@@ -39,6 +39,11 @@ public class SetLocationConnectionService extends IntentService {
         handler = new Handler();
     }
 
+    public SetLocationConnectionService(){
+        super(SetLocationConnectionService.class.getName());
+        this.stopSelf();
+    }
+
     @Override
     public void onHandleIntent(Intent intent){
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
@@ -62,6 +67,7 @@ public class SetLocationConnectionService extends IntentService {
                 postParams.append("&latitude=" + location[0] + "&longitude=" + location[1]);
                 scheduleSendLocation(postParams.toString());
             }
+            receiver.send(STATUS_FINISHED, Bundle.EMPTY);
         }else{
             receiver.send(STATUS_NAME_ERROR, Bundle.EMPTY);
         }

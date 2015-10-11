@@ -53,6 +53,14 @@
             android:name=".Connection.Services.RegisterConnectionService"
             android:exported="false" />
 
+        <service
+            android:name=".Connection.Services.SetLocationConnectionService"
+            android:exported="false" />
+
+        <service
+            android:name=".Connection.Services.GetLocationConnectionService"
+            android:exported="false" />
+
         <activity
             android:name=".Register"
             android:label="@string/title_activity_register" >
