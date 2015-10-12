@@ -8,7 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -22,6 +26,7 @@ public class ProviderSearch extends AppCompatActivity implements Receiver {
     CSResultReceiver mReceiver;
     ProgressBar progressBar;
     ArrayAdapter<String> arrayAdapter;
+    ListView lv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +35,14 @@ public class ProviderSearch extends AppCompatActivity implements Receiver {
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        lv = (ListView) findViewById(R.id.listView);
     }
 
     @Override
     protected void onStart(){
         super.onStart();
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, GetProvidersService.class);
+        intent.putExtra("mReceiver",mReceiver);
         startService(intent);
     }
 
@@ -47,9 +54,27 @@ public class ProviderSearch extends AppCompatActivity implements Receiver {
                 break;
             }
             case LoginConnectionService.STATUS_FINISHED:{
+                ArrayList<String> prov_names = new ArrayList<>();
                 ArrayList<String> objs = resultData.getStringArrayList("providers");
-
+                JSONObject o = null;
+                for(String s:objs){
+                    try {
+                        o = new JSONObject(s);
+                        prov_names.add(o.getString("name"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(!prov_names.isEmpty()){
+                    arrayAdapter = new ArrayAdapter<String>(
+                            this,
+                            R.layout.list_item,
+                            R.id.product_name,
+                            prov_names);
+                    lv.setAdapter(arrayAdapter);
+                }
                 progressBar.setVisibility(View.INVISIBLE);
+                lv.setVisibility(View.VISIBLE);
                 break;
             }
             case LoginConnectionService.STATUS_GENERAL_ERROR:{
