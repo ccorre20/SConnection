@@ -55,8 +55,13 @@ public class Provider extends AppCompatActivity implements Receiver {
     public void onReceiveResult(int resultCode, Bundle resultData){
         switch (resultCode){
             case GetLocationConnectionService.STATUS_FINISHED:
-                Intent i = new Intent(this, ProviderServices.class);
-                startActivity(i);
+                Context context = getApplicationContext();
+                CharSequence text = "Longitude: " + resultData.getString("longitude")
+                                    + " Latitude: " + resultData.getString("latitude");
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
                 break;
         }
     }
@@ -79,10 +84,18 @@ public class Provider extends AppCompatActivity implements Receiver {
     public void servicesClickListener(View view){
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
-        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, GetLocationConnectionService.class);
+        final Handler handler = new Handler();
+        final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, GetLocationConnectionService.class);
         intent.putExtra("username", username);
         intent.putExtra("mReceiver", mReceiver);
-        startService(intent);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startService(intent);
+                handler.postDelayed(this, 5000);
+            }
+        }, 5000);
+
     }
 
     @Override
