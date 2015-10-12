@@ -1,5 +1,11 @@
 package co.edu.eafit.pi1.sconnection;
 
+import co.edu.eafit.pi1.sconnection.Connection.Services.GetLocationConnectionService;
+import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
+import co.edu.eafit.pi1.sconnection.Connection.Services.SetLocationConnectionService;
+import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+import co.edu.eafit.pi1.sconnection.Extras.ActivityExtra;
 import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
 
 import android.content.Context;
@@ -7,8 +13,10 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,11 +32,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Provider extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener*/ {
+public class Provider extends AppCompatActivity implements Receiver {
 
     String username;
     Bundle extra;
+    CSResultReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,21 @@ public class Provider extends AppCompatActivity /*implements GoogleApiClient.Con
         super.onStart();
     }
 
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData){
+        switch (resultCode){
+            case 1:  //STATUS_FINISHED
+                Context context = getApplicationContext();
+                CharSequence text = "Longitude: " + resultData.getString("longitude")
+                                    + " Latitude: " + resultData.getString("latitude");
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                break;
+        }
+    }
+
     public void profileClickListener(View view){
         Intent i = new Intent(this, ProviderProfile.class);
         i.putExtra("username", username);
@@ -52,16 +75,46 @@ public class Provider extends AppCompatActivity /*implements GoogleApiClient.Con
     }
 
     public void arrivedClickListener(View view){
+        /*
         Context context = getApplicationContext();
         CharSequence text = "Confirmando llegada...";
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+        */
+
+        mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
+        final Handler handler = new Handler();
+        final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetLocationConnectionService.class);
+        intent.putExtra("username", username);
+        intent.putExtra("mReceiver", mReceiver);
+        intent.putExtra("appCompatActivity", new ActivityExtra(this));
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startService(intent);
+                handler.postDelayed(this, 5000);
+            }
+        }, 5000);
+
     }
 
     public void servicesClickListener(View view){
-
+        mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
+        final Handler handler = new Handler();
+        final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, GetLocationConnectionService.class);
+        intent.putExtra("username", username);
+        intent.putExtra("mReceiver", mReceiver);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startService(intent);
+                handler.postDelayed(this, 5000);
+            }
+        }, 5000);
     }
 
     @Override

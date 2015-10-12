@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v7.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,32 +15,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Timer;
 
+import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
 import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
-import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
 
 /**
  * Created by tflr on 10/11/15.
  */
 public class GetLocationConnectionService extends IntentService{
 
-    public static final int STATUS_RUNNING          = 0;
-    public static final int STATUS_FINISHED         = 1;
-    public static final int STATUS_NETWORK_ERROR    = 2;
-    public static final int STATUS_NAME_ERROR       = 3;
-    public static final int STATUS_GENERAL_ERROR    = 4;
+    private StringBuffer    url;
+    private String          uname;
+    private Handler         handler;
 
-    private StringBuffer url;
-    private String uname;
-    LocationServiceManager locationServiceManager;
-
-    public GetLocationConnectionService(AppCompatActivity appCompatActivity){
+    public GetLocationConnectionService(){
         super(GetLocationConnectionService.class.getName());
+
         url = new StringBuffer();
-        url.append("https://sc-b.herokuapp.com/api/v1/locations/?name=");
         uname = new String();
-        locationServiceManager = new LocationServiceManager(appCompatActivity);
+        handler = new Handler();
+
+        url.append("https://sc-b.herokuapp.com/api/v1/locations/?name=");
     }
 
     @Override
@@ -51,35 +45,67 @@ public class GetLocationConnectionService extends IntentService{
         uname = intent.getStringExtra("username");
         Bundle bundle = new Bundle();
 
-        String[] result = new String[2];
-
-        locationServiceManager.googleApiClient();
-        while(!locationServiceManager.mGoogleApiClient.isConnected()){
-            locationServiceManager.connect();
-        }
-
         if(!uname.isEmpty()){
-            receiver.send(STATUS_RUNNING, Bundle.EMPTY);
-            try{
-                result = sendGet(uname);
+            receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
+            try {
+                String[] result = sendGet(uname);
                 bundle.putString("longitude", result[0]);
                 bundle.putString("latitude", result[1]);
-                receiver.send(STATUS_FINISHED, bundle);
+                receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
             } catch (IOException e){
-                receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
                 e.printStackTrace();
             } catch (NetworkException e) {
-                receiver.send(STATUS_NETWORK_ERROR, Bundle.EMPTY);
+                receiver.send(NetworkOperationStatus.STATUS_NETWORK_ERROR.code, Bundle.EMPTY);
                 e.printStackTrace();
             } catch (JSONException e) {
-                receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
                 e.printStackTrace();
             }
+            scheduleGetLocation(uname, receiver);
         } else {
-            receiver.send(STATUS_NAME_ERROR, Bundle.EMPTY);
+            receiver.send(NetworkOperationStatus.STATUS_NAME_ERROR.code, Bundle.EMPTY);
         }
 
         this.stopSelf();
+    }
+
+    private void scheduleGetLocation(final String postParams,
+                                     final ResultReceiver receiver){
+        /*
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Bundle bundle = new Bundle();
+                    String[] result = sendGet(postParams);
+                    bundle.putString("longitude", result[0]);
+                    bundle.putString("latitude", result[1]);
+                    receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
+                    handler.postDelayed(this, FIVE_SECONDS);
+                } catch (IOException e) {
+                    receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
+                    handler.removeCallbacksAndMessages(null);
+                    e.printStackTrace();
+                } catch (NetworkException e) {
+                    receiver.send(NetworkOperationStatus.STATUS_NETWORK_ERROR.code, Bundle.EMPTY);
+                    handler.removeCallbacksAndMessages(null);
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
+                    handler.removeCallbacksAndMessages(null);
+                    e.printStackTrace();
+                }
+            }
+        }, FIVE_SECONDS);
+        */
+        try {
+            Bundle bundle = new Bundle();
+            String[] result = sendGet(postParams);
+            bundle.putString("longitude", result[0]);
+            bundle.putString("latitude", result[1]);
+            receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
+        }catch(Exception e){e.printStackTrace();}
     }
 
     private String[] sendGet (String uname) throws IOException, JSONException, NetworkException{
@@ -87,8 +113,8 @@ public class GetLocationConnectionService extends IntentService{
         urlS.append(this.url);
         urlS.append(uname);
         URL url = new URL(urlS.toString());
-        HttpURLConnection con = (HttpURLConnection)url.openConnection();
         String[] response = new String[2];
+        HttpURLConnection con = (HttpURLConnection)url.openConnection();
 
         // Request Header
         con.setRequestMethod("GET");

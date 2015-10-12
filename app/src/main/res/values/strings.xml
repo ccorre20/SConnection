@@ -45,5 +45,12 @@
     <string name="arrived">Confirmar llegada</string>
     <string name="title_activity_provider_profile">ProviderProfile</string>
     <string name="title_activity_provider_services">ProviderServices</string>
+    <string name="user_search_button">Buscar Proveedores</string>
+    <string name="user_view_services_button">Ver Servicios</string>
+    <string name="user_create_service_button">Crear Servicio</string>
+    <string name="title_activity_provider_search">ProviderSearch</string>
+    <string name="provider_search_filter">Buscar Proveedores</string>
+    <string name="provider_search_title">Proveedores</string>
+    <string name="title_activity_user_service_list">UserServiceList</string>
 </resources>
 

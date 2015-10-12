@@ -46,18 +46,18 @@ public class Register extends AppCompatActivity implements Receiver {
     public void onReceiveResult(int resultCode, Bundle resultData) {
 
         switch (resultCode){
-            case RegisterConnectionService.STATUS_RUNNING:{
+            case 0:{
                 break;
             }
-            case RegisterConnectionService.STATUS_FINISHED:{
+            case 1:{
                 this.finish();
                 break;
             }
-            case RegisterConnectionService.STATUS_GENERAL_ERROR:{
+            case 2:{
 
                 break;
             }
-            case RegisterConnectionService.STATUS_NAME_ERROR:{
+            case 3:{
 
                 break;
             }

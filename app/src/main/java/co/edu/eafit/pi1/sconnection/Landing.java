@@ -15,11 +15,15 @@ import android.widget.ProgressBar;
 
 import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+
+import static co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus.*;
 
 public class Landing extends AppCompatActivity implements Receiver {
 
     EditText uname;
+    String sentname;
     Button login;
     CSResultReceiver mReceiver;
     ProgressBar progressBar;
@@ -49,11 +53,11 @@ public class Landing extends AppCompatActivity implements Receiver {
         Intent i = null;
 
         switch (resultCode){
-            case LoginConnectionService.STATUS_RUNNING:{
+            case 0:{ //STATUS_RUNNING
                 progressBar.setVisibility(View.VISIBLE);
                 break;
             }
-            case LoginConnectionService.STATUS_FINISHED:{
+            case 1:{ //STATUS_FINISHED
                 String res = resultData.getString("user_t");
                 if(res.equals("user")){
                     i = new Intent(this, User.class);
@@ -65,21 +69,22 @@ public class Landing extends AppCompatActivity implements Receiver {
                 progressBar.setVisibility(View.INVISIBLE);
                 break;
             }
-            case LoginConnectionService.STATUS_GENERAL_ERROR:{
+            case 2:{ //STATUS_NETWORK_ERROR
 
                 break;
             }
-            case LoginConnectionService.STATUS_NAME_ERROR:{
+            case 3:{ //STATUS_NAME_ERROR
 
                 break;
             }
-            case LoginConnectionService.STATUS_NETWORK_ERROR:{
+            case 4:{ //STATUS_GENERAL_ERROR
 
                 break;
             }
         }
 
         if(i != null){
+            i.putExtra("name", sentname);
             startActivity(i);
         }
     }
@@ -92,7 +97,7 @@ public class Landing extends AppCompatActivity implements Receiver {
         Log.d("NAME", uname.getText().toString());
         intent.putExtra("username", uname.getText().toString());
         intent.putExtra("mReceiver", mReceiver);
-
+        sentname = uname.getText().toString();
         startService(intent);
     }
 
