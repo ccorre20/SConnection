@@ -9,11 +9,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nombre de usuario:"
+        android:text="Usuario: "
         android:id="@+id/uProv"
-        android:layout_marginTop="37dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:typeface="serif"
+        android:textIsSelectable="false"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,5 +24,7 @@
         android:id="@+id/unameProvider"
         android:layout_alignTop="@+id/uProv"
         android:layout_toEndOf="@+id/uProv"
-        android:layout_marginStart="14dp" />
+        android:typeface="serif"
+        android:textIsSelectable="false"
+        android:textSize="18sp" />
 </RelativeLayout>
