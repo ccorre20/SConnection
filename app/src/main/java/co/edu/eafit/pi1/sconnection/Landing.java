@@ -53,11 +53,11 @@ public class Landing extends AppCompatActivity implements Receiver {
         Intent i = null;
 
         switch (resultCode){
-            case 0:{
+            case 0:{ //STATUS_RUNNING
                 progressBar.setVisibility(View.VISIBLE);
                 break;
             }
-            case 1:{
+            case 1:{ //STATUS_FINISHED
                 String res = resultData.getString("user_t");
                 if(res.equals("user")){
                     i = new Intent(this, User.class);
@@ -69,15 +69,15 @@ public class Landing extends AppCompatActivity implements Receiver {
                 progressBar.setVisibility(View.INVISIBLE);
                 break;
             }
-            case 2:{
+            case 2:{ //STATUS_NETWORK_ERROR
 
                 break;
             }
-            case 3:{
+            case 3:{ //STATUS_NAME_ERROR
 
                 break;
             }
-            case 4:{
+            case 4:{ //STATUS_GENERAL_ERROR
 
                 break;
             }

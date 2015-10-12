@@ -2,8 +2,10 @@ package co.edu.eafit.pi1.sconnection;
 
 import co.edu.eafit.pi1.sconnection.Connection.Services.GetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
+import co.edu.eafit.pi1.sconnection.Connection.Services.SetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+import co.edu.eafit.pi1.sconnection.Extras.ActivityExtra;
 import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
 
 import android.content.Context;
@@ -54,7 +56,7 @@ public class Provider extends AppCompatActivity implements Receiver {
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData){
         switch (resultCode){
-            case 1:
+            case 1:  //STATUS_FINISHED
                 Context context = getApplicationContext();
                 CharSequence text = "Longitude: " + resultData.getString("longitude")
                                     + " Latitude: " + resultData.getString("latitude");
@@ -73,12 +75,30 @@ public class Provider extends AppCompatActivity implements Receiver {
     }
 
     public void arrivedClickListener(View view){
+        /*
         Context context = getApplicationContext();
         CharSequence text = "Confirmando llegada...";
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+        */
+
+        mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
+        final Handler handler = new Handler();
+        final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetLocationConnectionService.class);
+        intent.putExtra("username", username);
+        intent.putExtra("mReceiver", mReceiver);
+        intent.putExtra("appCompatActivity", new ActivityExtra(this));
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startService(intent);
+                handler.postDelayed(this, 5000);
+            }
+        }, 5000);
+
     }
 
     public void servicesClickListener(View view){
@@ -95,7 +115,6 @@ public class Provider extends AppCompatActivity implements Receiver {
                 handler.postDelayed(this, 5000);
             }
         }, 5000);
-
     }
 
     @Override
