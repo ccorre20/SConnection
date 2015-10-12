@@ -37,8 +37,8 @@ public class SetLocationConnectionService extends IntentService {
     @Override
     public void onHandleIntent(Intent intent){
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
-        String longitude = intent.getParcelableExtra("longitude");
-        String latitude = intent.getParcelableExtra("latitude");
+        String longitude = intent.getStringExtra("longitude");
+        String latitude = intent.getStringExtra("latitude");
 
         uname = intent.getStringExtra("username");
         StringBuffer postParams = new StringBuffer();
