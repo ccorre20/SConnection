@@ -125,6 +125,7 @@ public class Provider extends AppCompatActivity implements Receiver,
             intent.putExtra("mReceiver", mReceiver);
 
             handler.postDelayed(new Runnable() {
+
                 @Override
                 public void run() {
                     String[] location = getCoordinates()

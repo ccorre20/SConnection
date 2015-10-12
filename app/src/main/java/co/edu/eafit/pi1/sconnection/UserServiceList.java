@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import co.edu.eafit.pi1.sconnection.Connection.Services.GetServiceListService;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
-import co.edu.eafit.pi1.sconnection.R;
 
 public class UserServiceList extends AppCompatActivity implements Receiver {
 
@@ -30,6 +30,7 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
     RadioButton r1, r2, r3;
     ArrayAdapter<String> arrayAdapter;
     CSResultReceiver mReceiver;
+    RadioGroup rg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,13 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
         r3 = (RadioButton) findViewById(R.id.user_service_list_radio_all);
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
+        rg = (RadioGroup) findViewById(R.id.user_service_list_group);
+        MOnCheckedChangeListener mOnCheckedChangeListener = new MOnCheckedChangeListener(this);
+        rg.setOnCheckedChangeListener(mOnCheckedChangeListener);
+    }
+
+    public void refresh(){
+
     }
 
     @Override
@@ -119,6 +127,20 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class MOnCheckedChangeListener implements RadioGroup.OnCheckedChangeListener{
+
+        UserServiceList p;
+
+        public MOnCheckedChangeListener(UserServiceList p){
+            this.p = p;
+        }
+
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            p.refresh();
+        }
     }
 
 }

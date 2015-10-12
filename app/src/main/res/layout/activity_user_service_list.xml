@@ -19,41 +19,36 @@
             android:id="@+id/user_service_list_title"
             android:layout_gravity="center_horizontal" />
 
-        <LinearLayout
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
-            android:layout_width="298dp"
-            android:layout_height="wrap_content">
+            android:baselineAligned="false"
+            android:id="@+id/user_service_list_group">
 
-            <RadioGroup
-                android:layout_width="match_parent"
+            <RadioButton
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:text="@string/user_service_list_radio_sent"
+                android:id="@+id/user_service_list_radio_sent"
+                android:checked="true" />
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/user_service_list_radio_sent"
-                    android:id="@+id/user_service_list_radio_sent"
-                    android:checked="true" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_service_list_radio_completed"
+                android:id="@+id/user_service_list_radio_completed"
+                android:checked="false" />
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/user_service_list_radio_completed"
-                    android:id="@+id/user_service_list_radio_completed"
-                    android:checked="false"
-                    android:layout_gravity="center_horizontal" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/user_service_list_radio_all"
-                    android:id="@+id/user_service_list_radio_all"
-                    android:checked="false"
-                    android:layout_gravity="right" />
-            </RadioGroup>
-        </LinearLayout>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_service_list_radio_all"
+                android:id="@+id/user_service_list_radio_all"
+                android:checked="false"
+                android:layout_gravity="right" />
+        </RadioGroup>
 
         <ListView
             android:layout_width="wrap_content"
