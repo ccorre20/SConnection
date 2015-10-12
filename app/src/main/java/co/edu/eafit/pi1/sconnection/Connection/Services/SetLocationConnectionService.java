@@ -25,7 +25,6 @@ public class SetLocationConnectionService extends IntentService {
     private String uname;
     private StringBuffer url;
     private Handler handler;
-    private LocationServiceManager locationServiceManager;
 
     public SetLocationConnectionService(){
         super(SetLocationConnectionService.class.getName());
@@ -38,32 +37,22 @@ public class SetLocationConnectionService extends IntentService {
     @Override
     public void onHandleIntent(Intent intent){
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
-
-        ActivityExtra appCompatActivity = (ActivityExtra)
-                                            intent.getParcelableExtra("appCompatActivity");
-        locationServiceManager = new LocationServiceManager(appCompatActivity.getAppCompatActivity());
+        String longitude = intent.getParcelableExtra("longitude");
+        String latitude = intent.getParcelableExtra("latitude");
 
         uname = intent.getStringExtra("username");
         StringBuffer postParams = new StringBuffer();
         postParams.append("name=" + uname);
 
-        locationServiceManager.googleApiClient();
-        while(!locationServiceManager.mGoogleApiClient.isConnected()){
-            locationServiceManager.connect();
-        }
 
         if (!uname.isEmpty()){
             receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
-            String [] location = locationServiceManager
-                    .getCoordinates()
-                    .substring(0,locationServiceManager.getCoordinates().length()-3)
-                    .split("s");
 
-            if (location.length == 2){
-                postParams.append("&latitude=" + location[0] + "&longitude=" + location[1]);
+            if (longitude != null && latitude != null){
+                postParams.append("&latitude=" + latitude + "&longitude=" + longitude);
                 Bundle bundle = new Bundle();
-                bundle.putString("latitude", location[0]);
-                bundle.putString("longitude", location[1]);
+                bundle.putString("latitude", latitude);
+                bundle.putString("longitude", longitude);
                 receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
                 try {
                     sendPost(postParams.toString());
@@ -75,6 +64,8 @@ public class SetLocationConnectionService extends IntentService {
         }else{
             receiver.send(NetworkOperationStatus.STATUS_NAME_ERROR.code, Bundle.EMPTY);
         }
+
+        this.stopSelf();
     }
 
     /*private void scheduleSendLocation(final String postParams){
