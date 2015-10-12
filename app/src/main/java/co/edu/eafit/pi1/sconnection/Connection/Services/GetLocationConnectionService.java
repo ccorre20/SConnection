@@ -24,8 +24,6 @@ import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
  */
 public class GetLocationConnectionService extends IntentService{
 
-    private final int FIVE_SECONDS = 5000;
-
     private StringBuffer    url;
     private String          uname;
     private Handler         handler;
@@ -46,7 +44,6 @@ public class GetLocationConnectionService extends IntentService{
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
         uname = intent.getStringExtra("username");
         Bundle bundle = new Bundle();
-
 
         if(!uname.isEmpty()){
             receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);

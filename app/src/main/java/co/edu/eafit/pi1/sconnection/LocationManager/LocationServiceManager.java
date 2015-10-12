@@ -1,5 +1,7 @@
 package co.edu.eafit.pi1.sconnection.LocationManager;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;

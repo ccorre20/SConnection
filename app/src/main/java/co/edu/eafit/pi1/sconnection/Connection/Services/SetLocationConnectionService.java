@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
+import co.edu.eafit.pi1.sconnection.Extras.ActivityExtra;
 import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
 
 /**
@@ -24,52 +25,50 @@ public class SetLocationConnectionService extends IntentService {
     private String uname;
     private StringBuffer url;
     private Handler handler;
-    private LocationServiceManager locationServiceManager;
 
-    public SetLocationConnectionService(AppCompatActivity appCompatActivity){
+    public SetLocationConnectionService(){
         super(SetLocationConnectionService.class.getName());
         uname = new String();
         url = new StringBuffer();
         url.append("https://sc-b.herokuapp.com/api/v1/locations/");
-        locationServiceManager = new LocationServiceManager(appCompatActivity);
         handler = new Handler();
-    }
-
-    public SetLocationConnectionService(){
-        super(SetLocationConnectionService.class.getName());
-        this.stopSelf();
     }
 
     @Override
     public void onHandleIntent(Intent intent){
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
+        String longitude = intent.getParcelableExtra("longitude");
+        String latitude = intent.getParcelableExtra("latitude");
+
         uname = intent.getStringExtra("username");
         StringBuffer postParams = new StringBuffer();
         postParams.append("name=" + uname);
 
-        locationServiceManager.googleApiClient();
-        while(!locationServiceManager.mGoogleApiClient.isConnected()){
-            locationServiceManager.connect();
-        }
 
         if (!uname.isEmpty()){
             receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
-            String [] location = locationServiceManager
-                    .getCoordinates()
-                    .substring(0,locationServiceManager.getCoordinates().length()-3)
-                    .split("s");
 
-            if (location.length == 2){
-                postParams.append("&latitude=" + location[0] + "&longitude=" + location[1]);
-                scheduleSendLocation(postParams.toString());
+            if (longitude != null && latitude != null){
+                postParams.append("&latitude=" + latitude + "&longitude=" + longitude);
+                Bundle bundle = new Bundle();
+                bundle.putString("latitude", latitude);
+                bundle.putString("longitude", longitude);
+                receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
+                try {
+                    sendPost(postParams.toString());
+                } catch(IOException ioe){
+                    receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
+                    ioe.printStackTrace();
+                }
             }
-            receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, Bundle.EMPTY);
         }else{
             receiver.send(NetworkOperationStatus.STATUS_NAME_ERROR.code, Bundle.EMPTY);
         }
+
+        this.stopSelf();
     }
 
-    private void scheduleSendLocation(final String postParams){
+    /*private void scheduleSendLocation(final String postParams){
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -82,7 +81,7 @@ public class SetLocationConnectionService extends IntentService {
                 }
             }
         }, FIVE_SECONDS);
-    }
+    } */
 
 
     private boolean sendPost (String urlParams) throws IOException {
