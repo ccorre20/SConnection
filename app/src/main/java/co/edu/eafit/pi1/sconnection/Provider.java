@@ -1,17 +1,25 @@
 package co.edu.eafit.pi1.sconnection;
 
+import co.edu.eafit.pi1.sconnection.Connection.Services.GetLocationConnectionService;
+import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
+import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
 import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -22,15 +30,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Provider extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener*/ {
+public class Provider extends AppCompatActivity implements Receiver {
 
-
+    String username;
+    Bundle extra;
+    CSResultReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider);
+
+        extra = getIntent().getExtras();
+        if (extra != null)
+            username = extra.getString("username");
     }
 
     @Override
@@ -38,17 +51,38 @@ public class Provider extends AppCompatActivity /*implements GoogleApiClient.Con
         super.onStart();
     }
 
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData){
+        switch (resultCode){
+            case GetLocationConnectionService.STATUS_FINISHED:
+                Intent i = new Intent(this, ProviderServices.class);
+                startActivity(i);
+                break;
+        }
+    }
+
     public void profileClickListener(View view){
         Intent i = new Intent(this, ProviderProfile.class);
+        i.putExtra("username", username);
         startActivity(i);
     }
 
     public void arrivedClickListener(View view){
+        Context context = getApplicationContext();
+        CharSequence text = "Confirmando llegada...";
+        int duration = Toast.LENGTH_LONG;
 
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
     public void servicesClickListener(View view){
-
+        mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, GetLocationConnectionService.class);
+        intent.putExtra("username", username);
+        intent.putExtra("mReceiver", mReceiver);
+        startService(intent);
     }
 
     @Override
@@ -80,6 +114,4 @@ public class Provider extends AppCompatActivity /*implements GoogleApiClient.Con
     protected void onStop(){
         super.onStop();
     }
-
-
 }

@@ -31,8 +31,6 @@ public class Landing extends AppCompatActivity implements Receiver {
         uname = (EditText)findViewById(R.id.editText_username);
         login  = (Button) findViewById(R.id.button_login);
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
-        mReceiver = new CSResultReceiver(new Handler());
-        mReceiver.setReceiver(this);
     }
 
     @Override
@@ -59,8 +57,10 @@ public class Landing extends AppCompatActivity implements Receiver {
                 String res = resultData.getString("user_t");
                 if(res.equals("user")){
                     i = new Intent(this, User.class);
+                    i.putExtra("username", uname.getText().toString());
                 } else {
                     i = new Intent(this, Provider.class);
+                    i.putExtra("username", uname.getText().toString());
                 }
                 progressBar.setVisibility(View.INVISIBLE);
                 break;
@@ -86,6 +86,8 @@ public class Landing extends AppCompatActivity implements Receiver {
 
     public void userClick(View view){
         login.setEnabled(false);
+        mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, LoginConnectionService.class);
         Log.d("NAME", uname.getText().toString());
         intent.putExtra("username", uname.getText().toString());

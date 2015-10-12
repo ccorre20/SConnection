@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v7.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,7 +15,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Timer;
 
 import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
 
@@ -31,19 +29,20 @@ public class GetLocationConnectionService extends IntentService{
     public static final int STATUS_NAME_ERROR       = 3;
     public static final int STATUS_GENERAL_ERROR    = 4;
 
-    private StringBuffer url;
-    private String uname;
+    private final int FIVE_SECONDS = 5000;
 
-    public GetLocationConnectionService(AppCompatActivity appCompatActivity){
-        super(GetLocationConnectionService.class.getName());
-        url = new StringBuffer();
-        url.append("https://sc-b.herokuapp.com/api/v1/locations/?name=");
-        uname = new String();
-    }
+    private StringBuffer    url;
+    private String          uname;
+    private Handler         handler;
 
     public GetLocationConnectionService(){
         super(GetLocationConnectionService.class.getName());
-        this.stopSelf();
+
+        url = new StringBuffer();
+        uname = new String();
+        handler = new Handler();
+
+        url.append("https://sc-b.herokuapp.com/api/v1/locations/?name=");
     }
 
     @Override
@@ -53,31 +52,44 @@ public class GetLocationConnectionService extends IntentService{
         uname = intent.getStringExtra("username");
         Bundle bundle = new Bundle();
 
-        String[] result = new String[2];
-
 
         if(!uname.isEmpty()){
             receiver.send(STATUS_RUNNING, Bundle.EMPTY);
-            try{
-                result = sendGet(uname);
-                bundle.putString("longitude", result[0]);
-                bundle.putString("latitude", result[1]);
-                receiver.send(STATUS_FINISHED, bundle);
-            } catch (IOException e){
-                receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
-                e.printStackTrace();
-            } catch (NetworkException e) {
-                receiver.send(STATUS_NETWORK_ERROR, Bundle.EMPTY);
-                e.printStackTrace();
-            } catch (JSONException e) {
-                receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
-                e.printStackTrace();
-            }
+            scheduleGetLocation(uname, receiver);
         } else {
             receiver.send(STATUS_NAME_ERROR, Bundle.EMPTY);
         }
 
         this.stopSelf();
+    }
+
+    private void scheduleGetLocation(final String postParams,
+                                     final ResultReceiver receiver){
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Bundle bundle = new Bundle();
+                    String[] result = sendGet(postParams);
+                    bundle.putString("longitude", result[0]);
+                    bundle.putString("latitude", result[1]);
+                    receiver.send(STATUS_FINISHED, bundle);
+                    handler.postDelayed(this, FIVE_SECONDS);
+                } catch (IOException e){
+                    receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                    handler.removeCallbacksAndMessages(null);
+                    e.printStackTrace();
+                } catch (NetworkException e) {
+                    receiver.send(STATUS_NETWORK_ERROR, Bundle.EMPTY);
+                    handler.removeCallbacksAndMessages(null);
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                    handler.removeCallbacksAndMessages(null);
+                    e.printStackTrace();
+                }
+            }
+        }, FIVE_SECONDS);
     }
 
     private String[] sendGet (String uname) throws IOException, JSONException, NetworkException{
