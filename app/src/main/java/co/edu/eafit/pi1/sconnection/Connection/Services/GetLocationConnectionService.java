@@ -55,7 +55,7 @@ public class GetLocationConnectionService extends IntentService{
 
         if(!uname.isEmpty()){
             receiver.send(STATUS_RUNNING, Bundle.EMPTY);
-            scheduleGetLocation(uname, receiver, bundle);
+            scheduleGetLocation(uname, receiver);
         } else {
             receiver.send(STATUS_NAME_ERROR, Bundle.EMPTY);
         }
@@ -64,12 +64,12 @@ public class GetLocationConnectionService extends IntentService{
     }
 
     private void scheduleGetLocation(final String postParams,
-                                     final ResultReceiver receiver,
-                                     final Bundle bundle){
+                                     final ResultReceiver receiver){
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
+                    Bundle bundle = new Bundle();
                     String[] result = sendGet(postParams);
                     bundle.putString("longitude", result[0]);
                     bundle.putString("latitude", result[1]);
