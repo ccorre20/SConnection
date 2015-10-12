@@ -52,5 +52,9 @@
     <string name="provider_search_filter">Buscar Proveedores</string>
     <string name="provider_search_title">Proveedores</string>
     <string name="title_activity_user_service_list">UserServiceList</string>
+    <string name="user_service_list_title">Tus Servicios</string>
+    <string name="user_service_list_radio_sent">Enviados</string>
+    <string name="user_service_list_radio_completed">Completados</string>
+    <string name="user_service_list_radio_all">Todos</string>
 </resources>
 

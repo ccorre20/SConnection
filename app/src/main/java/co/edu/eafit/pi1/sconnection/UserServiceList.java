@@ -5,9 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
 import co.edu.eafit.pi1.sconnection.R;
 
-public class UserServiceList extends AppCompatActivity {
+public class UserServiceList extends AppCompatActivity implements Receiver {
 
     String username;
 
@@ -16,6 +17,11 @@ public class UserServiceList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_service_list);
         username = getIntent().getStringExtra("username");
+
+    }
+
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
 
     }
 
@@ -40,4 +46,5 @@ public class UserServiceList extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -17,11 +17,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import co.edu.eafit.pi1.sconnection.Connection.Services.GetProvidersService;
-import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
 
-public class ProviderSearch extends AppCompatActivity implements Receiver {
+public class UserProviderSearch extends AppCompatActivity implements Receiver {
 
     CSResultReceiver mReceiver;
     ProgressBar progressBar;
@@ -31,7 +30,7 @@ public class ProviderSearch extends AppCompatActivity implements Receiver {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_provider_search);
+        setContentView(R.layout.activity_user_provider_search);
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);

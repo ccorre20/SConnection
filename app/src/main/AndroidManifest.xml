@@ -75,7 +75,7 @@
             android:label="@string/title_activity_provider_services" >
         </activity>
         <activity
-            android:name=".ProviderSearch"
+            android:name=".UserProviderSearch"
             android:label="@string/title_activity_provider_search" >
         </activity>
         <activity

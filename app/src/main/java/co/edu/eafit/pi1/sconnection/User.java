@@ -36,7 +36,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public void onProviderSearchClick(View view){
-        Intent i = new Intent(this, ProviderSearch.class);
+        Intent i = new Intent(this, UserProviderSearch.class);
         startActivity(i);
     }
 
