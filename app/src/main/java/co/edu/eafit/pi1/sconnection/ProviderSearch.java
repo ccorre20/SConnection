@@ -1,68 +1,54 @@
 package co.edu.eafit.pi1.sconnection;
 
-import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 
+import java.util.ArrayList;
+
+import co.edu.eafit.pi1.sconnection.Connection.Services.GetProvidersService;
 import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
 
-public class Landing extends AppCompatActivity implements Receiver {
+public class ProviderSearch extends AppCompatActivity implements Receiver {
 
-    EditText uname;
-    Button login;
     CSResultReceiver mReceiver;
     ProgressBar progressBar;
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing);
-        uname = (EditText)findViewById(R.id.editText_username);
-        login  = (Button) findViewById(R.id.button_login);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+        setContentView(R.layout.activity_provider_search);
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     @Override
-    protected void onResume(){
-        super.onResume();
-        uname.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                uname.getText().clear();
-            }
-        });
+    protected void onStart(){
+        super.onStart();
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, GetProvidersService.class);
+        startService(intent);
     }
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
-        Intent i = null;
-
         switch (resultCode){
             case LoginConnectionService.STATUS_RUNNING:{
                 progressBar.setVisibility(View.VISIBLE);
                 break;
             }
             case LoginConnectionService.STATUS_FINISHED:{
-                String res = resultData.getString("user_t");
-                if(res.equals("user")){
-                    i = new Intent(this, User.class);
+                ArrayList<String> objs = resultData.getStringArrayList("providers");
 
-                } else {
-                    i = new Intent(this, Provider.class);
-                }
                 progressBar.setVisibility(View.INVISIBLE);
                 break;
             }
@@ -79,35 +65,12 @@ public class Landing extends AppCompatActivity implements Receiver {
                 break;
             }
         }
-
-        if(i != null){
-            startActivity(i);
-        }
-    }
-
-    public void userClick(View view){
-        login.setEnabled(false);
-        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, LoginConnectionService.class);
-        Log.d("NAME", uname.getText().toString());
-        intent.putExtra("username", uname.getText().toString());
-        intent.putExtra("mReceiver", mReceiver);
-
-        startService(intent);
-    }
-
-    public void registerClick(View view){
-        Intent i = new Intent(this, Register.class);
-        startActivity(i);
-    }
-
-    public void nameClick(View view){
-        uname.getText().clear();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_landing, menu);
+        getMenuInflater().inflate(R.menu.menu_provider_search, menu);
         return true;
     }
 
