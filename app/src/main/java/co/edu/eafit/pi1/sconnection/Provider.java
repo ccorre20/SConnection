@@ -25,8 +25,6 @@ import java.net.Socket;
 public class Provider extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener*/ {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

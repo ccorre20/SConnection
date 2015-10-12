@@ -57,6 +57,7 @@ public class Landing extends AppCompatActivity implements Receiver {
                 String res = resultData.getString("user_t");
                 if(res.equals("user")){
                     i = new Intent(this, User.class);
+
                 } else {
                     i = new Intent(this, Provider.class);
                 }
