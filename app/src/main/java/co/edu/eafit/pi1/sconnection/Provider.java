@@ -116,25 +116,22 @@ public class Provider extends AppCompatActivity implements Receiver,
                 }
             }
 
-
-
             mReceiver = new CSResultReceiver(new Handler());
             mReceiver.setReceiver(this);
-
-            String[] location = this.getCoordinates()
-                    .substring(0, this.getCoordinates().length() - 3)
-                    .split("s");
 
             final Handler handler = new Handler();
             final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetLocationConnectionService.class);
             intent.putExtra("username", username);
             intent.putExtra("mReceiver", mReceiver);
-            intent.putExtra("longitude", location[0]);
-            intent.putExtra("latitude", location[1]);
 
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    String[] location = getCoordinates()
+                            .substring(0, getCoordinates().length() - 3)
+                            .split("s");
+                    intent.putExtra("longitude", location[0]);
+                    intent.putExtra("latitude", location[1]);
                     startService(intent);
                     handler.postDelayed(this, 5000);
                 }
