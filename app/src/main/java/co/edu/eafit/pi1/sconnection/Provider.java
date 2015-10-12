@@ -32,11 +32,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Provider extends AppCompatActivity implements Receiver {
+public class Provider extends AppCompatActivity implements Receiver,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
 
     String username;
     Bundle extra;
     CSResultReceiver mReceiver;
+    public GoogleApiClient mGoogleApiClient;
+    private Location lastKnownLocation;
+    private Location previous;
+    private String latitude, longitude;
+    private boolean mResolvingError = false;
+    private final int REQUEST_RESOLVE_ERROR = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +52,24 @@ public class Provider extends AppCompatActivity implements Receiver {
         setContentView(R.layout.activity_provider);
 
         extra = getIntent().getExtras();
-        if (extra != null)
+        if (extra != null) {
             username = extra.getString("username");
+        }
+
+        previous = null;
     }
 
     @Override
     protected void onStart(){
         super.onStart();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        mGoogleApiClient.connect();
     }
+
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData){
@@ -75,47 +93,59 @@ public class Provider extends AppCompatActivity implements Receiver {
     }
 
     public void arrivedClickListener(View view){
-        /*
+
         Context context = getApplicationContext();
         CharSequence text = "Confirmando llegada...";
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
-        */
 
-        mReceiver = new CSResultReceiver(new Handler());
-        mReceiver.setReceiver(this);
-        /*
-        LocationServiceManager locationServiceManager = new LocationServiceManager(this);
-        locationServiceManager.googleApiClient();
-        locationServiceManager.connect();
-        while(!locationServiceManager.mGoogleApiClient.isConnected()){
-            locationServiceManager.connect();
-        }*/
+        if(mGoogleApiClient.isConnected() ){
 
-        LocationServiceManager locationServiceManager = new LocationServiceManager(this);
-        locationServiceManager.execute();
-
-        String [] location = locationServiceManager
-                .getCoordinates()
-                .substring(0,locationServiceManager.getCoordinates().length()-3)
-                .split("s");
-
-        final Handler handler = new Handler();
-        final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetLocationConnectionService.class);
-        intent.putExtra("username", username);
-        intent.putExtra("mReceiver", mReceiver);
-        intent.putExtra("longitude", location[0]);
-        intent.putExtra("latitude", location[1]);
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startService(intent);
-                handler.postDelayed(this, 5000);
+            while (lastKnownLocation == null
+                    || (previous != null
+                        && !longitude.equals(String.valueOf(previous.getLongitude()))
+                        && !latitude.equals(String.valueOf(previous.getLatitude())))
+                    ){
+                this.onConnected(Bundle.EMPTY);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }, 5000);
+
+            mReceiver = new CSResultReceiver(new Handler());
+            mReceiver.setReceiver(this);
+
+            final Handler handler = new Handler();
+            final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetLocationConnectionService.class);
+            intent.putExtra("username", username);
+            intent.putExtra("mReceiver", mReceiver);
+
+            handler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    String[] location = getCoordinates()
+                            .substring(0, getCoordinates().length() - 3)
+                            .split("s");
+                    intent.putExtra("longitude", location[0]);
+                    intent.putExtra("latitude", location[1]);
+                    startService(intent);
+                    handler.postDelayed(this, 5000);
+                }
+            }, 5000);
+
+        } else {
+            context = getApplicationContext();
+            text = "Conexion no disponible";
+            duration = Toast.LENGTH_LONG;
+
+            toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
 
     }
 
@@ -163,6 +193,46 @@ public class Provider extends AppCompatActivity implements Receiver {
 
     @Override
     protected void onStop(){
+        mGoogleApiClient.disconnect();
         super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        previous = lastKnownLocation;
+        lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (lastKnownLocation != null) {
+            latitude = String.valueOf(lastKnownLocation.getLatitude());
+            longitude = String.valueOf(lastKnownLocation.getLongitude());
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d("API", "stop");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (mResolvingError) {return;}
+        else if (connectionResult.hasResolution()){
+            try{
+                mResolvingError = true;
+                connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+            } catch (IntentSender.SendIntentException sie){
+                mGoogleApiClient.connect();
+            }
+        } else {
+            mResolvingError = true;
+        }
+        Log.d("API", "stop");
+    }
+
+    public String getCoordinates(){
+        if(longitude != null && latitude != null) {
+            return longitude + 's' + latitude + "sss";
+        }else{
+            return "ERROR";
+        }
     }
 }

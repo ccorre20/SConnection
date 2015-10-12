@@ -13,8 +13,6 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -75,7 +73,7 @@
             android:label="@string/title_activity_provider_services" >
         </activity>
         <activity
-            android:name=".ProviderSearch"
+            android:name=".UserProviderSearch"
             android:label="@string/title_activity_provider_search" >
         </activity>
         <activity
