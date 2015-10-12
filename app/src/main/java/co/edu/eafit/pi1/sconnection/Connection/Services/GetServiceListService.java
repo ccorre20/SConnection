@@ -48,7 +48,7 @@ public class GetServiceListService extends IntentService{
         receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
         try{
             result = sendGet(name);
-            bundle.putStringArrayList("providers", result);
+            bundle.putStringArrayList("Services", result);
             receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
         } catch (IOException | JSONException e){
             receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);

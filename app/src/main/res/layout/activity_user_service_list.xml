@@ -34,14 +34,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/user_service_list_radio_sent"
-                    android:id="@+id/radioButton5"
+                    android:id="@+id/user_service_list_radio_sent"
                     android:checked="true" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/user_service_list_radio_completed"
-                    android:id="@+id/radioButton3"
+                    android:id="@+id/user_service_list_radio_completed"
                     android:checked="false"
                     android:layout_gravity="center_horizontal" />
 
@@ -49,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/user_service_list_radio_all"
-                    android:id="@+id/radioButton4"
+                    android:id="@+id/user_service_list_radio_all"
                     android:checked="false"
                     android:layout_gravity="right" />
             </RadioGroup>
