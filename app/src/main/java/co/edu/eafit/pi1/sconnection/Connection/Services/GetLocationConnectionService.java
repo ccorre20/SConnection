@@ -55,6 +55,21 @@ public class GetLocationConnectionService extends IntentService{
 
         if(!uname.isEmpty()){
             receiver.send(STATUS_RUNNING, Bundle.EMPTY);
+            try {
+                String[] result = sendGet(uname);
+                bundle.putString("longitude", result[0]);
+                bundle.putString("latitude", result[1]);
+                receiver.send(STATUS_FINISHED, bundle);
+            } catch (IOException e){
+                receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                e.printStackTrace();
+            } catch (NetworkException e) {
+                receiver.send(STATUS_NETWORK_ERROR, Bundle.EMPTY);
+                e.printStackTrace();
+            } catch (JSONException e) {
+                receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                e.printStackTrace();
+            }
             scheduleGetLocation(uname, receiver);
         } else {
             receiver.send(STATUS_NAME_ERROR, Bundle.EMPTY);
@@ -65,6 +80,7 @@ public class GetLocationConnectionService extends IntentService{
 
     private void scheduleGetLocation(final String postParams,
                                      final ResultReceiver receiver){
+        /*
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -90,6 +106,14 @@ public class GetLocationConnectionService extends IntentService{
                 }
             }
         }, FIVE_SECONDS);
+        */
+        try {
+            Bundle bundle = new Bundle();
+            String[] result = sendGet(postParams);
+            bundle.putString("longitude", result[0]);
+            bundle.putString("latitude", result[1]);
+            receiver.send(STATUS_FINISHED, bundle);
+        }catch(Exception e){e.printStackTrace();}
     }
 
     private String[] sendGet (String uname) throws IOException, JSONException, NetworkException{
@@ -97,8 +121,8 @@ public class GetLocationConnectionService extends IntentService{
         urlS.append(this.url);
         urlS.append(uname);
         URL url = new URL(urlS.toString());
-        HttpURLConnection con = (HttpURLConnection)url.openConnection();
         String[] response = new String[2];
+        HttpURLConnection con = (HttpURLConnection)url.openConnection();
 
         // Request Header
         con.setRequestMethod("GET");
