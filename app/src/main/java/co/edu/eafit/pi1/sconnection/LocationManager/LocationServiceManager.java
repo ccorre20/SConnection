@@ -1,7 +1,10 @@
 package co.edu.eafit.pi1.sconnection.LocationManager;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.IntentSender;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -9,7 +12,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
-public class LocationServiceManager implements
+public class LocationServiceManager extends AsyncTask<Void, Void, Void> implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
 
@@ -65,7 +68,7 @@ public class LocationServiceManager implements
 
     /**************************** /Google API connection ******************************************/
 
-    public void googleApiClient(){
+    private void googleApiClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(appCompatActivity)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -73,7 +76,7 @@ public class LocationServiceManager implements
                 .build();
     }
 
-    public void connect(){
+    private void connect(){
         if(!mResolvingError){
             mGoogleApiClient.connect();
         }
@@ -86,4 +89,17 @@ public class LocationServiceManager implements
             return "ERROR";
         }
     }
+
+    @Override
+    public void onPreExecute(){super.onPreExecute();}
+
+    @Override
+    protected Void doInBackground(Void... v){
+        googleApiClient();
+        while (!mGoogleApiClient.isConnected()){connect();}
+        return null;
+    }
 }
+
+
+

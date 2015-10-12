@@ -86,11 +86,29 @@ public class Provider extends AppCompatActivity implements Receiver {
 
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
+        /*
+        LocationServiceManager locationServiceManager = new LocationServiceManager(this);
+        locationServiceManager.googleApiClient();
+        locationServiceManager.connect();
+        while(!locationServiceManager.mGoogleApiClient.isConnected()){
+            locationServiceManager.connect();
+        }*/
+
+        LocationServiceManager locationServiceManager = new LocationServiceManager(this);
+        locationServiceManager.execute();
+
+        String [] location = locationServiceManager
+                .getCoordinates()
+                .substring(0,locationServiceManager.getCoordinates().length()-3)
+                .split("s");
+
         final Handler handler = new Handler();
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetLocationConnectionService.class);
         intent.putExtra("username", username);
         intent.putExtra("mReceiver", mReceiver);
-        intent.putExtra("appCompatActivity", new ActivityExtra(this));
+        intent.putExtra("longitude", location[0]);
+        intent.putExtra("latitude", location[1]);
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -108,6 +126,7 @@ public class Provider extends AppCompatActivity implements Receiver {
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, GetLocationConnectionService.class);
         intent.putExtra("username", username);
         intent.putExtra("mReceiver", mReceiver);
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
