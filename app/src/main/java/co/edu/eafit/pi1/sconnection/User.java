@@ -16,6 +16,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
 
     private Button b, b2, b3;
     private GoogleMap map;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
         b3 = (Button) findViewById(R.id.user_create_service_button);
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfragment);
         mapFragment.getMapAsync(this);
+        username = getIntent().getStringExtra("name");
     }
 
     @Override
@@ -39,7 +41,9 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public void onServiceListClick(View view){
-
+        Intent i = new Intent(this, UserServiceList.class);
+        i.putExtra("username", username);
+        startActivity(i);
     }
 
     public void onServiceCreateClick(View view){

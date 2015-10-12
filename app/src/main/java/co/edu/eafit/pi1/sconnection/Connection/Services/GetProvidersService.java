@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
 import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
 
 /**
@@ -25,11 +26,6 @@ import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
  */
 public class GetProvidersService extends IntentService{
     private StringBuffer url;
-
-    public static final int STATUS_RUNNING = 0;
-    public static final int STATUS_FINISHED = 1;
-    public static final int STATUS_NETWORK_ERROR = 2;
-    public static final int STATUS_GENERAL_ERROR = 4;
 
     private static final String TAG = "RConnectionService";
 
@@ -49,16 +45,16 @@ public class GetProvidersService extends IntentService{
 
         ArrayList<String> result = null;
 
-        receiver.send(STATUS_RUNNING, Bundle.EMPTY);
+        receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
         try{
             result = sendGet();
             bundle.putStringArrayList("providers", result);
-            receiver.send(STATUS_FINISHED, bundle);
+            receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
         } catch (IOException | JSONException e){
-            receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+            receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
             e.printStackTrace();
         } catch (NetworkException e) {
-            receiver.send(STATUS_NETWORK_ERROR, Bundle.EMPTY);
+            receiver.send(NetworkOperationStatus.STATUS_NETWORK_ERROR.code, Bundle.EMPTY);
             e.printStackTrace();
         }
 

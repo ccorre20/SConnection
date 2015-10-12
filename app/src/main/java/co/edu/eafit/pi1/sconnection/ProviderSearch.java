@@ -42,18 +42,18 @@ public class ProviderSearch extends AppCompatActivity implements Receiver {
     protected void onStart(){
         super.onStart();
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, GetProvidersService.class);
-        intent.putExtra("mReceiver",mReceiver);
+        intent.putExtra("mReceiver", mReceiver);
         startService(intent);
     }
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
         switch (resultCode){
-            case LoginConnectionService.STATUS_RUNNING:{
+            case 0:{
                 progressBar.setVisibility(View.VISIBLE);
                 break;
             }
-            case LoginConnectionService.STATUS_FINISHED:{
+            case 1:{
                 ArrayList<String> prov_names = new ArrayList<>();
                 ArrayList<String> objs = resultData.getStringArrayList("providers");
                 JSONObject o = null;
@@ -77,15 +77,15 @@ public class ProviderSearch extends AppCompatActivity implements Receiver {
                 lv.setVisibility(View.VISIBLE);
                 break;
             }
-            case LoginConnectionService.STATUS_GENERAL_ERROR:{
+            case 2:{
 
                 break;
             }
-            case LoginConnectionService.STATUS_NAME_ERROR:{
+            case 3:{
 
                 break;
             }
-            case LoginConnectionService.STATUS_NETWORK_ERROR:{
+            case 4:{
 
                 break;
             }

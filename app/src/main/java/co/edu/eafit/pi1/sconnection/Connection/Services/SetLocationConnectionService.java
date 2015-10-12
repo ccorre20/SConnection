@@ -11,17 +11,13 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
 import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
 
 /**
  * Created by tflr on 10/11/15.
  */
 public class SetLocationConnectionService extends IntentService {
-
-    public static final int STATUS_RUNNING          = 0;
-    public static final int STATUS_FINISHED         = 1;
-    public static final int STATUS_NAME_ERROR       = 3;
-    public static final int STATUS_GENERAL_ERROR    = 4;
 
     private final int FIVE_SECONDS = 5000;
 
@@ -57,7 +53,7 @@ public class SetLocationConnectionService extends IntentService {
         }
 
         if (!uname.isEmpty()){
-            receiver.send(STATUS_RUNNING, Bundle.EMPTY);
+            receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
             String [] location = locationServiceManager
                     .getCoordinates()
                     .substring(0,locationServiceManager.getCoordinates().length()-3)
@@ -67,9 +63,9 @@ public class SetLocationConnectionService extends IntentService {
                 postParams.append("&latitude=" + location[0] + "&longitude=" + location[1]);
                 scheduleSendLocation(postParams.toString());
             }
-            receiver.send(STATUS_FINISHED, Bundle.EMPTY);
+            receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, Bundle.EMPTY);
         }else{
-            receiver.send(STATUS_NAME_ERROR, Bundle.EMPTY);
+            receiver.send(NetworkOperationStatus.STATUS_NAME_ERROR.code, Bundle.EMPTY);
         }
     }
 

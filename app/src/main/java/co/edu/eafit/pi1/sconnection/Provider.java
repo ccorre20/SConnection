@@ -54,7 +54,7 @@ public class Provider extends AppCompatActivity implements Receiver {
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData){
         switch (resultCode){
-            case GetLocationConnectionService.STATUS_FINISHED:
+            case 1:
                 Context context = getApplicationContext();
                 CharSequence text = "Longitude: " + resultData.getString("longitude")
                                     + " Latitude: " + resultData.getString("latitude");

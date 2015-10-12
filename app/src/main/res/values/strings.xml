@@ -51,5 +51,6 @@
     <string name="title_activity_provider_search">ProviderSearch</string>
     <string name="provider_search_filter">Buscar Proveedores</string>
     <string name="provider_search_title">Proveedores</string>
+    <string name="title_activity_user_service_list">UserServiceList</string>
 </resources>
 

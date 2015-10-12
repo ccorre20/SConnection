@@ -16,18 +16,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
 import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
 
 /**
  * Created by tflr on 10/11/15.
  */
 public class GetLocationConnectionService extends IntentService{
-
-    public static final int STATUS_RUNNING          = 0;
-    public static final int STATUS_FINISHED         = 1;
-    public static final int STATUS_NETWORK_ERROR    = 2;
-    public static final int STATUS_NAME_ERROR       = 3;
-    public static final int STATUS_GENERAL_ERROR    = 4;
 
     private final int FIVE_SECONDS = 5000;
 
@@ -54,25 +49,25 @@ public class GetLocationConnectionService extends IntentService{
 
 
         if(!uname.isEmpty()){
-            receiver.send(STATUS_RUNNING, Bundle.EMPTY);
+            receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
             try {
                 String[] result = sendGet(uname);
                 bundle.putString("longitude", result[0]);
                 bundle.putString("latitude", result[1]);
-                receiver.send(STATUS_FINISHED, bundle);
+                receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
             } catch (IOException e){
-                receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
                 e.printStackTrace();
             } catch (NetworkException e) {
-                receiver.send(STATUS_NETWORK_ERROR, Bundle.EMPTY);
+                receiver.send(NetworkOperationStatus.STATUS_NETWORK_ERROR.code, Bundle.EMPTY);
                 e.printStackTrace();
             } catch (JSONException e) {
-                receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
                 e.printStackTrace();
             }
             scheduleGetLocation(uname, receiver);
         } else {
-            receiver.send(STATUS_NAME_ERROR, Bundle.EMPTY);
+            receiver.send(NetworkOperationStatus.STATUS_NAME_ERROR.code, Bundle.EMPTY);
         }
 
         this.stopSelf();
@@ -89,18 +84,18 @@ public class GetLocationConnectionService extends IntentService{
                     String[] result = sendGet(postParams);
                     bundle.putString("longitude", result[0]);
                     bundle.putString("latitude", result[1]);
-                    receiver.send(STATUS_FINISHED, bundle);
+                    receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
                     handler.postDelayed(this, FIVE_SECONDS);
-                } catch (IOException e){
-                    receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                } catch (IOException e) {
+                    receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
                     handler.removeCallbacksAndMessages(null);
                     e.printStackTrace();
                 } catch (NetworkException e) {
-                    receiver.send(STATUS_NETWORK_ERROR, Bundle.EMPTY);
+                    receiver.send(NetworkOperationStatus.STATUS_NETWORK_ERROR.code, Bundle.EMPTY);
                     handler.removeCallbacksAndMessages(null);
                     e.printStackTrace();
                 } catch (JSONException e) {
-                    receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                    receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
                     handler.removeCallbacksAndMessages(null);
                     e.printStackTrace();
                 }
@@ -112,7 +107,7 @@ public class GetLocationConnectionService extends IntentService{
             String[] result = sendGet(postParams);
             bundle.putString("longitude", result[0]);
             bundle.putString("latitude", result[1]);
-            receiver.send(STATUS_FINISHED, bundle);
+            receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
         }catch(Exception e){e.printStackTrace();}
     }
 

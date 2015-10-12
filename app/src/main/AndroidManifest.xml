@@ -52,18 +52,15 @@
         <service
             android:name=".Connection.Services.RegisterConnectionService"
             android:exported="false" />
-
         <service
             android:name=".Connection.Services.SetLocationConnectionService"
             android:exported="false" />
-
         <service
             android:name=".Connection.Services.GetLocationConnectionService"
             android:exported="false" />
-
         <service
             android:name=".Connection.Services.GetProvidersService"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name=".Register"
@@ -80,6 +77,10 @@
         <activity
             android:name=".ProviderSearch"
             android:label="@string/title_activity_provider_search" >
+        </activity>
+        <activity
+            android:name=".UserServiceList"
+            android:label="@string/title_activity_user_service_list" >
         </activity>
     </application>
 

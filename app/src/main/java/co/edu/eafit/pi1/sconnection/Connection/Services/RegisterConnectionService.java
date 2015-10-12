@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
 import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
 
 /**
@@ -26,11 +27,6 @@ public class RegisterConnectionService extends IntentService {
 
     private StringBuffer url;
     private String uname;
-
-    public static final int STATUS_RUNNING = 0;
-    public static final int STATUS_FINISHED = 1;
-    public static final int STATUS_NAME_ERROR = 3;
-    public static final int STATUS_GENERAL_ERROR = 4;
 
     private static final String TAG = "RConnectionService";
 
@@ -56,17 +52,17 @@ public class RegisterConnectionService extends IntentService {
         boolean result;
 
         if(!uname.isEmpty()){
-            receiver.send(STATUS_RUNNING, Bundle.EMPTY);
+            receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
             try{
                 result = sendPost(sb.toString());
                 bundle.putBoolean("done", result);
-                receiver.send(STATUS_FINISHED, bundle);
+                receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
             } catch (IOException e){
-                receiver.send(STATUS_GENERAL_ERROR, Bundle.EMPTY);
+                receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
                 e.printStackTrace();
             }
         } else {
-            receiver.send(STATUS_NAME_ERROR, Bundle.EMPTY);
+            receiver.send(NetworkOperationStatus.STATUS_NAME_ERROR.code, Bundle.EMPTY);
         }
         Log.d(TAG, "SERVICE STOPPED");
         this.stopSelf();
