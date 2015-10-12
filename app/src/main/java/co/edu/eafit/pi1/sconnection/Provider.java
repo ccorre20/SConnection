@@ -89,16 +89,19 @@ public class Provider extends AppCompatActivity implements Receiver {
         /*
         LocationServiceManager locationServiceManager = new LocationServiceManager(this);
         locationServiceManager.googleApiClient();
+        locationServiceManager.connect();
         while(!locationServiceManager.mGoogleApiClient.isConnected()){
             locationServiceManager.connect();
-        }
+        }*/
+
+        LocationServiceManager locationServiceManager = new LocationServiceManager(this);
+        locationServiceManager.execute();
 
         String [] location = locationServiceManager
                 .getCoordinates()
                 .substring(0,locationServiceManager.getCoordinates().length()-3)
                 .split("s");
-        */
-        String [] location = {"72", "80"};
+
         final Handler handler = new Handler();
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetLocationConnectionService.class);
         intent.putExtra("username", username);
