@@ -22,33 +22,33 @@ import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
 import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
 
 /**
- * Created by ccr185 on 10/11/15.
+ * Created by ccr185 on 10/12/15.
  */
-public class GetProvidersService extends IntentService{
-    private StringBuffer url;
+public class GetServiceListService extends IntentService{
 
+   StringBuffer url;
     private static final String TAG = "RConnectionService";
 
-    public GetProvidersService() {
-        super(GetProvidersService.class.getName());
+    public GetServiceListService() {
+        super(GetServiceListService.class.getName());
         url = new StringBuffer();
-        url.append("https://sc-b.herokuapp.com/api/v1/users/?only=provider");
+        url.append("https://sc-b.herokuapp.com/api/v1/services/");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
         Log.d(TAG, "SERVICE STARTED");
 
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
+        final String name = intent.getStringExtra("username");
         Bundle bundle = new Bundle();
 
         ArrayList<String> result = null;
 
         receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
         try{
-            result = sendGet();
-            bundle.putStringArrayList("providers", result);
+            result = sendGet(name);
+            bundle.putStringArrayList("Services", result);
             receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
         } catch (IOException | JSONException e){
             receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
@@ -62,9 +62,10 @@ public class GetProvidersService extends IntentService{
         this.stopSelf();
     }
 
-    private ArrayList<String> sendGet () throws IOException, JSONException, NetworkException{
+    private ArrayList<String> sendGet (String name) throws IOException, JSONException, NetworkException{
         StringBuffer urlS = new StringBuffer();
         urlS.append(this.url);
+        urlS.append("?name="+name);
         URL url = new URL(urlS.toString());
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         // Request Header
@@ -81,7 +82,7 @@ public class GetProvidersService extends IntentService{
         if(responseCode == 200 || responseCode == 201){
             String json = getJSON(con.getInputStream());
             JSONObject obj = new JSONObject(json);
-            JSONArray array = obj.getJSONArray("users");
+            JSONArray array = obj.getJSONArray("services");
 
             for(int i = 0; i < array.length(); i++){
                 arrayList.add(array.getJSONObject(i).toString());
@@ -108,5 +109,4 @@ public class GetProvidersService extends IntentService{
 
         return json.toString();
     }
-
 }
