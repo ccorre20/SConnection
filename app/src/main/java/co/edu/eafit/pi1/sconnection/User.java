@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import co.edu.eafit.pi1.sconnection.connection.services.SetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
+import co.edu.eafit.pi1.sconnection.dialogs.ConfirmArrival;
 
 public class User extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -85,7 +86,8 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     }
 
     public void confirmArrival(View view){
-
+        Intent intent = new Intent(this, ConfirmArrival.class);
+        startActivity(intent);
     }
 
     private void beginLocationShow(){
