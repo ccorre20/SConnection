@@ -1,10 +1,12 @@
 package co.edu.eafit.pi1.sconnection;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -34,7 +36,22 @@ public class UserCreateService extends Activity implements Receiver,
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
-
+        Context context = getApplicationContext();
+        CharSequence text;
+        int duration = Toast.LENGTH_SHORT;;
+        Toast toast;
+        switch (resultCode){
+            case 0:
+                text = "Enviando";
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
+                break;
+            case 1:  //STATUS_FINISHED
+                text = "Enviado";
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
+                break;
+        }
     }
 
     @Override
