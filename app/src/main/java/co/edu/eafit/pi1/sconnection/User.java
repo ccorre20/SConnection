@@ -19,9 +19,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import co.edu.eafit.pi1.sconnection.connection.services.SetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
@@ -165,7 +168,15 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     public void onLocationChanged(Location location) {
         lastKnownLocation = location;
         getLocation();
-        beginLocationShow();
+        LatLng loc = new LatLng(Double.parseDouble(latitude),Double.parseDouble(longitude));
+        if(loc != null && map != null){
+            map.clear();
+            map.addMarker(new MarkerOptions()
+                            .position(loc)
+                            .title("Lugar del Servicio")
+            );
+            map.animateCamera(CameraUpdateFactory.newLatLng(loc));
+        }
     }
     /**************************** /Location Listener method **************************************/
 
@@ -197,6 +208,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         if (lastKnownLocation != null) {
             getLocation();
         }
+        beginLocationShow();
     }
 
     @Override
