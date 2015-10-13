@@ -28,9 +28,10 @@ public class SetServiceService extends IntentService{
         String latitude     = intent.getStringExtra("latitude");
         String longitude    = intent.getStringExtra("longitude");
         String message      = intent.getStringExtra("message");
+        String type         = intent.getStringExtra("type");
 
         try {
-            sendPost("name=" + uname + "&provider=" + provider +
+            sendPost("name=" + uname + "&provider=" + provider + "&type=" + type +
                     "&latitude=" + latitude + "&longitude=" + longitude + "&message=" + message);
         } catch(IOException ioe){
             ioe.printStackTrace();

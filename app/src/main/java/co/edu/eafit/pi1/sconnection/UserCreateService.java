@@ -13,18 +13,20 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import co.edu.eafit.pi1.sconnection.connection.services.SetServiceService;
-import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
+import co.edu.eafit.pi1.sconnection.Connection.Services.SetServiceService;
+import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+import co.edu.eafit.pi1.sconnection.dialogs.ConfirmArrival;
 
 public class UserCreateService extends Activity implements Receiver,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
 
-    String uname;
-    EditText provider;
-    EditText longitude;
-    EditText latitude;
-    EditText message;
+    String      uname;
+    EditText    provider;
+    EditText    longitude;
+    EditText    latitude;
+    EditText    message;
+    EditText    type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class UserCreateService extends Activity implements Receiver,
         longitude   = (EditText)findViewById(R.id.user_create_service_longitude_edittext);
         latitude    = (EditText)findViewById(R.id.user_create_service_latitude_edittext);
         message     = (EditText)findViewById(R.id.user_create_service_message_edittext);
+        type        = (EditText)findViewById(R.id.user_create_service_type_edittext);
     }
 
     public void onAutoClick(View view){
@@ -48,6 +51,7 @@ public class UserCreateService extends Activity implements Receiver,
         intent.putExtra("longitude", longitude.getText().toString());
         intent.putExtra("latitude", latitude.getText().toString());
         intent.putExtra("message", message.getText().toString());
+        intent.putExtra("type", type.getText().toString());
         startService(intent);
     }
 

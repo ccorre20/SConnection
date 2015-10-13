@@ -1,9 +1,10 @@
 package co.edu.eafit.pi1.sconnection;
 
-import co.edu.eafit.pi1.sconnection.connection.services.GetLocationConnectionService;
-import co.edu.eafit.pi1.sconnection.connection.services.SetLocationConnectionService;
-import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
-import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
+import co.edu.eafit.pi1.sconnection.Connection.Services.GetLocationConnectionService;
+import co.edu.eafit.pi1.sconnection.Connection.Services.SetLocationConnectionService;
+import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+import co.edu.eafit.pi1.sconnection.dialogs.ConfirmArrival;
 
 import android.content.Context;
 import android.content.Intent;
@@ -158,7 +159,9 @@ public class Provider extends AppCompatActivity implements Receiver,
     }
 
     public void arrivedClickListener(View view){
-
+        Intent intent = new Intent(this, ConfirmArrival.class);
+        startActivity(intent);
+        /*
         Context context = getApplicationContext();
         CharSequence text = "Confirmando llegada...";
         int duration = Toast.LENGTH_LONG;
@@ -210,8 +213,7 @@ public class Provider extends AppCompatActivity implements Receiver,
 
             toast = Toast.makeText(context, text, duration);
             toast.show();
-        }
-
+        } */
     }
 
     public void servicesClickListener(View view){
