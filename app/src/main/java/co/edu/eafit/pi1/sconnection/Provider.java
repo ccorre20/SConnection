@@ -166,29 +166,10 @@ public class Provider extends AppCompatActivity implements Receiver,
     }
 
     public void servicesClickListener(View view){
-        /*mReceiver = new CSResultReceiver(new Handler());
-        mReceiver.setReceiver(this);
-        final Handler handler = new Handler();
-        final Intent intent = new Intent(
-                Intent.ACTION_SYNC,
-                null,
-                this,
-                GetLocationConnectionService.class
-        );
-        intent.putExtra("username", username);
-        intent.putExtra("mReceiver", mReceiver);
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startService(intent);
-                handler.postDelayed(this, 5000);
-            }
-        }, 5000);*/
-
-            Intent i = new Intent(this, UserServiceList.class);
-            i.putExtra("username", username);
-            startActivity(i);
+        Intent i = new Intent(this, UserServiceList.class);
+        i.putExtra("username", username);
+        startActivity(i);
 
     }
     /**************************** /Click listeners ***********************************************/
