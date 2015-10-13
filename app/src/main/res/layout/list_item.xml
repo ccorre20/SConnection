@@ -10,11 +10,4 @@
         android:padding="10dip"
         android:textSize="16dip" />
 
-    <TextView android:id="@+id/product_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dip"
-        android:textSize="16dip"
-        android:textStyle="normal"/>
-
 </LinearLayout>

@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -26,6 +29,7 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
     ProgressBar progressBar;
     ArrayAdapter<String> arrayAdapter;
     ListView lv;
+    EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,27 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
         mReceiver.setReceiver(this);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         lv = (ListView) findViewById(R.id.listView);
+        editText = (EditText)findViewById(R.id.editText);
+        editText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                UserProviderSearch.this.arrayAdapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
     @Override
@@ -68,7 +93,7 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
                     arrayAdapter = new ArrayAdapter<String>(
                             this,
                             R.layout.list_item,
-                            R.id.product_name,
+                            R.id.Desc,
                             prov_names);
                     lv.setAdapter(arrayAdapter);
                 }

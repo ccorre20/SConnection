@@ -60,6 +60,10 @@
             android:name=".Connection.Services.GetProvidersService"
             android:exported="false" />
 
+        <service
+            android:name=".Connection.Services.GetServiceListService"
+            android:exported="false"/>
+
         <activity
             android:name=".Register"
             android:label="@string/title_activity_register" >

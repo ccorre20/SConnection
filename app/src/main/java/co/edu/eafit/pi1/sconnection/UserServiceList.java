@@ -31,6 +31,7 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
     ArrayAdapter<String> arrayAdapter;
     CSResultReceiver mReceiver;
     RadioGroup rg;
+    String only;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,35 +48,50 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
         rg = (RadioGroup) findViewById(R.id.user_service_list_group);
         MOnCheckedChangeListener mOnCheckedChangeListener = new MOnCheckedChangeListener(this);
         rg.setOnCheckedChangeListener(mOnCheckedChangeListener);
+        only = "sent";
     }
 
     public void refresh(){
+        if(r1.isChecked()){
+            only = "sent";
+        } else if (r2.isChecked()){
+            only = "done";
+        } else {
+            only = "all";
+        }
+        go();
+    }
 
+    private void go(){
+        Intent i = new Intent(Intent.ACTION_SYNC, null, this, GetServiceListService.class);
+        i.putExtra("username", username);
+        i.putExtra("mReceiver", mReceiver);
+        i.putExtra("only",only);
+        startService(i);
     }
 
     @Override
     public void onStart(){
         super.onStart();
-        Intent i = new Intent(Intent.ACTION_SYNC, null, this, GetServiceListService.class);
-        i.putExtra("username", username);
-        i.putExtra("mReceiver", mReceiver);
+        go();
     }
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
         switch (resultCode) {
             case 0: {
+                listView.setEnabled(false);
                 progressBar.setVisibility(View.VISIBLE);
                 break;
             }
             case 1: {
                 ArrayList<String> prov_names = new ArrayList<>();
-                ArrayList<String> objs = resultData.getStringArrayList("providers");
+                ArrayList<String> objs = resultData.getStringArrayList("services");
                 JSONObject o = null;
                 for (String s : objs) {
                     try {
                         o = new JSONObject(s);
-                        prov_names.add(o.getString("name"));
+                        prov_names.add(o.getString("message"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -84,12 +100,13 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
                     arrayAdapter = new ArrayAdapter<String>(
                             this,
                             R.layout.list_item,
-                            R.id.product_name,
+                            R.id.Desc,
                             prov_names);
                     listView.setAdapter(arrayAdapter);
                 }
                 progressBar.setVisibility(View.INVISIBLE);
                 listView.setVisibility(View.VISIBLE);
+                listView.setEnabled(true);
                 break;
             }
             case 2: {
