@@ -2,6 +2,7 @@ package co.edu.eafit.pi1.sconnection;
 
 
 import co.edu.eafit.pi1.sconnection.connection.services.GetLocationConnectionService;
+import co.edu.eafit.pi1.sconnection.connection.services.SetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 import co.edu.eafit.pi1.sconnection.dialogs.ConfirmArrival;
@@ -129,6 +130,7 @@ public class Provider extends AppCompatActivity implements Receiver,
     public void onLocationChanged(Location location) {
         lastKnownLocation = location;
         getLocation();
+        beginLocationShow();
     }
     /**************************** /Location Listener method **************************************/
 
@@ -161,9 +163,81 @@ public class Provider extends AppCompatActivity implements Receiver,
     public void arrivedClickListener(View view){
         Intent intent = new Intent(this, ConfirmArrival.class);
         startActivity(intent);
-        /*
+    }
+
+    public void servicesClickListener(View view){
+        mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
+        final Handler handler = new Handler();
+        final Intent intent = new Intent(
+                Intent.ACTION_SYNC,
+                null,
+                this,
+                GetLocationConnectionService.class
+        );
+        intent.putExtra("username", username);
+        intent.putExtra("mReceiver", mReceiver);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startService(intent);
+                handler.postDelayed(this, 5000);
+            }
+        }, 5000);
+    }
+    /**************************** /Click listeners ***********************************************/
+
+    /**************************** Google Play services *******************************************/
+    @Override
+    public void onConnected(Bundle bundle) {
+        startLocationUpdates();
+        previous = lastKnownLocation;
+        lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (lastKnownLocation != null) {
+            getLocation();
+        }
+        beginLocationShow();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d("API", "stop");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (mResolvingError) {return;}
+        else if (connectionResult.hasResolution()){
+            try{
+                mResolvingError = true;
+                connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+            } catch (IntentSender.SendIntentException sie){
+                mGoogleApiClient.connect();
+            }
+        } else {
+            mResolvingError = true;
+        }
+        Log.d("API", "stop");
+    }
+    /**************************** /Google Play services ******************************************/
+
+    private void getLocation(){
+        latitude = String.valueOf(lastKnownLocation.getLatitude());
+        longitude = String.valueOf(lastKnownLocation.getLongitude());
+    }
+
+    public String getCoordinates(){
+        if(longitude != null && latitude != null) {
+            return longitude + 's' + latitude + "sss";
+        }else{
+            return "ERROR";
+        }
+    }
+
+    private void beginLocationShow(){
         Context context = getApplicationContext();
-        CharSequence text = "Confirmando llegada...";
+        CharSequence text = "Cambio de ubicacion detectada...";
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);
@@ -173,8 +247,8 @@ public class Provider extends AppCompatActivity implements Receiver,
 
             while (lastKnownLocation == null
                     || (previous != null
-                        && !longitude.equals(String.valueOf(previous.getLongitude()))
-                        && !latitude.equals(String.valueOf(previous.getLatitude())))
+                    && !longitude.equals(String.valueOf(previous.getLongitude()))
+                    && !latitude.equals(String.valueOf(previous.getLatitude())))
                     ){
                 this.onConnected(Bundle.EMPTY);
                 try {
@@ -213,75 +287,6 @@ public class Provider extends AppCompatActivity implements Receiver,
 
             toast = Toast.makeText(context, text, duration);
             toast.show();
-        } */
-    }
-
-    public void servicesClickListener(View view){
-        mReceiver = new CSResultReceiver(new Handler());
-        mReceiver.setReceiver(this);
-        final Handler handler = new Handler();
-        final Intent intent = new Intent(
-                Intent.ACTION_SYNC,
-                null,
-                this,
-                GetLocationConnectionService.class
-        );
-        intent.putExtra("username", username);
-        intent.putExtra("mReceiver", mReceiver);
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startService(intent);
-                handler.postDelayed(this, 5000);
-            }
-        }, 5000);
-    }
-    /**************************** /Click listeners ***********************************************/
-
-    /**************************** Google Play services *******************************************/
-    @Override
-    public void onConnected(Bundle bundle) {
-        startLocationUpdates();
-        previous = lastKnownLocation;
-        lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (lastKnownLocation != null) {
-            getLocation();
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d("API", "stop");
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (mResolvingError) {return;}
-        else if (connectionResult.hasResolution()){
-            try{
-                mResolvingError = true;
-                connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
-            } catch (IntentSender.SendIntentException sie){
-                mGoogleApiClient.connect();
-            }
-        } else {
-            mResolvingError = true;
-        }
-        Log.d("API", "stop");
-    }
-    /**************************** /Google Play services ******************************************/
-
-    private void getLocation(){
-        latitude = String.valueOf(lastKnownLocation.getLatitude());
-        longitude = String.valueOf(lastKnownLocation.getLongitude());
-    }
-
-    public String getCoordinates(){
-        if(longitude != null && latitude != null) {
-            return longitude + 's' + latitude + "sss";
-        }else{
-            return "ERROR";
         }
     }
 
