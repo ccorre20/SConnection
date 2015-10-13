@@ -14,6 +14,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -59,10 +64,9 @@
         <service
             android:name=".Connection.Services.GetProvidersService"
             android:exported="false" />
-
         <service
             android:name=".Connection.Services.GetServiceListService"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name=".Register"
@@ -83,6 +87,10 @@
         <activity
             android:name=".UserServiceList"
             android:label="@string/title_activity_user_service_list" >
+        </activity>
+        <activity
+            android:name=".UserCreateService"
+            android:label="@string/title_activity_user_create_service" >
         </activity>
     </application>
 
