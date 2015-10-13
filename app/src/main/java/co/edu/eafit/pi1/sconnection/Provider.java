@@ -1,18 +1,14 @@
 package co.edu.eafit.pi1.sconnection;
 
 import co.edu.eafit.pi1.sconnection.Connection.Services.GetLocationConnectionService;
-import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
 import co.edu.eafit.pi1.sconnection.Connection.Services.SetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
-import co.edu.eafit.pi1.sconnection.Extras.ActivityExtra;
-import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,35 +17,44 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
 
 public class Provider extends AppCompatActivity implements Receiver,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
-    String username;
-    Bundle extra;
-    CSResultReceiver mReceiver;
-    public GoogleApiClient mGoogleApiClient;
-    private Location lastKnownLocation;
-    private Location previous;
-    private String latitude, longitude;
-    private boolean mResolvingError = false;
-    private final int REQUEST_RESOLVE_ERROR = 1001;
+    private String              username;
+    private Bundle              extra;
+    private CSResultReceiver    mReceiver;
+    private Location            lastKnownLocation;
+    private LocationRequest     mLocationRequest;
+    private Location            previous;
+    private String              latitude;
+    private String              longitude;
+    private Handler             handler;
+    private Button              arrived;
+    private boolean             mResolvingError = false;
+    private final int           REQUEST_RESOLVE_ERROR = 1001;
+    public GoogleApiClient      mGoogleApiClient;
 
+    /**************************** Android Activity methods ***************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider);
+
+        createLocationRequest();
+        handler = new Handler();
+        arrived = (Button)findViewById(R.id.provider_arrived_button);
 
         extra = getIntent().getExtras();
         if (extra != null) {
@@ -70,6 +75,12 @@ public class Provider extends AppCompatActivity implements Receiver,
         mGoogleApiClient.connect();
     }
 
+    @Override
+    protected void onStop(){
+        stopLocationUpdates();
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData){
@@ -86,6 +97,60 @@ public class Provider extends AppCompatActivity implements Receiver,
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_provider, menu);
+        return super.onCreateOptionsMenu(menu);
+        //getMenuInflater().inflate(R.menu.menu_, menu);
+        //return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    /**************************** /Android Activity methods **************************************/
+
+    /**************************** Location Listener method ***************************************/
+    @Override
+    public void onLocationChanged(Location location) {
+        lastKnownLocation = location;
+        getLocation();
+    }
+    /**************************** /Location Listener method **************************************/
+
+    /**************************** Location Requests **********************************************/
+    protected void createLocationRequest(){
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                mGoogleApiClient, this);
+    }
+    /**************************** /Location Requests *********************************************/
+
+    /**************************** Click listeners ************************************************/
     public void profileClickListener(View view){
         Intent i = new Intent(this, ProviderProfile.class);
         i.putExtra("username", username);
@@ -119,7 +184,6 @@ public class Provider extends AppCompatActivity implements Receiver,
             mReceiver = new CSResultReceiver(new Handler());
             mReceiver.setReceiver(this);
 
-            final Handler handler = new Handler();
             final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetLocationConnectionService.class);
             intent.putExtra("username", username);
             intent.putExtra("mReceiver", mReceiver);
@@ -128,8 +192,9 @@ public class Provider extends AppCompatActivity implements Receiver,
 
                 @Override
                 public void run() {
-                    String[] location = getCoordinates()
-                            .substring(0, getCoordinates().length() - 3)
+                    String coordinates = Provider.this.getCoordinates();
+                    String[] location = coordinates
+                            .substring(0, coordinates.length() - 3)
                             .split("s");
                     intent.putExtra("longitude", location[0]);
                     intent.putExtra("latitude", location[1]);
@@ -165,45 +230,16 @@ public class Provider extends AppCompatActivity implements Receiver,
             }
         }, 5000);
     }
+    /**************************** /Click listeners ***********************************************/
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_provider, menu);
-        return super.onCreateOptionsMenu(menu);
-        //getMenuInflater().inflate(R.menu.menu_, menu);
-        //return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onStop(){
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
+    /**************************** Google Play services *******************************************/
     @Override
     public void onConnected(Bundle bundle) {
+        startLocationUpdates();
         previous = lastKnownLocation;
         lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastKnownLocation != null) {
-            latitude = String.valueOf(lastKnownLocation.getLatitude());
-            longitude = String.valueOf(lastKnownLocation.getLongitude());
+            getLocation();
         }
     }
 
@@ -227,6 +263,12 @@ public class Provider extends AppCompatActivity implements Receiver,
         }
         Log.d("API", "stop");
     }
+    /**************************** /Google Play services ******************************************/
+
+    private void getLocation(){
+        latitude = String.valueOf(lastKnownLocation.getLatitude());
+        longitude = String.valueOf(lastKnownLocation.getLongitude());
+    }
 
     public String getCoordinates(){
         if(longitude != null && latitude != null) {
@@ -235,4 +277,5 @@ public class Provider extends AppCompatActivity implements Receiver,
             return "ERROR";
         }
     }
+
 }
