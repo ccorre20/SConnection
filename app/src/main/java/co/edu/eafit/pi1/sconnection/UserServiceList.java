@@ -1,6 +1,5 @@
 package co.edu.eafit.pi1.sconnection;
 
-import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -20,9 +19,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import co.edu.eafit.pi1.sconnection.Connection.Services.GetServiceListService;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+import co.edu.eafit.pi1.sconnection.connection.services.GetServiceListService;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 public class UserServiceList extends AppCompatActivity implements Receiver {
 

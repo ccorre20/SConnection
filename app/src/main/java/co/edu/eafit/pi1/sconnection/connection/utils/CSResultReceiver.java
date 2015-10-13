@@ -1,4 +1,4 @@
-package co.edu.eafit.pi1.sconnection.Connection.Utils;
+package co.edu.eafit.pi1.sconnection.connection.utils;
 
 import android.os.Bundle;
 import android.os.Handler;

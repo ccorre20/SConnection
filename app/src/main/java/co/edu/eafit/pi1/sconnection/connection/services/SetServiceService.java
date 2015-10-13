@@ -1,8 +1,7 @@
-package co.edu.eafit.pi1.sconnection.Connection.Services;
+package co.edu.eafit.pi1.sconnection.connection.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.widget.EditText;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

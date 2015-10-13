@@ -1,6 +1,5 @@
 package co.edu.eafit.pi1.sconnection;
 
-import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
-
-import static co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus.*;
+import co.edu.eafit.pi1.sconnection.connection.services.LoginConnectionService;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 public class Landing extends AppCompatActivity implements Receiver {
 

@@ -1,4 +1,4 @@
-package co.edu.eafit.pi1.sconnection.LocationManager;
+package co.edu.eafit.pi1.sconnection.locationManager;
 
 import android.content.IntentSender;
 import android.location.Location;

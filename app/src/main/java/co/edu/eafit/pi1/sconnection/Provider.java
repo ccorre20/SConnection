@@ -1,9 +1,9 @@
 package co.edu.eafit.pi1.sconnection;
 
-import co.edu.eafit.pi1.sconnection.Connection.Services.GetLocationConnectionService;
-import co.edu.eafit.pi1.sconnection.Connection.Services.SetLocationConnectionService;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+import co.edu.eafit.pi1.sconnection.connection.services.GetLocationConnectionService;
+import co.edu.eafit.pi1.sconnection.connection.services.SetLocationConnectionService;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 import android.content.Context;
 import android.content.Intent;

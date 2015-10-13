@@ -13,7 +13,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 public class UserServiceDetail extends Activity implements OnMapReadyCallback {
 

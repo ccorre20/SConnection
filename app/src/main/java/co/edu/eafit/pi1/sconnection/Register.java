@@ -4,17 +4,15 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
-import co.edu.eafit.pi1.sconnection.Connection.Services.RegisterConnectionService;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+import co.edu.eafit.pi1.sconnection.connection.services.RegisterConnectionService;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 public class Register extends AppCompatActivity implements Receiver {
 

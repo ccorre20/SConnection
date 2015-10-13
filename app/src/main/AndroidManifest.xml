@@ -50,26 +50,29 @@
         </activity>
 
         <service
-            android:name=".Connection.Services.LoginConnectionService"
+            android:name=".connection.services.LoginConnectionService"
             android:exported="false" />
         <service
-            android:name=".Connection.Services.RegisterConnectionService"
+            android:name=".connection.services.RegisterConnectionService"
             android:exported="false" />
         <service
-            android:name=".Connection.Services.SetLocationConnectionService"
+            android:name=".connection.services.SetLocationConnectionService"
             android:exported="false" />
         <service
-            android:name=".Connection.Services.GetLocationConnectionService"
+            android:name=".connection.services.GetLocationConnectionService"
             android:exported="false" />
         <service
-            android:name=".Connection.Services.GetProvidersService"
+            android:name=".connection.services.GetProvidersService"
             android:exported="false" />
         <service
-            android:name=".Connection.Services.GetServiceListService"
+            android:name=".connection.services.GetServiceListService"
             android:exported="false" />
         <service
-            android:name=".Connection.Services.SetServiceService"
+            android:name=".connection.services.SetServiceService"
             android:exported="false" />
+        <service
+            android:name=".connection.services.ArrivedStatusService"
+            android:exported="false"/>
 
         <activity
             android:name=".Register"

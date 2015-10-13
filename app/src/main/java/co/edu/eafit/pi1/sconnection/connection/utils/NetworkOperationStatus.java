@@ -1,4 +1,4 @@
-package co.edu.eafit.pi1.sconnection.Connection.Utils;
+package co.edu.eafit.pi1.sconnection.connection.utils;
 
 /**
  * Created by ccr185 on 10/11/15.
@@ -12,7 +12,7 @@ public enum NetworkOperationStatus {
 
     public int code;
 
-    private NetworkOperationStatus(int val){
+    NetworkOperationStatus(int val){
         this.code = val;
     }
 }

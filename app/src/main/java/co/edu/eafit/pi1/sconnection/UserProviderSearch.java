@@ -19,9 +19,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import co.edu.eafit.pi1.sconnection.Connection.Services.GetProvidersService;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+import co.edu.eafit.pi1.sconnection.connection.services.GetProvidersService;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 public class UserProviderSearch extends AppCompatActivity implements Receiver {
 

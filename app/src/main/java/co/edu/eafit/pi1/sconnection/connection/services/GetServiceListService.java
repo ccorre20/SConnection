@@ -1,4 +1,4 @@
-package co.edu.eafit.pi1.sconnection.Connection.Services;
+package co.edu.eafit.pi1.sconnection.connection.services;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,69 +16,59 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
-import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
-import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
+import co.edu.eafit.pi1.sconnection.connection.utils.NetworkOperationStatus;
+import co.edu.eafit.pi1.sconnection.exceptions.NetworkException;
 
 /**
- * Created by tflr on 10/10/15.
+ * Created by ccr185 on 10/12/15.
  */
-public class LoginConnectionService extends IntentService {
+public class GetServiceListService extends IntentService{
 
-    private StringBuffer url;
-    private String uname;
-
+   StringBuffer url;
     private static final String TAG = "RConnectionService";
 
-    public LoginConnectionService() {
-        super(LoginConnectionService.class.getName());
+    public GetServiceListService() {
+        super(GetServiceListService.class.getName());
         url = new StringBuffer();
-        url.append("https://sc-b.herokuapp.com/api/v1/users/?login=true&name=");
-        uname = new String();
+        url.append("https://sc-b.herokuapp.com/api/v1/services/");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
         Log.d(TAG, "SERVICE STARTED");
 
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
-        uname = intent.getStringExtra("username");
+        final String name = intent.getStringExtra("username");
+        final String only = intent.getStringExtra("only");
         Bundle bundle = new Bundle();
 
-        String result = null;
+        ArrayList<String> result = null;
 
-        if(!uname.isEmpty()){
-            receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
-            try{
-                result = sendGet(uname);
-                bundle.putString("user_t", result);
-                receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
-            } catch (IOException e){
-                receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
-                e.printStackTrace();
-            } catch (NetworkException e) {
-                receiver.send(NetworkOperationStatus.STATUS_NETWORK_ERROR.code, Bundle.EMPTY);
-                e.printStackTrace();
-            } catch (JSONException e) {
-                receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
-                e.printStackTrace();
-            }
-        } else {
-            receiver.send(NetworkOperationStatus.STATUS_NAME_ERROR.code, Bundle.EMPTY);
+        receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
+        try{
+            result = sendGet(name, only);
+            bundle.putStringArrayList("services", result);
+            receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
+        } catch (IOException | JSONException e){
+            receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
+            e.printStackTrace();
+        } catch (NetworkException e) {
+            receiver.send(NetworkOperationStatus.STATUS_NETWORK_ERROR.code, Bundle.EMPTY);
+            e.printStackTrace();
         }
+
         Log.d(TAG, "SERVICE STOPPED");
         this.stopSelf();
     }
 
-    private String sendGet (String uname) throws IOException, JSONException, NetworkException{
+    private ArrayList<String> sendGet (String name, String only) throws IOException, JSONException, NetworkException{
         StringBuffer urlS = new StringBuffer();
         urlS.append(this.url);
-        urlS.append(uname);
+        urlS.append("?name="+name+"&only="+only);
         URL url = new URL(urlS.toString());
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
-        String response;
-
         // Request Header
         con.setRequestMethod("GET");
         con.setRequestProperty("Accept", "application/json");
@@ -87,16 +78,23 @@ public class LoginConnectionService extends IntentService {
         int responseCode = con.getResponseCode();
 
         // Parse JSON
+
+        ArrayList<String> arrayList = new ArrayList<>();
         if(responseCode == 200 || responseCode == 201){
             String json = getJSON(con.getInputStream());
             JSONObject obj = new JSONObject(json);
-            response = obj.getString("user_t");
+            JSONArray array = obj.getJSONArray("services");
+
+            for(int i = 0; i < array.length(); i++){
+                arrayList.add(array.getJSONObject(i).toString());
+            }
+
         } else {
             NetworkException e = new NetworkException("Could not get JSON");
             throw e;
         }
 
-        return response;
+        return arrayList;
     }
 
     private String getJSON(InputStream inputStream) throws IOException {
@@ -112,5 +110,4 @@ public class LoginConnectionService extends IntentService {
 
         return json.toString();
     }
-
 }

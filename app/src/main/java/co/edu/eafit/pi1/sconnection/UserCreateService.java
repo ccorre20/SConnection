@@ -13,8 +13,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import co.edu.eafit.pi1.sconnection.Connection.Services.SetServiceService;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+import co.edu.eafit.pi1.sconnection.connection.services.SetServiceService;
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 public class UserCreateService extends Activity implements Receiver,
         GoogleApiClient.ConnectionCallbacks,

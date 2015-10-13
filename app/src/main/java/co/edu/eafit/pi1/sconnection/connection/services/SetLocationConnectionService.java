@@ -1,19 +1,17 @@
-package co.edu.eafit.pi1.sconnection.Connection.Services;
+package co.edu.eafit.pi1.sconnection.connection.services;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v7.app.AppCompatActivity;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
-import co.edu.eafit.pi1.sconnection.Extras.ActivityExtra;
-import co.edu.eafit.pi1.sconnection.LocationManager.LocationServiceManager;
+import co.edu.eafit.pi1.sconnection.connection.utils.NetworkOperationStatus;
 
 /**
  * Created by tflr on 10/11/15.

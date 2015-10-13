@@ -1,4 +1,4 @@
-package co.edu.eafit.pi1.sconnection.Connection.Services;
+package co.edu.eafit.pi1.sconnection.connection.services;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -18,38 +18,37 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
-import co.edu.eafit.pi1.sconnection.Exceptions.NetworkException;
+import co.edu.eafit.pi1.sconnection.connection.utils.NetworkOperationStatus;
+import co.edu.eafit.pi1.sconnection.exceptions.NetworkException;
 
 /**
- * Created by ccr185 on 10/12/15.
+ * Created by ccr185 on 10/11/15.
  */
-public class GetServiceListService extends IntentService{
+public class GetProvidersService extends IntentService{
+    private StringBuffer url;
 
-   StringBuffer url;
     private static final String TAG = "RConnectionService";
 
-    public GetServiceListService() {
-        super(GetServiceListService.class.getName());
+    public GetProvidersService() {
+        super(GetProvidersService.class.getName());
         url = new StringBuffer();
-        url.append("https://sc-b.herokuapp.com/api/v1/services/");
+        url.append("https://sc-b.herokuapp.com/api/v1/users/?only=provider");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
         Log.d(TAG, "SERVICE STARTED");
 
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
-        final String name = intent.getStringExtra("username");
-        final String only = intent.getStringExtra("only");
         Bundle bundle = new Bundle();
 
         ArrayList<String> result = null;
 
         receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
         try{
-            result = sendGet(name, only);
-            bundle.putStringArrayList("services", result);
+            result = sendGet();
+            bundle.putStringArrayList("providers", result);
             receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
         } catch (IOException | JSONException e){
             receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
@@ -63,10 +62,9 @@ public class GetServiceListService extends IntentService{
         this.stopSelf();
     }
 
-    private ArrayList<String> sendGet (String name, String only) throws IOException, JSONException, NetworkException{
+    private ArrayList<String> sendGet () throws IOException, JSONException, NetworkException{
         StringBuffer urlS = new StringBuffer();
         urlS.append(this.url);
-        urlS.append("?name="+name+"&only="+only);
         URL url = new URL(urlS.toString());
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         // Request Header
@@ -83,7 +81,7 @@ public class GetServiceListService extends IntentService{
         if(responseCode == 200 || responseCode == 201){
             String json = getJSON(con.getInputStream());
             JSONObject obj = new JSONObject(json);
-            JSONArray array = obj.getJSONArray("services");
+            JSONArray array = obj.getJSONArray("users");
 
             for(int i = 0; i < array.length(); i++){
                 arrayList.add(array.getJSONObject(i).toString());
@@ -110,4 +108,5 @@ public class GetServiceListService extends IntentService{
 
         return json.toString();
     }
+
 }

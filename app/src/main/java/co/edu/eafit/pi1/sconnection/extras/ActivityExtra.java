@@ -1,4 +1,4 @@
-package co.edu.eafit.pi1.sconnection.Extras;
+package co.edu.eafit.pi1.sconnection.extras;
 
 import android.os.Parcel;
 import android.os.Parcelable;

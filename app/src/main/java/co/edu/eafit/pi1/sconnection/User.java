@@ -1,22 +1,45 @@
 package co.edu.eafit.pi1.sconnection;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
-public class User extends AppCompatActivity implements OnMapReadyCallback {
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 
-    private Button b, b2, b3;
-    private GoogleMap map;
-    String username;
+public class User extends AppCompatActivity implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
+
+    private Button              b, b2, b3;
+    private GoogleMap           map;
+    private String              username;
+    private Bundle              extra;
+    private CSResultReceiver    mReceiver;
+    private Location            lastKnownLocation;
+    private LocationRequest     mLocationRequest;
+    private Location            previous;
+    private String              latitude;
+    private String              longitude;
+    private Handler             handler;
+    private Button              arrived;
+    private boolean             mResolvingError = false;
+    private final int           REQUEST_RESOLVE_ERROR = 1001;
+    public GoogleApiClient      mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +51,26 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfragment);
         mapFragment.getMapAsync(this);
         username = getIntent().getStringExtra("name");
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
     @Override
