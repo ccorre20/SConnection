@@ -51,6 +51,15 @@
             android:layout_margin="10dp"
             android:onClick="onServiceCreateClick" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_confirm"
+            android:id="@+id/user_confirm"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:onClick="confirmArrival" />
+
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"

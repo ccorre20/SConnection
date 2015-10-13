@@ -75,7 +75,7 @@
             android:exported="false"/>
 
         <service
-            android:name=".Connection.Services.SetArrivalConfirmation"
+            android:name=".connection.services.SetArrivalConfirmation"
             android:exported="false" />
 
         <activity

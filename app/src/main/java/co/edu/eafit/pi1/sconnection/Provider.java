@@ -1,9 +1,9 @@
 package co.edu.eafit.pi1.sconnection;
 
-import co.edu.eafit.pi1.sconnection.Connection.Services.GetLocationConnectionService;
-import co.edu.eafit.pi1.sconnection.Connection.Services.SetLocationConnectionService;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+
+import co.edu.eafit.pi1.sconnection.connection.services.GetLocationConnectionService;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 import co.edu.eafit.pi1.sconnection.dialogs.ConfirmArrival;
 
 import android.content.Context;
@@ -35,7 +35,7 @@ public class Provider extends AppCompatActivity implements Receiver,
 
     private String              username;
     private Bundle              extra;
-    private CSResultReceiver    mReceiver;
+    private CSResultReceiver mReceiver;
     private Location            lastKnownLocation;
     private LocationRequest     mLocationRequest;
     private Location            previous;
@@ -220,7 +220,12 @@ public class Provider extends AppCompatActivity implements Receiver,
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
         final Handler handler = new Handler();
-        final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, GetLocationConnectionService.class);
+        final Intent intent = new Intent(
+                Intent.ACTION_SYNC,
+                null,
+                this,
+                GetLocationConnectionService.class
+        );
         intent.putExtra("username", username);
         intent.putExtra("mReceiver", mReceiver);
 

@@ -1,4 +1,4 @@
-package co.edu.eafit.pi1.sconnection.Connection.Services;
+package co.edu.eafit.pi1.sconnection.connection.services;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import co.edu.eafit.pi1.sconnection.Connection.Utils.NetworkOperationStatus;
 
 /**
  * Created by tflr on 10/13/15.

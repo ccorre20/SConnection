@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import co.edu.eafit.pi1.sconnection.Connection.Services.SetArrivalConfirmation;
 import co.edu.eafit.pi1.sconnection.R;
+import co.edu.eafit.pi1.sconnection.connection.services.SetArrivalConfirmation;
 
 public class ConfirmArrival extends Activity {
 
