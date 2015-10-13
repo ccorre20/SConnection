@@ -166,7 +166,7 @@ public class Provider extends AppCompatActivity implements Receiver,
     }
 
     public void servicesClickListener(View view){
-        mReceiver = new CSResultReceiver(new Handler());
+        /*mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
         final Handler handler = new Handler();
         final Intent intent = new Intent(
@@ -184,7 +184,12 @@ public class Provider extends AppCompatActivity implements Receiver,
                 startService(intent);
                 handler.postDelayed(this, 5000);
             }
-        }, 5000);
+        }, 5000);*/
+
+            Intent i = new Intent(this, UserServiceList.class);
+            i.putExtra("username", username);
+            startActivity(i);
+
     }
     /**************************** /Click listeners ***********************************************/
 
