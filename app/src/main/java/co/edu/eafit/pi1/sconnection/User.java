@@ -47,7 +47,9 @@ public class User extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public void onServiceCreateClick(View view){
-
+        Intent i = new Intent(this, UserCreateService.class);
+        i.putExtra("username", username);
+        startActivity(i);
     }
 
 

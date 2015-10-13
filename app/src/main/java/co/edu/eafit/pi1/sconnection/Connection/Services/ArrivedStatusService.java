@@ -2,7 +2,7 @@ package co.edu.eafit.pi1.sconnection.Connection.Services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.widget.EditText;
+import android.content.IntentSender;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,29 +10,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by ccr185 on 10/12/15.
+ * Created by tflr on 10/12/15.
  */
-public class SetServiceService extends IntentService{
+public class ArrivedStatusService extends IntentService {
 
     private StringBuffer url;
 
-    public SetServiceService() {
-        super(SetServiceService.class.getName());
+    public ArrivedStatusService(){
+        super(ArrivedStatusService.class.getName());
         url = new StringBuffer();
-        url.append("https://sc-b.herokuapp.com/api/v1/services/");
+        url.append("https://sc-b.herokuapp.com/api/v1/service_statuses/");
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        String uname        = intent.getStringExtra("uname");
-        String provider     = intent.getStringExtra("provider");
-        String latitude     = intent.getStringExtra("latitude");
-        String longitude    = intent.getStringExtra("longitude");
-        String message      = intent.getStringExtra("message");
-
-        try {
-            sendPost("name=" + uname + "&provider=" + provider +
-                    "&latitude=" + latitude + "&longitude=" + longitude + "&message=" + message);
+    public void onHandleIntent(Intent intent){
+        try{
+            sendPost("");
         } catch(IOException ioe){
             ioe.printStackTrace();
         }
@@ -47,7 +40,7 @@ public class SetServiceService extends IntentService{
         con.setRequestMethod("POST");
         con.setRequestProperty("http.agent", "");
 
-        // Send post request
+        //Send post request
         con.setDoOutput(true);
         DataOutputStream dos = new DataOutputStream(con.getOutputStream());
         dos.writeBytes(urlParams);

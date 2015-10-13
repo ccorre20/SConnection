@@ -67,6 +67,9 @@
         <service
             android:name=".Connection.Services.GetServiceListService"
             android:exported="false" />
+        <service
+            android:name=".Connection.Services.SetServiceService"
+            android:exported="false" />
 
         <activity
             android:name=".Register"
