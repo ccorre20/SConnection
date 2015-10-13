@@ -42,6 +42,6 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:indeterminate="true"
-        android:indeterminateBehavior="repeat"
+        android:indeterminateBehavior="cycle"
         android:visibility="visible" />
 </RelativeLayout>
