@@ -71,6 +71,10 @@
             android:name=".Connection.Services.SetServiceService"
             android:exported="false" />
 
+        <service
+            android:name=".Connection.Services.SetArrivalConfirmation"
+            android:exported="false" />
+
         <activity
             android:name=".Register"
             android:label="@string/title_activity_register" >
@@ -96,6 +100,10 @@
             android:label="@string/title_activity_user_create_service" >
         </activity>
         <activity android:name=".UserServiceDetail" >
+        </activity>
+        <activity
+            android:name=".dialogs.ConfirmArrival"
+            android:theme="@android:style/Theme.Dialog">
         </activity>
     </application>
 

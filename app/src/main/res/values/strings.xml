@@ -90,5 +90,9 @@
     <string name="user_service_detail_service_type">Tipo de Servicio</string>
     <string name="user_service_detail_service_status">Status</string>
     <string name="placeholder_bar">---</string>
+    <string name="which_user">¿Cual usuario?</string>
+    <string name="user_name">Nombre del usuario</string>
+    <string name="dialog_accept">Aceptar</string>
+    <string name="dialog_cancel">Cancelar</string>
 </resources>
 
