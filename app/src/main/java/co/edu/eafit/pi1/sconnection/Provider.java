@@ -76,6 +76,13 @@ public class Provider extends AppCompatActivity implements Receiver,
     }
 
     @Override
+    protected void onStop(){
+        stopLocationUpdates();
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
     public void onReceiveResult(int resultCode, Bundle resultData){
         switch (resultCode){
             case 1:  //STATUS_FINISHED
@@ -120,7 +127,7 @@ public class Provider extends AppCompatActivity implements Receiver,
     @Override
     public void onLocationChanged(Location location) {
         lastKnownLocation = location;
-        arrived.performClick();
+        getLocation();
     }
     /**************************** /Location Listener method **************************************/
 
@@ -143,6 +150,7 @@ public class Provider extends AppCompatActivity implements Receiver,
     }
     /**************************** /Location Requests *********************************************/
 
+    /**************************** Click listeners ************************************************/
     public void profileClickListener(View view){
         Intent i = new Intent(this, ProviderProfile.class);
         i.putExtra("username", username);
@@ -175,11 +183,6 @@ public class Provider extends AppCompatActivity implements Receiver,
 
             mReceiver = new CSResultReceiver(new Handler());
             mReceiver.setReceiver(this);
-
-            if(handler != null){
-                handler.removeCallbacksAndMessages(null);
-                handler = null;
-            }
 
             final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetLocationConnectionService.class);
             intent.putExtra("username", username);
@@ -227,22 +230,16 @@ public class Provider extends AppCompatActivity implements Receiver,
             }
         }, 5000);
     }
+    /**************************** /Click listeners ***********************************************/
 
-    @Override
-    protected void onStop(){
-        stopLocationUpdates();
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
+    /**************************** Google Play services *******************************************/
     @Override
     public void onConnected(Bundle bundle) {
         startLocationUpdates();
         previous = lastKnownLocation;
         lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastKnownLocation != null) {
-            latitude = String.valueOf(lastKnownLocation.getLatitude());
-            longitude = String.valueOf(lastKnownLocation.getLongitude());
+            getLocation();
         }
     }
 
@@ -265,6 +262,12 @@ public class Provider extends AppCompatActivity implements Receiver,
             mResolvingError = true;
         }
         Log.d("API", "stop");
+    }
+    /**************************** /Google Play services ******************************************/
+
+    private void getLocation(){
+        latitude = String.valueOf(lastKnownLocation.getLatitude());
+        longitude = String.valueOf(lastKnownLocation.getLongitude());
     }
 
     public String getCoordinates(){
