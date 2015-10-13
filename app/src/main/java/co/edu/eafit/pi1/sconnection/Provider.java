@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -39,6 +40,8 @@ public class Provider extends AppCompatActivity implements Receiver,
     private Location            previous;
     private String              latitude;
     private String              longitude;
+    private Handler             handler;
+    private Button              arrived;
     private boolean             mResolvingError = false;
     private final int           REQUEST_RESOLVE_ERROR = 1001;
     public GoogleApiClient      mGoogleApiClient;
@@ -50,6 +53,8 @@ public class Provider extends AppCompatActivity implements Receiver,
         setContentView(R.layout.activity_provider);
 
         createLocationRequest();
+        handler = new Handler();
+        arrived = (Button)findViewById(R.id.provider_arrived_button);
 
         extra = getIntent().getExtras();
         if (extra != null) {
@@ -115,6 +120,7 @@ public class Provider extends AppCompatActivity implements Receiver,
     @Override
     public void onLocationChanged(Location location) {
         lastKnownLocation = location;
+        arrived.performClick();
     }
     /**************************** /Location Listener method **************************************/
 
@@ -170,7 +176,11 @@ public class Provider extends AppCompatActivity implements Receiver,
             mReceiver = new CSResultReceiver(new Handler());
             mReceiver.setReceiver(this);
 
-            final Handler handler = new Handler();
+            if(handler != null){
+                handler.removeCallbacksAndMessages(null);
+                handler = null;
+            }
+
             final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetLocationConnectionService.class);
             intent.putExtra("username", username);
             intent.putExtra("mReceiver", mReceiver);
@@ -179,8 +189,9 @@ public class Provider extends AppCompatActivity implements Receiver,
 
                 @Override
                 public void run() {
-                    String[] location = getCoordinates()
-                            .substring(0, getCoordinates().length() - 3)
+                    String coordinates = Provider.this.getCoordinates();
+                    String[] location = coordinates
+                            .substring(0, coordinates.length() - 3)
                             .split("s");
                     intent.putExtra("longitude", location[0]);
                     intent.putExtra("latitude", location[1]);
