@@ -1,5 +1,6 @@
 package co.edu.eafit.pi1.sconnection;
 
+import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +34,8 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
     CSResultReceiver mReceiver;
     RadioGroup rg;
     String only;
+    ArrayList<String> objs;
+    String msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,23 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
         startService(i);
     }
 
+    public void onItemClick(View view){
+        String s = ((TextView)view).getText().toString();
+        if (!s.equals("No hay servicios")){
+            Intent i = null;
+            for (String j: objs){
+                if(j.contains(s)){
+                    i = new Intent(this, UserServiceDetail.class);
+                    i.putExtra("json", j);
+                    break;
+                }
+            }
+            if (i !=  null){
+                startActivity(i);
+            }
+        }
+    }
+
     @Override
     public void onStart(){
         super.onStart();
@@ -86,7 +107,7 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
             }
             case 1: {
                 ArrayList<String> prov_names = new ArrayList<>();
-                ArrayList<String> objs = resultData.getStringArrayList("services");
+                objs = resultData.getStringArrayList("services");
                 JSONObject o = null;
                 for (String s : objs) {
                     try {
@@ -97,6 +118,14 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
                     }
                 }
                 if (!prov_names.isEmpty()) {
+                    arrayAdapter = new ArrayAdapter<String>(
+                            this,
+                            R.layout.list_item,
+                            R.id.Desc,
+                            prov_names);
+                    listView.setAdapter(arrayAdapter);
+                }else{
+                    prov_names.add("No hay servicios");
                     arrayAdapter = new ArrayAdapter<String>(
                             this,
                             R.layout.list_item,

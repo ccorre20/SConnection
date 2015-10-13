@@ -41,13 +41,14 @@ public class GetServiceListService extends IntentService{
 
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
         final String name = intent.getStringExtra("username");
+        final String only = intent.getStringExtra("only");
         Bundle bundle = new Bundle();
 
         ArrayList<String> result = null;
 
         receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
         try{
-            result = sendGet(name);
+            result = sendGet(name, only);
             bundle.putStringArrayList("services", result);
             receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
         } catch (IOException | JSONException e){
@@ -62,10 +63,10 @@ public class GetServiceListService extends IntentService{
         this.stopSelf();
     }
 
-    private ArrayList<String> sendGet (String name) throws IOException, JSONException, NetworkException{
+    private ArrayList<String> sendGet (String name, String only) throws IOException, JSONException, NetworkException{
         StringBuffer urlS = new StringBuffer();
         urlS.append(this.url);
-        urlS.append("?name="+name);
+        urlS.append("?name="+name+"&only="+only);
         URL url = new URL(urlS.toString());
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         // Request Header

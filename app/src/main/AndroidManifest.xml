@@ -95,6 +95,8 @@
             android:name=".UserCreateService"
             android:label="@string/title_activity_user_create_service" >
         </activity>
+        <activity android:name=".UserServiceDetail" >
+        </activity>
     </application>
 
 </manifest>

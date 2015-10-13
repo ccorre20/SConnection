@@ -84,5 +84,11 @@
     <string name="user_create_service_longitude_edittext_hint"><![CDATA[<longitude>]]></string>
     <string name="user_create_service_latitude_edittext_hint"><![CDATA[<latitude>]]></string>
     <string name="user_create_service_message_edittext_hint"><![CDATA[<mensaje>]]></string>
+    <string name="user_service_detail_title">Servicio</string>
+    <string name="user_service_detail_user_id">User ID</string>
+    <string name="user_service_detail_provider_id">Provider ID</string>
+    <string name="user_service_detail_service_type">Tipo de Servicio</string>
+    <string name="user_service_detail_service_status">Status</string>
+    <string name="placeholder_bar">---</string>
 </resources>
 
