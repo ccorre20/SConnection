@@ -1,4 +1,4 @@
-package co.edu.eafit.pi1.sconnection.Exceptions;
+package co.edu.eafit.pi1.sconnection.exceptions;
 
 /**
  * Created by ccr185 on 10/10/15.

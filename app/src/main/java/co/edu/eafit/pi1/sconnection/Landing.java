@@ -1,6 +1,5 @@
 package co.edu.eafit.pi1.sconnection;
 
-import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import co.edu.eafit.pi1.sconnection.Connection.Services.LoginConnectionService;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.CSResultReceiver;
-import co.edu.eafit.pi1.sconnection.Connection.Utils.Receiver;
+import co.edu.eafit.pi1.sconnection.connection.services.LoginConnectionService;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 public class Landing extends AppCompatActivity implements Receiver {
 
     EditText uname;
+    String sentname;
     Button login;
     CSResultReceiver mReceiver;
     ProgressBar progressBar;
@@ -49,48 +49,50 @@ public class Landing extends AppCompatActivity implements Receiver {
         Intent i = null;
 
         switch (resultCode){
-            case LoginConnectionService.STATUS_RUNNING:{
+            case 0:{ //STATUS_RUNNING
                 progressBar.setVisibility(View.VISIBLE);
                 break;
             }
-            case LoginConnectionService.STATUS_FINISHED:{
+            case 1:{ //STATUS_FINISHED
                 String res = resultData.getString("user_t");
                 if(res.equals("user")){
                     i = new Intent(this, User.class);
+                    i.putExtra("username", uname.getText().toString());
                 } else {
                     i = new Intent(this, Provider.class);
+                    i.putExtra("username", uname.getText().toString());
                 }
                 progressBar.setVisibility(View.INVISIBLE);
                 break;
             }
-            case LoginConnectionService.STATUS_GENERAL_ERROR:{
+            case 2:{ //STATUS_NETWORK_ERROR
 
                 break;
             }
-            case LoginConnectionService.STATUS_NAME_ERROR:{
+            case 3:{ //STATUS_NAME_ERROR
 
                 break;
             }
-            case LoginConnectionService.STATUS_NETWORK_ERROR:{
+            case 4:{ //STATUS_GENERAL_ERROR
 
                 break;
             }
         }
 
         if(i != null){
+            i.putExtra("name", sentname);
             startActivity(i);
         }
     }
 
     public void userClick(View view){
-        login.setEnabled(false);
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, LoginConnectionService.class);
         Log.d("NAME", uname.getText().toString());
         intent.putExtra("username", uname.getText().toString());
         intent.putExtra("mReceiver", mReceiver);
-
+        sentname = uname.getText().toString();
         startService(intent);
     }
 

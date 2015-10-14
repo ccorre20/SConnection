@@ -1,9 +1,10 @@
-package co.edu.eafit.pi1.sconnection.LocationManager;
+package co.edu.eafit.pi1.sconnection.locationManager;
 
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -45,6 +46,7 @@ public class LocationServiceManager implements
 
     @Override
     public void onConnectionSuspended(int cause){
+        Log.d("API", "stop");
         return;
     }
 
@@ -61,21 +63,39 @@ public class LocationServiceManager implements
         } else {
             mResolvingError = true;
         }
+        Log.d("API", "stop");
     }
 
     /**************************** /Google API connection ******************************************/
 
     public void googleApiClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(appCompatActivity)
+                .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
                 .build();
+        mGoogleApiClient.connect();
+        while(!mGoogleApiClient.isConnected()){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d("connected", "connected");
     }
 
     public void connect(){
         if(!mResolvingError){
             mGoogleApiClient.connect();
+            while (!mGoogleApiClient.isConnected()){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.d("connected", "connected");
         }
     }
 
@@ -86,4 +106,8 @@ public class LocationServiceManager implements
             return "ERROR";
         }
     }
+
 }
+
+
+

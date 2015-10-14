@@ -18,7 +18,7 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
-    <string name="title_activity_landing">Landing</string>
+    <string name="title_activity_landing">Service Tracking</string>
     <string name="title_activity_user">User</string>
     <string name="title_activity_provider">Provider</string>
 
@@ -40,5 +40,61 @@
     <string name="register_radio_user">Usuario</string>
     <string name="register_radio_provider">Proveedor</string>
     <string name="register_button">Registrarse</string>
+    <string name="profile">Perfil</string>
+    <string name="see_services">Ver servicios</string>
+    <string name="arrived">Confirmar llegada</string>
+    <string name="title_activity_provider_profile">ProviderProfile</string>
+    <string name="title_activity_provider_services">ProviderServices</string>
+    <string name="user_search_button">Buscar Proveedores</string>
+    <string name="user_view_services_button">Ver Servicios</string>
+    <string name="user_create_service_button">Crear Servicio</string>
+    <string name="title_activity_provider_search">ProviderSearch</string>
+    <string name="provider_search_filter">Buscar Proveedores</string>
+    <string name="provider_search_title">Proveedores</string>
+    <string name="title_activity_user_service_list">UserServiceList</string>
+    <string name="user_service_list_title">Tus Servicios</string>
+    <string name="user_service_list_radio_sent">Enviados</string>
+    <string name="user_service_list_radio_completed">Completados</string>
+    <string name="user_service_list_radio_all">Todos</string>
+    <string name="title_activity_user_create_service">Crear un Servicio</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <!-- Strings related to creating a service-->
+    <string name="user_create_service_provider_name_txt">Proveedor</string>
+    <string name="user_create_service_title">Crear un Servicio</string>
+    <string name="user_create_service_provider_edittext_hint"><![CDATA[<proveedor>]]></string>
+    <string name="user_create_service_type_txt">Tipo de Servicio</string>
+    <string name="user_create_service_type_edittext_hint"><![CDATA[<tipo>]]></string>
+    <string name="user_create_service_longitude_latitude_txt"><![CDATA[Longitud & Latitud]]></string>
+    <string name="user_create_service_button_auto">Auto-Detect</string>
+    <string name="user_create_service_message_txt">Mensaje</string>
+    <string name="user_create_service_send_button">Enviar</string>
+    <string name="user_create_service_longitude_edittext_hint"><![CDATA[<longitude>]]></string>
+    <string name="user_create_service_latitude_edittext_hint"><![CDATA[<latitude>]]></string>
+    <string name="user_create_service_message_edittext_hint"><![CDATA[<mensaje>]]></string>
+    <string name="user_service_detail_title">Servicio</string>
+    <string name="user_service_detail_user_id">User ID</string>
+    <string name="user_service_detail_provider_id">Provider ID</string>
+    <string name="user_service_detail_service_type">Tipo de Servicio</string>
+    <string name="user_service_detail_service_status">Status</string>
+    <string name="placeholder_bar">---</string>
+    <string name="user_confirm">Confirmar</string>
+    <string name="which_user">¿Cual usuario?</string>
+    <string name="user_name">Nombre del usuario</string>
+    <string name="dialog_accept">Aceptar</string>
+    <string name="dialog_cancel">Cancelar</string>
+    <string name="user_provider_detail_title">Proveedor</string>
 </resources>
 
