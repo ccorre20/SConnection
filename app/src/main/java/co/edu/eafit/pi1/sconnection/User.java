@@ -1,11 +1,13 @@
 package co.edu.eafit.pi1.sconnection;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +27,10 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import co.edu.eafit.pi1.sconnection.connection.services.SetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
@@ -51,6 +57,8 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     private boolean             mResolvingError = false;
     private final int           REQUEST_RESOLVE_ERROR = 1001;
     public GoogleApiClient      mGoogleApiClient;
+    CSResultReceiver receiver;
+    LatLng service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +73,8 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         username = getIntent().getStringExtra("name");
         createLocationRequest();
         handler = new Handler();
+        receiver = new CSResultReceiver(new Handler());
+        receiver.setReceiver(this);
     }
 
     @Override
@@ -87,6 +97,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
 
     public void confirmArrival(View view){
         Intent intent = new Intent(this, ConfirmArrival.class);
+        intent.putExtra("mReceiver", receiver);
         startActivity(intent);
     }
 
@@ -153,6 +164,9 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData){
         switch (resultCode){
+            case 0:
+
+                break;
             case 1:  //STATUS_FINISHED
                 Context context = getApplicationContext();
                 CharSequence text = "Longitude: " + resultData.getString("longitude")
@@ -162,7 +176,54 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
                 break;
+            case -1://username
+                Context ctext = getApplicationContext();
+                CharSequence cstext = "Cambio de ubicacion detectada...";
+
+                Toast ctoast = Toast.makeText(ctext, cstext, Toast.LENGTH_SHORT);
+                ctoast.show();
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(resultData.getString("providers"));
+                    JSONArray jsonArray = jsonObject.getJSONArray("services");
+                    jsonObject = jsonArray.getJSONObject(0);
+                    if(jsonObject != null) {
+                        service = new LatLng(
+                                Double.parseDouble(jsonObject.getString("latitude")),
+                                Double.parseDouble(jsonObject.getString("longitude"))
+                        );
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(service != null){
+                    displayDialog();
+                }
+                break;
         }
+    }
+
+    private void displayDialog(){
+        float [] a = new float[1];
+        Location.distanceBetween(
+                Double.parseDouble(latitude),
+                Double.parseDouble(longitude),
+                service.latitude,
+                service.longitude,
+                a
+        );
+        String ab = new String(a[0]+"");
+        new AlertDialog.Builder(this)
+                .setTitle("Verificacion")
+                .setMessage(ab)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     /**************************** Location Listener method ***************************************/

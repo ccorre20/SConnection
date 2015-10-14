@@ -8,10 +8,12 @@ import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 import co.edu.eafit.pi1.sconnection.dialogs.ConfirmArrival;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +29,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class Provider extends AppCompatActivity implements Receiver,
@@ -36,7 +43,7 @@ public class Provider extends AppCompatActivity implements Receiver,
 
     private String              username;
     private Bundle              extra;
-    private CSResultReceiver mReceiver;
+    private CSResultReceiver    mReceiver;
     private Location            lastKnownLocation;
     private LocationRequest     mLocationRequest;
     private Location            previous;
@@ -47,6 +54,8 @@ public class Provider extends AppCompatActivity implements Receiver,
     private boolean             mResolvingError = false;
     private final int           REQUEST_RESOLVE_ERROR = 1001;
     public GoogleApiClient      mGoogleApiClient;
+    CSResultReceiver receiver;
+    LatLng service;
 
     /**************************** Android Activity methods ***************************************/
     @Override
@@ -64,6 +73,8 @@ public class Provider extends AppCompatActivity implements Receiver,
         }
 
         previous = null;
+        receiver = new CSResultReceiver(new Handler());
+        receiver.setReceiver(this);
     }
 
     @Override
@@ -96,7 +107,54 @@ public class Provider extends AppCompatActivity implements Receiver,
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
                 break;
+            case -1://username
+                Context ctext = getApplicationContext();
+                CharSequence cstext = "Cambio de ubicacion detectada...";
+
+                Toast ctoast = Toast.makeText(ctext, cstext, Toast.LENGTH_SHORT);
+                ctoast.show();
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(resultData.getString("providers"));
+                    JSONArray jsonArray = jsonObject.getJSONArray("services");
+                    jsonObject = jsonArray.getJSONObject(0);
+                    if(jsonObject != null) {
+                        service = new LatLng(
+                                Double.parseDouble(jsonObject.getString("latitude")),
+                                Double.parseDouble(jsonObject.getString("longitude"))
+                        );
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(service != null){
+                    displayDialog();
+                }
+                break;
         }
+    }
+
+    private void displayDialog(){
+        float [] a = new float[1];
+        Location.distanceBetween(
+                Double.parseDouble(latitude),
+                Double.parseDouble(longitude),
+                service.latitude,
+                service.longitude,
+                a
+        );
+        String ab = new String(a[0]+"");
+        new AlertDialog.Builder(this)
+                .setTitle("Verificacion")
+                .setMessage(ab)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
@@ -162,6 +220,7 @@ public class Provider extends AppCompatActivity implements Receiver,
 
     public void arrivedClickListener(View view){
         Intent intent = new Intent(this, ConfirmArrival.class);
+        intent.putExtra("mReceiver", receiver);
         startActivity(intent);
     }
 
