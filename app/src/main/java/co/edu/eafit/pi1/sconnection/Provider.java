@@ -1,7 +1,5 @@
 package co.edu.eafit.pi1.sconnection;
 
-
-import co.edu.eafit.pi1.sconnection.connection.services.GetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.connection.services.SetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
@@ -118,6 +116,8 @@ public class Provider extends AppCompatActivity implements Receiver,
                     jsonObject = new JSONObject(resultData.getString("providers"));
                     JSONArray jsonArray = jsonObject.getJSONArray("services");
                     jsonObject = jsonArray.getJSONObject(0);
+                    jsonObject = jsonObject.getJSONObject("user");
+                    jsonObject = jsonObject.getJSONObject("location");
                     if(jsonObject != null) {
                         service = new LatLng(
                                 Double.parseDouble(jsonObject.getString("latitude")),
@@ -143,18 +143,33 @@ public class Provider extends AppCompatActivity implements Receiver,
                 service.longitude,
                 a
         );
-        String ab = new String(a[0]+"");
-        new AlertDialog.Builder(this)
-                .setTitle("Verificacion")
-                .setMessage(ab)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                        dialog.dismiss();
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        if(a[0] < 500.0f) {
+            String ab = new String(a[0] + "");
+            new AlertDialog.Builder(this)
+                    .setTitle("Enhorabuena")
+                    .setMessage("Estas a "+ab+" metros de tu usuario")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            dialog.dismiss();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        } else {
+            String ab = new String(a[0] + "");
+            new AlertDialog.Builder(this)
+                    .setTitle("Malas Noticias")
+                    .setMessage("Estas a "+ab+" metros de tu usuario")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            dialog.dismiss();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     @Override

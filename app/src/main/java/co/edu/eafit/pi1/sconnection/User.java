@@ -187,6 +187,8 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
                     jsonObject = new JSONObject(resultData.getString("providers"));
                     JSONArray jsonArray = jsonObject.getJSONArray("services");
                     jsonObject = jsonArray.getJSONObject(0);
+                    jsonObject = jsonObject.getJSONObject("provider");
+                    jsonObject = jsonObject.getJSONObject("location");
                     if(jsonObject != null) {
                         service = new LatLng(
                                 Double.parseDouble(jsonObject.getString("latitude")),
@@ -212,18 +214,32 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
                 service.longitude,
                 a
         );
-        String ab = new String(a[0]+"");
-        new AlertDialog.Builder(this)
-                .setTitle("Verificacion")
-                .setMessage(ab)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                        dialog.dismiss();
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        String ab = new String(a[0] + "");
+        if(a[0] < 500.0f) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Enhorabuena")
+                    .setMessage("Estas a "+ab+" metros de tu proveedor")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            dialog.dismiss();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Malas Noticias")
+                    .setMessage("Estas a "+ab+" metros de tu proveedor")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            dialog.dismiss();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     /**************************** Location Listener method ***************************************/
