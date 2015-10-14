@@ -86,7 +86,6 @@ public class Landing extends AppCompatActivity implements Receiver {
     }
 
     public void userClick(View view){
-        login.setEnabled(false);
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, LoginConnectionService.class);
