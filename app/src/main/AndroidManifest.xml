@@ -13,8 +13,11 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +27,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
@@ -45,6 +47,67 @@
         <activity
             android:name=".Provider"
             android:label="@string/title_activity_provider" >
+        </activity>
+
+        <service
+            android:name=".connection.services.LoginConnectionService"
+            android:exported="false" />
+        <service
+            android:name=".connection.services.RegisterConnectionService"
+            android:exported="false" />
+        <service
+            android:name=".connection.services.SetLocationConnectionService"
+            android:exported="false" />
+        <service
+            android:name=".connection.services.GetLocationConnectionService"
+            android:exported="false" />
+        <service
+            android:name=".connection.services.GetProvidersService"
+            android:exported="false" />
+        <service
+            android:name=".connection.services.GetServiceListService"
+            android:exported="false" />
+        <service
+            android:name=".connection.services.SetServiceService"
+            android:exported="false" />
+        <service
+            android:name=".connection.services.ArrivedStatusService"
+            android:exported="false" />
+        <service
+            android:name=".connection.services.SetArrivalConfirmation"
+            android:exported="false" />
+
+        <activity
+            android:name=".Register"
+            android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name=".ProviderProfile"
+            android:label="@string/title_activity_provider_profile" >
+        </activity>
+        <activity
+            android:name=".ProviderServices"
+            android:label="@string/title_activity_provider_services" >
+        </activity>
+        <activity
+            android:name=".UserProviderSearch"
+            android:label="@string/title_activity_provider_search" >
+        </activity>
+        <activity
+            android:name=".UserServiceList"
+            android:label="@string/title_activity_user_service_list" >
+        </activity>
+        <activity
+            android:name=".UserCreateService"
+            android:label="@string/title_activity_user_create_service" >
+        </activity>
+        <activity android:name=".UserServiceDetail" >
+        </activity>
+        <activity
+            android:name=".dialogs.ConfirmArrival"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <activity android:name=".UserProviderSearchDetail" >
         </activity>
     </application>
 
