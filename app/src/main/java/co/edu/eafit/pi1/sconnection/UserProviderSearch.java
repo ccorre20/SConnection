@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +31,7 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
     ArrayAdapter<String> arrayAdapter;
     ListView lv;
     EditText editText;
+    ArrayList<String> objs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,23 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
         startService(intent);
     }
 
+    public void onProviderClick(View view){
+        String s = ((TextView)view).getText().toString();
+        if (!s.equals("No hay servicios")){
+            Intent i = null;
+            for (String j: objs){
+                if(j.contains(s)){
+                    i = new Intent(this, UserProviderSearchDetail.class);
+                    i.putExtra("json", j);
+                    break;
+                }
+            }
+            if (i !=  null){
+                startActivity(i);
+            }
+        }
+    }
+
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
         switch (resultCode){
@@ -79,7 +98,7 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
             }
             case 1:{
                 ArrayList<String> prov_names = new ArrayList<>();
-                ArrayList<String> objs = resultData.getStringArrayList("providers");
+                objs = resultData.getStringArrayList("providers");
                 JSONObject o = null;
                 for(String s:objs){
                     try {
@@ -92,8 +111,8 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
                 if(!prov_names.isEmpty()){
                     arrayAdapter = new ArrayAdapter<String>(
                             this,
-                            R.layout.list_item,
-                            R.id.Desc,
+                            R.layout.list_item2,
+                            R.id.provider_detail,
                             prov_names);
                     lv.setAdapter(arrayAdapter);
                 }

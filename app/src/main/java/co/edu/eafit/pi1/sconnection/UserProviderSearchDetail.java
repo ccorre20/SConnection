@@ -14,27 +14,24 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserServiceDetail extends Activity implements OnMapReadyCallback {
+public class UserProviderSearchDetail extends Activity implements OnMapReadyCallback{
 
-    TextView t1, t2, t3, t4;
     JSONObject jsonObject;
+    TextView t1, t2;
     LatLng location;
     GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_service_detail);
-        t1 = (TextView)findViewById(R.id.user_service_detail_user_id_txt);
-        t2 = (TextView)findViewById(R.id.user_service_detail_provider_id_txt);
-        t3 = (TextView)findViewById(R.id.user_service_detail_service_type_txt);
-        t4 = (TextView)findViewById(R.id.user_service_detail_service_status_txt);
+        setContentView(R.layout.activity_user_provider_search_detail);
+        t1 = (TextView) findViewById(R.id.user_provider_detail_provider_id_txt);
+        t2 = (TextView) findViewById(R.id.user_provider_detail_service_status_txt);
         try {
             jsonObject = new JSONObject(getIntent().getStringExtra("json"));
-            t1.setText(jsonObject.getJSONObject("user").getString("name"));
-            t2.setText(jsonObject.getJSONObject("provider").getString("name"));
-            t3.setText(jsonObject.getString("s_t"));
-            t4.setText(jsonObject.getString("s_status"));
+            t1.setText(jsonObject.getString("name"));
+            t2.setText(jsonObject.getString("avail").equals("true") ? "Disponible" : "No Disponible");
+            jsonObject = jsonObject.getJSONObject("location");
             location = new LatLng(
                     Double.parseDouble(jsonObject.getString("latitude")),
                     Double.parseDouble(jsonObject.getString("longitude"))
@@ -42,13 +39,8 @@ public class UserServiceDetail extends Activity implements OnMapReadyCallback {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.user_service_detail_fragment);
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.user_provider_detail_fragment);
         mapFragment.getMapAsync(this);
-    }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
     }
 
     private void setMarker(){

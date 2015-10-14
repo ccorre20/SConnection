@@ -72,8 +72,7 @@
             android:exported="false" />
         <service
             android:name=".connection.services.ArrivedStatusService"
-            android:exported="false"/>
-
+            android:exported="false" />
         <service
             android:name=".connection.services.SetArrivalConfirmation"
             android:exported="false" />
@@ -106,7 +105,9 @@
         </activity>
         <activity
             android:name=".dialogs.ConfirmArrival"
-            android:theme="@android:style/Theme.Dialog">
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <activity android:name=".UserProviderSearchDetail" >
         </activity>
     </application>
 
