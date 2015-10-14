@@ -18,7 +18,7 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
-    <string name="title_activity_landing">Landing</string>
+    <string name="title_activity_landing">Service Tracking</string>
     <string name="title_activity_user">User</string>
     <string name="title_activity_provider">Provider</string>
 
