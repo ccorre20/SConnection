@@ -19,6 +19,7 @@ import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 public class Landing extends AppCompatActivity implements Receiver {
 
     EditText uname;
+    EditText password;
     String sentname;
     Button login;
     CSResultReceiver mReceiver;
@@ -29,6 +30,7 @@ public class Landing extends AppCompatActivity implements Receiver {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
         uname = (EditText)findViewById(R.id.editText_username);
+        password= (EditText)findViewById(R.id.editText_password);
         login  = (Button) findViewById(R.id.button_login);
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
     }
@@ -36,12 +38,6 @@ public class Landing extends AppCompatActivity implements Receiver {
     @Override
     protected void onResume(){
         super.onResume();
-        uname.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                uname.getText().clear();
-            }
-        });
     }
 
     @Override
@@ -91,6 +87,7 @@ public class Landing extends AppCompatActivity implements Receiver {
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, LoginConnectionService.class);
         Log.d("NAME", uname.getText().toString());
         intent.putExtra("username", uname.getText().toString());
+        intent.putExtra("password", password.getText().toString());
         intent.putExtra("mReceiver", mReceiver);
         sentname = uname.getText().toString();
         startService(intent);

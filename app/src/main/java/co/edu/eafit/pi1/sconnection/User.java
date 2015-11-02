@@ -286,8 +286,9 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastKnownLocation != null) {
             getLocation();
+            beginLocationShow();
         }
-        beginLocationShow();
+
     }
 
     @Override

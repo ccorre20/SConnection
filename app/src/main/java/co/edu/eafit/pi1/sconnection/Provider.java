@@ -256,8 +256,8 @@ public class Provider extends AppCompatActivity implements Receiver,
         lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastKnownLocation != null) {
             getLocation();
+            beginLocationShow();
         }
-        beginLocationShow();
     }
 
     @Override

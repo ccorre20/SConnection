@@ -11,7 +11,7 @@
     <string name="title_activity_map_controller">Map</string>
     <string name="title_activity_landing_gral">Landing_gral</string>
     <string name="Nada">---</string>
-    <string name="username">usuario</string>
+    <string name="username">Usuario</string>
     <string name="user">Usuario</string>
     <string name="provider">Proveedor</string>
 
@@ -96,5 +96,14 @@
     <string name="dialog_accept">Aceptar</string>
     <string name="dialog_cancel">Cancelar</string>
     <string name="user_provider_detail_title">Proveedor</string>
+    <string name="password">Contraseña</string>
+    <string name="title_activity_provider_register">ProviderRegister</string>
+    <string name="provider_create_account_title">Registrarse como proveedor</string>
+    <string name="nombre_completo">Nombre completo</string>
+    <string name="name_and_lastname">Nombres y apellidos</string>
+    <string name="description">Descripcion</string>
+    <string name="availability_time_schedule">Horario de disponibilidad</string>
+    <string name="description_details">Breve descripcion sobre tu trabajo</string>
+    <string name="schedule_text">Lunes 8 a 12 y 15 a 16: L8-12,L15-16</string>
 </resources>
 
