@@ -18,15 +18,15 @@ public class Register extends AppCompatActivity implements Receiver {
 
     CSResultReceiver mReceiver;
     EditText username_text;
-    RadioButton r1, r2;
+    RadioButton userRButton, providerRButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         username_text = (EditText) findViewById(R.id.username_text);
-        r1 = (RadioButton) findViewById(R.id.radioButton);
-        r2 = (RadioButton) findViewById(R.id.radioButton2);
+        userRButton = (RadioButton) findViewById(R.id.radioButton);
+        providerRButton = (RadioButton) findViewById(R.id.radioButton2);
     }
 
     @Override
@@ -69,15 +69,13 @@ public class Register extends AppCompatActivity implements Receiver {
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, RegisterConnectionService.class);
         intent.putExtra("username", username_text.getText().toString());
         intent.putExtra("mReceiver", mReceiver);
-        String type = "user";
-        if(r1.isChecked()){
-            type = "user";
-        } else if(r2.isChecked()) {
-            type = "provider";
+        if(userRButton.isChecked()){
+            intent.putExtra("type", "user");
+            startService(intent);
+        } else if(providerRButton.isChecked()) {
+            Intent providerRegisterIntent = new Intent(this, ProviderRegister.class);
+            startActivity(providerRegisterIntent);
         }
-        intent.putExtra("type", type);
-
-        startService(intent);
     }
 
     @Override

@@ -12,7 +12,7 @@
         android:clickable="true"
         android:enabled="true"
         android:onClick="userClick"
-        android:layout_below="@+id/editText_username"
+        android:layout_below="@+id/editText_password"
         android:layout_alignStart="@+id/textView"
         android:layout_marginTop="36dp" />
 
@@ -32,9 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="@string/username"
         android:ems="10"
-        android:id="@+id/editText_username"
+        android:id="@+id/editText_password"
         android:layout_marginTop="40dp"
         android:textColor="@android:color/darker_gray"
         android:editable="true"
@@ -43,7 +42,8 @@
         android:singleLine="true"
         android:clickable="true"
         android:layout_below="@+id/progressBar2"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:hint="@string/password" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,5 +67,21 @@
         android:indeterminate="true"
         android:indeterminateBehavior="cycle"
         android:indeterminateOnly="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText_username"
+        android:textColor="@android:color/darker_gray"
+        android:editable="true"
+        android:typeface="normal"
+        android:textAlignment="center"
+        android:singleLine="true"
+        android:clickable="true"
+        android:layout_below="@+id/progressBar2"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/username" />
 
 </RelativeLayout>

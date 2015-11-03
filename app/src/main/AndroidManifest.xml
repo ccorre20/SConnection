@@ -109,6 +109,10 @@
         </activity>
         <activity android:name=".UserProviderSearchDetail" >
         </activity>
+        <activity
+            android:name=".ProviderRegister"
+            android:label="@string/title_activity_provider_register" >
+        </activity>
     </application>
 
 </manifest>

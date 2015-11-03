@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import co.edu.eafit.pi1.sconnection.connection.utils.NetworkOperationStatus;
 import co.edu.eafit.pi1.sconnection.exceptions.NetworkException;
@@ -26,6 +27,7 @@ public class LoginConnectionService extends IntentService {
 
     private StringBuffer url;
     private String uname;
+    private String password;
 
     private static final String TAG = "RConnectionService";
 
@@ -33,7 +35,6 @@ public class LoginConnectionService extends IntentService {
         super(LoginConnectionService.class.getName());
         url = new StringBuffer();
         url.append("https://sc-b.herokuapp.com/api/v1/users/?login=true&name=");
-        uname = new String();
     }
 
     @Override
@@ -43,14 +44,15 @@ public class LoginConnectionService extends IntentService {
 
         final ResultReceiver receiver = intent.getParcelableExtra("mReceiver");
         uname = intent.getStringExtra("username");
+        password = intent.getStringExtra("password");
         Bundle bundle = new Bundle();
 
         String result = null;
 
-        if(!uname.isEmpty()){
+        if(!uname.isEmpty() && !password.isEmpty()){
             receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
             try{
-                result = sendGet(uname);
+                result = sendGet(uname, password);
                 bundle.putString("user_t", result);
                 receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
             } catch (IOException e){
@@ -70,10 +72,11 @@ public class LoginConnectionService extends IntentService {
         this.stopSelf();
     }
 
-    private String sendGet (String uname) throws IOException, JSONException, NetworkException{
+    private String sendGet (String uname, String password) throws
+            IOException, JSONException, NetworkException{
         StringBuffer urlS = new StringBuffer();
         urlS.append(this.url);
-        urlS.append(uname);
+        urlS.append(uname + "&password=" + password);
         URL url = new URL(urlS.toString());
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         String response;
