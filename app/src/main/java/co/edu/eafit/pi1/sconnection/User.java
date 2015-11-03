@@ -112,9 +112,10 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         if(mGoogleApiClient.isConnected() ){
 
             while (lastKnownLocation == null
-                    || (previous != null
-                    && !longitude.equals(String.valueOf(previous.getLongitude()))
-                    && !latitude.equals(String.valueOf(previous.getLatitude())))
+                    ||  (previous != null
+                        && !longitude.equals(String.valueOf(previous.getLongitude()))
+                        && !latitude.equals(String.valueOf(previous.getLatitude()))
+                        )
                     ){
                 this.onConnected(Bundle.EMPTY);
                 try {
@@ -286,8 +287,8 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastKnownLocation != null) {
             getLocation();
+            beginLocationShow();
         }
-        beginLocationShow();
     }
 
     @Override

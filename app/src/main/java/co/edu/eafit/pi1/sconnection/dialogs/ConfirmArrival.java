@@ -1,16 +1,16 @@
 package co.edu.eafit.pi1.sconnection.dialogs;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
 import co.edu.eafit.pi1.sconnection.R;
 import co.edu.eafit.pi1.sconnection.connection.services.SetArrivalConfirmation;
 
-public class ConfirmArrival extends Activity{
+public class ConfirmArrival extends AppCompatActivity {
 
     private EditText uname;
     ResultReceiver receiver;
