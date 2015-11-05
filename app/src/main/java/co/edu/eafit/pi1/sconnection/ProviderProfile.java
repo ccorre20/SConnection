@@ -4,13 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ProviderProfile extends AppCompatActivity {
 
     String username;
     Bundle extra;
     TextView userProvider;
+    RatingBar ratingBar = (RatingBar)findViewById(R.id.ratingBar);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,8 @@ public class ProviderProfile extends AppCompatActivity {
 
         userProvider = (TextView)findViewById(R.id.unameProvider);
         userProvider.setText(username);
+
+        addListenerOnRatingBar();
     }
 
     @Override
@@ -31,6 +36,20 @@ public class ProviderProfile extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_provider_profile, menu);
         return true;
+    }
+
+    public void addListenerOnRatingBar() {
+
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+
+        //if rating value is changed,
+        //display the current rating value in the result (textview) automatically
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+                Toast.makeText(getApplicationContext(), String.valueOf(rating), Toast.LENGTH_LONG);
+            }
+        });
     }
 
     @Override
