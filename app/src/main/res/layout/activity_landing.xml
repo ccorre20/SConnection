@@ -2,54 +2,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_red_dark"
     tools:context="co.edu.eafit.pi1.sconnection.Landing">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:background="@drawable/round_rect"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_below="@+id/progressBar2"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:id="@+id/editText_username"
+            android:textColor="@android:color/darker_gray"
+            android:textColorHint="#7cffffff"
+            android:textAlignment="center"
+            android:hint="@string/username"
+            android:background="@null"
+            android:padding="6dp"/>
+
+        <View android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#17000000"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:id="@+id/editText_password"
+            android:textColor="@android:color/darker_gray"
+            android:textColorHint="#7cffffff"
+            android:textAlignment="center"
+            android:hint="@string/password"
+            android:background="@null"
+            android:padding="6dp"/>
+
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_login"
         android:text="@string/login"
+        android:textAllCaps="false"
+        android:textSize="20dp"
+        android:textColor="@android:color/white"
+        android:background="@null"
         android:clickable="true"
         android:enabled="true"
         android:onClick="userClick"
-        android:layout_below="@+id/editText_password"
-        android:layout_alignStart="@+id/textView"
-        android:layout_marginTop="36dp" />
+        android:layout_marginTop="104dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignStart="@+id/textView" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/join"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:background="@null"
         android:id="@+id/button_join"
         android:clickable="true"
         android:enabled="true"
-        android:layout_marginTop="88dp"
-        android:layout_below="@+id/button_login"
-        android:layout_centerHorizontal="true"
-        android:onClick="registerClick" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editText_password"
         android:layout_marginTop="40dp"
-        android:textColor="@android:color/darker_gray"
-        android:editable="true"
-        android:typeface="normal"
-        android:textAlignment="center"
-        android:singleLine="true"
-        android:clickable="true"
-        android:layout_below="@+id/progressBar2"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/password" />
+        android:onClick="registerClick"
+        android:layout_below="@+id/button_login"
+        android:layout_alignEnd="@+id/progressBar2" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/login"
+        android:textColor="@android:color/white"
         android:id="@+id/textView"
         android:layout_marginTop="54dp"
         android:layout_alignParentTop="true"
@@ -67,21 +103,5 @@
         android:indeterminate="true"
         android:indeterminateBehavior="cycle"
         android:indeterminateOnly="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editText_username"
-        android:textColor="@android:color/darker_gray"
-        android:editable="true"
-        android:typeface="normal"
-        android:textAlignment="center"
-        android:singleLine="true"
-        android:clickable="true"
-        android:layout_below="@+id/progressBar2"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/username" />
 
 </RelativeLayout>

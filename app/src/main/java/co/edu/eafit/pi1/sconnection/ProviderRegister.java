@@ -26,12 +26,12 @@ public class ProviderRegister extends Activity {
     }
 
     public void doRegisterClick(View view){
-        String pattern = "[A-Z]\\d{2}[-]\\d{2}";
+        String regex = "^([A-Z]([1]\\d?|[2][0-4])[-]([1]\\d?|[2][0-4]))$";
 
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(schedule.getText());
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(schedule.getText());
 
-        if(m.matches()){}
+        if(matcher.matches()){}
     }
 
 }
