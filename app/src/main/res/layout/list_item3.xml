@@ -2,22 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
-    <TextView android:id="@+id/Desc"
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dip"
-        android:textSize="16sp"
-        android:onClick="onItemClick"
-        android:clickable="true" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView4"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editText2"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="15dp" />
-
+        android:editable="false"
+        android:layout_weight="0.1" />
 </LinearLayout>

@@ -98,7 +98,7 @@ public class ConfirmArrival extends AppCompatActivity {
                     for (String s : objs) {
                         try {
                             o = new JSONObject(s);
-                            prov_names.add(o.getString("message"));
+                            prov_names.add(o.getString("message") + "\n" + o.getString("provider"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -107,7 +107,7 @@ public class ConfirmArrival extends AppCompatActivity {
                         arrayAdapter = new ArrayAdapter<String>(
                                 this,
                                 R.layout.list_item,
-                                R.id.Desc,
+                                R.id.editText2,
                                 prov_names);
                         listView.setAdapter(arrayAdapter);
                     } else {
