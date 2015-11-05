@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import co.edu.eafit.pi1.sconnection.R;
+import co.edu.eafit.pi1.sconnection.ServiceConfirm;
 import co.edu.eafit.pi1.sconnection.UserServiceDetail;
 import co.edu.eafit.pi1.sconnection.connection.services.GetServiceListService;
 import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
@@ -66,7 +67,7 @@ public class ConfirmArrival extends AppCompatActivity {
                 Intent i = null;
                 for (String j : objs) {
                     if (j.contains(s)) {
-                        i = new Intent(this, UserServiceDetail.class);
+                        i = new Intent(this, ServiceConfirm.class);
                         i.putExtra("json", j);
                         break;
                     }

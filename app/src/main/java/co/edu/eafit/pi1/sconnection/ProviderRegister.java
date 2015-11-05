@@ -33,7 +33,7 @@ public class ProviderRegister extends Activity implements Receiver{
         description = (EditText) findViewById(R.id.description_edit_text);
         schedule    = (EditText) findViewById(R.id.schedule_edit_text);
         username    = getIntent().getExtras().getString("username");
-        password    = getIntent().getExtras().getString("password");
+        password    = getIntent().getStringExtra("password");
     }
 
     public void doRegisterClick(View view){
@@ -63,7 +63,7 @@ public class ProviderRegister extends Activity implements Receiver{
         if(!name.isEmpty() && !description.isEmpty() && !schedule.isEmpty() && !username.isEmpty()){
             Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
             intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/users/?");
-            intent.putExtra("urlParams", "name=" + name + "&user_t=provider" +
+            intent.putExtra("urlParams", "name=" + username + "&user_t=provider" +
                             "&password=" + password + "&description=" + description +
                             "&availability=" + schedule);
             intent.putExtra("type", "POST");

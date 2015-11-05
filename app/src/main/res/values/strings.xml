@@ -113,5 +113,8 @@
     <string name="availability_time_schedule">Horario de disponibilidad</string>
     <string name="description_details">Breve descripcion sobre tu trabajo</string>
     <string name="schedule_text">Lunes 8 a 12 y 15 a 16: L8-12,L15-16</string>
+    <string name="title_activity_service_confirm">ServiceConfirm</string>
+    <string name="confirm_title">Confirma tu Servicio</string>
+    <string name="proveedor">Proveedor</string>
 </resources>
 

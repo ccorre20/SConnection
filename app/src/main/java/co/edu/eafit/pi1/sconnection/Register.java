@@ -18,6 +18,7 @@ public class Register extends AppCompatActivity implements Receiver {
 
     CSResultReceiver mReceiver;
     EditText username_text;
+    EditText passwd;
     RadioButton userRButton, providerRButton;
 
     @Override
@@ -25,6 +26,7 @@ public class Register extends AppCompatActivity implements Receiver {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         username_text = (EditText) findViewById(R.id.username_text);
+        passwd = (EditText) findViewById(R.id.editText3);
         userRButton = (RadioButton) findViewById(R.id.radioButton);
         providerRButton = (RadioButton) findViewById(R.id.radioButton2);
     }
@@ -68,6 +70,7 @@ public class Register extends AppCompatActivity implements Receiver {
         mReceiver.setReceiver(this);
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, RegisterConnectionService.class);
         intent.putExtra("username", username_text.getText().toString());
+        intent.putExtra("password", passwd.getText().toString());
         intent.putExtra("mReceiver", mReceiver);
         if(userRButton.isChecked()){
             intent.putExtra("type", "user");
