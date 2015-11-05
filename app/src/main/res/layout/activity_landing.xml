@@ -4,6 +4,47 @@
     android:layout_height="match_parent"
     tools:context="co.edu.eafit.pi1.sconnection.Landing">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:background="@drawable/round_rect"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_below="@+id/progressBar2"
+        android:layout_centerHorizontal="true">
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:id="@+id/editText_username"
+            android:textColor="@android:color/darker_gray"
+            android:textAlignment="center"
+            android:hint="@string/username"
+            android:background="@null"
+            android:padding="6dp"/>
+
+        <View android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:id="@+id/editText_password"
+            android:textColor="@android:color/darker_gray"
+            android:textAlignment="center"
+            android:hint="@string/password"
+            android:background="@null"
+            android:padding="6dp"/>
+
+    </LinearLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -12,9 +53,9 @@
         android:clickable="true"
         android:enabled="true"
         android:onClick="userClick"
-        android:layout_below="@+id/editText_password"
-        android:layout_alignStart="@+id/textView"
-        android:layout_marginTop="36dp" />
+        android:layout_below="@+id/progressBar2"
+        android:layout_alignStart="@+id/button_join"
+        android:layout_marginTop="130dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -27,23 +68,6 @@
         android:layout_below="@+id/button_login"
         android:layout_centerHorizontal="true"
         android:onClick="registerClick" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editText_password"
-        android:layout_marginTop="40dp"
-        android:textColor="@android:color/darker_gray"
-        android:editable="true"
-        android:typeface="normal"
-        android:textAlignment="center"
-        android:singleLine="true"
-        android:clickable="true"
-        android:layout_below="@+id/progressBar2"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/password" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,21 +91,5 @@
         android:indeterminate="true"
         android:indeterminateBehavior="cycle"
         android:indeterminateOnly="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editText_username"
-        android:textColor="@android:color/darker_gray"
-        android:editable="true"
-        android:typeface="normal"
-        android:textAlignment="center"
-        android:singleLine="true"
-        android:clickable="true"
-        android:layout_below="@+id/progressBar2"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/username" />
 
 </RelativeLayout>
