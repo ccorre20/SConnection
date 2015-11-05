@@ -74,6 +74,7 @@ public class Register extends AppCompatActivity implements Receiver {
             startService(intent);
         } else if(providerRButton.isChecked()) {
             Intent providerRegisterIntent = new Intent(this, ProviderRegister.class);
+            providerRegisterIntent.putExtra("username", username_text.getText().toString());
             startActivity(providerRegisterIntent);
         }
     }
