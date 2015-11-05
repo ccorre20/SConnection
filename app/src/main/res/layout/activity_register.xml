@@ -54,7 +54,9 @@
         android:layout_alignEnd="@+id/register_title"
         android:layout_alignParentStart="true"
         android:id="@+id/radioGroup"
-        android:layout_above="@+id/register_button">
+        android:layout_above="@+id/register_button"
+        android:layout_marginBottom="100dp"
+        android:layout_marginRight="30dp">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -77,7 +79,7 @@
         android:layout_height="wrap_content"
         android:text="@string/register_button"
         android:id="@+id/register_button"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="38dp"
         android:onClick="doRegisterClick"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/register_title" />

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">SC</string>
 
+    <string name="accpt">Aceptar</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="login">Iniciar Sesion</string>
     <string name="join">Crear Cuenta</string>
@@ -93,6 +95,9 @@
     <string name="user_confirm">Confirmar</string>
     <string name="which_user">¿Cual usuario?</string>
     <string name="user_name">Nombre del usuario</string>
+    <string name="alert_dialog_error_title">Error</string>
+    <string name="alert_dialog_schedule_error">Error en el patron establecido para definir
+        el horario de disponibilidad.</string>
     <string name="dialog_accept">Aceptar</string>
     <string name="dialog_cancel">Cancelar</string>
     <string name="user_provider_detail_title">Proveedor</string>
