@@ -2,6 +2,7 @@ package co.edu.eafit.pi1.sconnection;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -12,7 +13,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ServiceConfirm extends Activity implements OnMapReadyCallback{
+public class ServiceConfirm extends AppCompatActivity implements OnMapReadyCallback{
 
     JSONObject jsonObject;
     TextView t1, t2;

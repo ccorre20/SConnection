@@ -44,9 +44,8 @@ public class ConfirmArrival extends AppCompatActivity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_user_service_list);
+            setContentView(R.layout.activity_confirm_arrival);
             username = getIntent().getStringExtra("username");
-            progressBar = (ProgressBar) findViewById(R.id.user_service_list_bar);
             listView = (ListView) findViewById(R.id.listView2);
             mReceiver = new CSResultReceiver(new Handler());
             mReceiver.setReceiver(this);
@@ -107,7 +106,7 @@ public class ConfirmArrival extends AppCompatActivity {
                     if (!prov_names.isEmpty()) {
                         arrayAdapter = new ArrayAdapter<String>(
                                 this,
-                                R.layout.list_item,
+                                R.layout.list_item3,
                                 R.id.editText2,
                                 prov_names);
                         listView.setAdapter(arrayAdapter);
@@ -115,7 +114,7 @@ public class ConfirmArrival extends AppCompatActivity {
                         prov_names.add("No hay servicios");
                         arrayAdapter = new ArrayAdapter<String>(
                                 this,
-                                R.layout.list_item,
+                                R.layout.list_item3,
                                 R.id.Desc,
                                 prov_names);
                         listView.setAdapter(arrayAdapter);
