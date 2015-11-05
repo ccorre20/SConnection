@@ -70,7 +70,8 @@ public class Register extends AppCompatActivity implements Receiver {
         mReceiver.setReceiver(this);
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, RegisterConnectionService.class);
         intent.putExtra("username", username_text.getText().toString());
-        intent.putExtra("password", passwd.getText().toString());
+        String pass = new String(passwd.getText().toString());
+        intent.putExtra("password", pass);
         intent.putExtra("mReceiver", mReceiver);
         if(userRButton.isChecked()){
             intent.putExtra("type", "user");
@@ -78,6 +79,7 @@ public class Register extends AppCompatActivity implements Receiver {
         } else if(providerRButton.isChecked()) {
             Intent providerRegisterIntent = new Intent(this, ProviderRegister.class);
             providerRegisterIntent.putExtra("username", username_text.getText().toString());
+            providerRegisterIntent.putExtra("password", pass);
             startActivity(providerRegisterIntent);
         }
     }

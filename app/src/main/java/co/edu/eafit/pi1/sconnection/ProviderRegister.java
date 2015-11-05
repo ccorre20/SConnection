@@ -32,8 +32,8 @@ public class ProviderRegister extends Activity implements Receiver{
         name        = (EditText) findViewById(R.id.complete_name_edit_text);
         description = (EditText) findViewById(R.id.description_edit_text);
         schedule    = (EditText) findViewById(R.id.schedule_edit_text);
+        password    = getIntent().getExtras().getString("password");
         username    = getIntent().getExtras().getString("username");
-        password    = getIntent().getStringExtra("password");
     }
 
     public void doRegisterClick(View view){
