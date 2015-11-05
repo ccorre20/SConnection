@@ -95,6 +95,9 @@
     <string name="user_confirm">Confirmar</string>
     <string name="which_user">¿Cual usuario?</string>
     <string name="user_name">Nombre del usuario</string>
+    <string name="alert_dialog_register_successful">Registro completado satisfactoriamente</string>
+    <string name="alert_dialog_register_fail">El registro ha fallado</string>
+    <string name="alert_dialog_register_successful_warning">Aviso</string>
     <string name="alert_dialog_error_title">Error</string>
     <string name="alert_dialog_schedule_error">Error en el patron establecido para definir
         el horario de disponibilidad.</string>

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,8 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import co.edu.eafit.pi1.sconnection.connection.services.HttpRequest;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
-public class ProviderRegister extends Activity {
+public class ProviderRegister extends Activity implements Receiver{
 
     EditText name;
     EditText description;
@@ -38,13 +41,17 @@ public class ProviderRegister extends Activity {
         String description   = this.description.getText().toString();
         String schedule      = this.schedule.getText().toString();
 
+        CSResultReceiver mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
+
         String regex = "^([A-Z]([1]\\d?|[2][0-4])[-]([1]\\d?|[2][0-4]))$";
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(schedule);
 
         if(!matcher.matches()){
-            AlertDialog alertDialog = createAlertDialog();
+            AlertDialog alertDialog = createAlertDialog(R.string.alert_dialog_error_title,
+                                                        R.string.alert_dialog_schedule_error);
             alertDialog.show();
             Intent intent = new Intent(this, ProviderRegister.class);
             intent.putExtra("username", username);
@@ -56,20 +63,40 @@ public class ProviderRegister extends Activity {
         if(!name.isEmpty() && !description.isEmpty() && !schedule.isEmpty() && !username.isEmpty()){
             Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
             intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/users/?");
-            intent.putExtra("urlParams", "name=" + name + "&user_t=" + username +
+            intent.putExtra("urlParams", "name=" + name + "&user_t=provider" +
                             "&password=" + password + "&description=" + description +
                             "&availability=" + schedule);
             intent.putExtra("type", "POST");
+            intent.putExtra("mReceiver", mReceiver);
             startService(intent);
         }
     }
 
-    private AlertDialog createAlertDialog(){
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData){
+        switch(resultCode){
+            case 1: //STATUS_FINISHED
+                if(resultData.getBoolean("result")){
+                    AlertDialog alertDialog =
+                            createAlertDialog(R.string.alert_dialog_register_successful_warning,
+                                              R.string.alert_dialog_register_successful);
+                    alertDialog.show();
+                    break;  //If an error does not occur, then case 4 is not verified
+                }
+            case 4: //STATUS_GENERAL_ERROR
+                AlertDialog alertDialog =
+                        createAlertDialog(R.string.alert_dialog_register_successful_warning,
+                                R.string.alert_dialog_register_fail);
+                alertDialog.show();
+        }
+    }
+
+    private AlertDialog createAlertDialog(int tittle, int message){
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getBaseContext());
 
         //Set the dialog characteristics
-        alertBuilder.setMessage(R.string.alert_dialog_schedule_error)
-                    .setTitle(R.string.alert_dialog_error_title);
+        alertBuilder.setMessage(message)
+                    .setTitle(tittle);
 
         //Add the dialog buttons
         alertBuilder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
