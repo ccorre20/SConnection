@@ -22,6 +22,7 @@ public class UserCreateService extends Activity implements Receiver,
         GoogleApiClient.OnConnectionFailedListener{
 
     String      uname;
+    String      password;
     EditText    provider;
     EditText    longitude;
     EditText    latitude;
@@ -32,7 +33,7 @@ public class UserCreateService extends Activity implements Receiver,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_create_service);
-        uname = getIntent().getStringExtra("username");
+        uname       = getIntent().getStringExtra("username");
         provider    = (EditText)findViewById(R.id.user_create_service_provider_edittext);
         longitude   = (EditText)findViewById(R.id.user_create_service_longitude_edittext);
         latitude    = (EditText)findViewById(R.id.user_create_service_latitude_edittext);

@@ -32,6 +32,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 import co.edu.eafit.pi1.sconnection.connection.services.SetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
@@ -59,6 +62,8 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     public GoogleApiClient      mGoogleApiClient;
     CSResultReceiver receiver;
     LatLng service;
+    ScheduledExecutorService scheduledExecutorService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +80,11 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         handler = new Handler();
         receiver = new CSResultReceiver(new Handler());
         receiver.setReceiver(this);
+
+        /* ----------------- JAIL ------------------- */
+        scheduledExecutorService = Executors.newScheduledThreadPool(5);
+        /* ----------------- /JAIL ------------------- */
+
     }
 
     @Override
@@ -98,6 +108,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     public void confirmArrival(View view){
         Intent intent = new Intent(this, ConfirmArrival.class);
         intent.putExtra("mReceiver", receiver);
+        intent.putExtra("username", username);
         startActivity(intent);
     }
 
@@ -112,9 +123,10 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         if(mGoogleApiClient.isConnected() ){
 
             while (lastKnownLocation == null
-                    || (previous != null
-                    && !longitude.equals(String.valueOf(previous.getLongitude()))
-                    && !latitude.equals(String.valueOf(previous.getLatitude())))
+                    ||  (previous != null
+                        && !longitude.equals(String.valueOf(previous.getLongitude()))
+                        && !latitude.equals(String.valueOf(previous.getLatitude()))
+                        )
                     ){
                 this.onConnected(Bundle.EMPTY);
                 try {
@@ -288,7 +300,6 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
             getLocation();
             beginLocationShow();
         }
-
     }
 
     @Override
