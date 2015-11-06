@@ -107,8 +107,7 @@
         <activity android:name=".UserServiceDetail" >
         </activity>
         <activity
-            android:name=".dialogs.ConfirmArrival"
-            android:theme="@android:style/Theme.Dialog" >
+            android:name=".dialogs.ConfirmArrival">
         </activity>
         <activity android:name=".UserProviderSearchDetail" >
         </activity>
