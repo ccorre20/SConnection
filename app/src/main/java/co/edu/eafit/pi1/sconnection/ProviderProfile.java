@@ -1,5 +1,7 @@
 package co.edu.eafit.pi1.sconnection;
 
+import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,7 +10,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ProviderProfile extends AppCompatActivity {
+import co.edu.eafit.pi1.sconnection.connection.services.HttpRequest;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
+
+public class ProviderProfile extends AppCompatActivity implements Receiver{
 
     String username;
     Bundle extra;
@@ -20,6 +26,8 @@ public class ProviderProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_profile);
 
+        CSResultReceiver mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
 
         extra = getIntent().getExtras();
         if (extra != null)
@@ -27,6 +35,14 @@ public class ProviderProfile extends AppCompatActivity {
 
         userProvider = (TextView)findViewById(R.id.unameProvider);
         userProvider.setText(username);
+
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
+        intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service/?");
+        intent.putExtra("urlParams", "name=" + username + "&only=ranking");
+        intent.putExtra("type", "GET");
+        intent.putExtra("valuesToGet", new String[]{"ranking"});
+        intent.putExtra("mReceiver", mReceiver);
+        startService(intent);
 
         addListenerOnRatingBar();
     }
@@ -36,6 +52,20 @@ public class ProviderProfile extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_provider_profile, menu);
         return true;
+    }
+
+    public void onReceiveResult(int resultCode, Bundle resultData){
+        switch(resultCode){
+            case 1: //STATUS_FINISHED
+                String[] result = resultData.getStringArray("result");
+                try {
+                    ratingBar.setRating(Float.parseFloat(result[0]));
+                } catch(NullPointerException e) {
+                    Toast.makeText(getApplicationContext(), "Not found!", Toast.LENGTH_LONG);
+                }
+            case 4: //STATUS_GENERAL_ERROR
+
+        }
     }
 
     public void addListenerOnRatingBar() {
