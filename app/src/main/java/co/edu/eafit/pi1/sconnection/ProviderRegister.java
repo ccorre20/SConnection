@@ -44,7 +44,7 @@ public class ProviderRegister extends Activity implements Receiver{
         CSResultReceiver mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
 
-        String regex = "^([A-Z]([1]\\d?|[2][0-4])[-]([1]\\d?|[2][0-4]))$";
+        String regex = "^([A-Z]([1|0][1-9]|[2][0-4])[-]([1|0][1-9]|[2][0-4]))$";
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(schedule);
@@ -92,7 +92,7 @@ public class ProviderRegister extends Activity implements Receiver{
     }
 
     private AlertDialog createAlertDialog(int tittle, int message){
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getBaseContext());
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
 
         //Set the dialog characteristics
         alertBuilder.setMessage(message)
