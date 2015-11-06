@@ -58,11 +58,7 @@ public class ProviderProfile extends AppCompatActivity implements Receiver{
         switch(resultCode){
             case 1: //STATUS_FINISHED
                 String[] result = resultData.getStringArray("result");
-                try {
-                    ratingBar.setRating(Float.parseFloat(result[0]));
-                } catch(NullPointerException e) {
-                    Toast.makeText(getApplicationContext(), "Not found!", Toast.LENGTH_LONG);
-                }
+                ratingBar.setRating(Float.parseFloat(result[0]));
             case 4: //STATUS_GENERAL_ERROR
 
         }
