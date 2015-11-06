@@ -38,7 +38,7 @@ public class ProviderProfile extends AppCompatActivity implements Receiver{
 
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
         intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service/?");
-        intent.putExtra("urlParams", "name=" + username + "&only=ranking");
+        intent.putExtra("urlParams", "name=" + username + "&ranking=true");
         intent.putExtra("type", "GET");
         intent.putExtra("valuesToGet", new String[]{"ranking"});
         intent.putExtra("mReceiver", mReceiver);
