@@ -2,11 +2,15 @@ package co.edu.eafit.pi1.sconnection.connection.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.ResultReceiver;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import co.edu.eafit.pi1.sconnection.connection.utils.NetworkOperationStatus;
 
 /**
  * Created by ccr185 on 10/12/15.
@@ -29,6 +33,7 @@ public class SetServiceService extends IntentService{
         String longitude    = intent.getStringExtra("longitude");
         String message      = intent.getStringExtra("message");
         String type         = intent.getStringExtra("type");
+        final ResultReceiver receiver   = intent.getParcelableExtra("mReceiver");
 
         try {
             sendPost("name=" + uname + "&provider=" + provider + "&type=" + type +
@@ -36,6 +41,7 @@ public class SetServiceService extends IntentService{
         } catch(IOException ioe){
             ioe.printStackTrace();
         }
+        receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, Bundle.EMPTY);
         this.stopSelf();
     }
 

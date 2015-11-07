@@ -1,5 +1,7 @@
 package co.edu.eafit.pi1.sconnection;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 public class Landing extends AppCompatActivity implements Receiver {
 
     EditText uname;
+    EditText password;
     String sentname;
     Button login;
     CSResultReceiver mReceiver;
@@ -29,6 +32,7 @@ public class Landing extends AppCompatActivity implements Receiver {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
         uname = (EditText)findViewById(R.id.editText_username);
+        password= (EditText)findViewById(R.id.editText_password);
         login  = (Button) findViewById(R.id.button_login);
         progressBar = (ProgressBar) findViewById(R.id.progressBar2);
     }
@@ -36,12 +40,6 @@ public class Landing extends AppCompatActivity implements Receiver {
     @Override
     protected void onResume(){
         super.onResume();
-        uname.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                uname.getText().clear();
-            }
-        });
     }
 
     @Override
@@ -66,7 +64,10 @@ public class Landing extends AppCompatActivity implements Receiver {
                 break;
             }
             case 2:{ //STATUS_NETWORK_ERROR
-
+                AlertDialog alertDialog =
+                        createAlertDialog(R.string.alert_dialog_register_successful_warning,
+                                R.string.alert_dialog_login_fail);
+                alertDialog.show();
                 break;
             }
             case 3:{ //STATUS_NAME_ERROR
@@ -91,6 +92,7 @@ public class Landing extends AppCompatActivity implements Receiver {
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, LoginConnectionService.class);
         Log.d("NAME", uname.getText().toString());
         intent.putExtra("username", uname.getText().toString());
+        intent.putExtra("password", password.getText().toString());
         intent.putExtra("mReceiver", mReceiver);
         sentname = uname.getText().toString();
         startService(intent);
@@ -125,6 +127,25 @@ public class Landing extends AppCompatActivity implements Receiver {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private AlertDialog createAlertDialog(int tittle, int message){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+
+        //Set the dialog characteristics
+        alertBuilder.setMessage(message)
+                .setTitle(tittle);
+
+        //Add the dialog buttons
+        alertBuilder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = alertBuilder.create();
+
+        return alertDialog;
     }
 
 }
