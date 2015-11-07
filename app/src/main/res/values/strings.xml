@@ -96,7 +96,14 @@
     <string name="which_user">¿Cual usuario?</string>
     <string name="user_name">Nombre del usuario</string>
     <string name="alert_dialog_register_successful">Registro completado satisfactoriamente</string>
+    <string name="alert_dialog_confirmation_successful">El servicio se ha confirmado
+        satisfactoriamente.</string>
     <string name="alert_dialog_register_fail">El registro ha fallado</string>
+    <string name="alert_dialog_rate_fail">No se ha procesado su solicitud</string>
+    <string name="alert_dialog_rate_successful">Se ha procesado su solicitud satisfactoriamente
+        </string>
+    <string name="alert_dialog_confirmation_fail">El servicio no ha podido ser confirmado.</string>
+    <string name="alert_dialog_login_fail">Usuario o contraseña erronea.</string>
     <string name="alert_dialog_register_successful_warning">Aviso</string>
     <string name="alert_dialog_error_title">Error</string>
     <string name="alert_dialog_schedule_error">Error en el patron establecido para definir
@@ -118,5 +125,6 @@
     <string name="proveedor">Proveedor</string>
     <string name="choose_provider">Solicitar servicio</string>
     <string name="choose_provider_text_view">Elegir proveedor ...</string>
+    <string name="rate">Puntuar</string>
 </resources>
 

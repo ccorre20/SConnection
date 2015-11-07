@@ -98,13 +98,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Puntuar"
-                android:id="@+id/button2" />
+                android:text="@string/rate"
+                android:onClick="onRateClick"
+                android:id="@+id/rate_button" />
 
             <RatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingBar2"
+                android:id="@+id/service_ratingBar"
                 android:numStars="5"
                 android:layout_marginLeft="30dp" />
         </LinearLayout>
