@@ -66,6 +66,7 @@ public class ConfirmArrival extends AppCompatActivity implements Receiver{
                 if (j.contains(s)) {
                     i = new Intent(this, ServiceConfirm.class);
                     i.putExtra("json", j);
+                    i.putExtra("username", username);
                     break;
                 }
             }
