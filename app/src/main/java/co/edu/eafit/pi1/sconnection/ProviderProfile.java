@@ -19,12 +19,14 @@ public class ProviderProfile extends AppCompatActivity implements Receiver{
     String username;
     Bundle extra;
     TextView userProvider;
-    RatingBar ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+    RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_profile);
+
+        ratingBar = (RatingBar)findViewById(R.id.ratingBar);
 
         CSResultReceiver mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
@@ -37,10 +39,10 @@ public class ProviderProfile extends AppCompatActivity implements Receiver{
         userProvider.setText(username);
 
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
-        intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service/?");
-        intent.putExtra("urlParams", "name=" + username + "&only=ranking");
+        intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/users/?");
+        intent.putExtra("urlParams", "name=" + username + "&ranking=true");
         intent.putExtra("type", "GET");
-        intent.putExtra("valuesToGet", new String[]{"ranking"});
+        intent.putExtra("valuesToGet", new String[]{"rating"});
         intent.putExtra("mReceiver", mReceiver);
         startService(intent);
 

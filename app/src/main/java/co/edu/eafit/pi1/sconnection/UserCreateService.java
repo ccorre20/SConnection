@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -21,9 +22,11 @@ public class UserCreateService extends Activity implements Receiver,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
 
+    final int   SEARCH_PROVIDER_REQUEST_CODE = 1;
+
     String      uname;
     String      password;
-    EditText    provider;
+    TextView    provider;
     EditText    longitude;
     EditText    latitude;
     EditText    message;
@@ -34,11 +37,22 @@ public class UserCreateService extends Activity implements Receiver,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_create_service);
         uname       = getIntent().getStringExtra("username");
-        provider    = (EditText)findViewById(R.id.user_create_service_provider_edittext);
+        provider    = (TextView)findViewById(R.id.user_create_service_provider_text_view);
         longitude   = (EditText)findViewById(R.id.user_create_service_longitude_edittext);
         latitude    = (EditText)findViewById(R.id.user_create_service_latitude_edittext);
         message     = (EditText)findViewById(R.id.user_create_service_message_edittext);
         type        = (EditText)findViewById(R.id.user_create_service_type_edittext);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == SEARCH_PROVIDER_REQUEST_CODE) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                provider.setText(data.getStringExtra("providerName"));
+            }
+        }
     }
 
     public void onAutoClick(View view){
@@ -54,6 +68,11 @@ public class UserCreateService extends Activity implements Receiver,
         intent.putExtra("message", message.getText().toString());
         intent.putExtra("type", type.getText().toString());
         startService(intent);
+    }
+
+    public void onSearchProviderClick(View view){
+        Intent intent = new Intent(this, UserProviderSearch.class);
+        startActivityForResult(intent, SEARCH_PROVIDER_REQUEST_CODE);
     }
 
     @Override

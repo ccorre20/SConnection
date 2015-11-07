@@ -116,5 +116,7 @@
     <string name="title_activity_service_confirm">ServiceConfirm</string>
     <string name="confirm_title">Confirma tu Servicio</string>
     <string name="proveedor">Proveedor</string>
+    <string name="choose_provider">Solicitar servicio</string>
+    <string name="choose_provider_text_view">Elegir proveedor ...</string>
 </resources>
 
