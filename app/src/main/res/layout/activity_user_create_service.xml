@@ -31,14 +31,15 @@
             android:id="@+id/user_create_service_provider_name_txt"
             android:layout_marginTop="15dp" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="340dp"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/user_create_service_provider_edittext"
-            android:hint="@string/user_create_service_provider_edittext_hint"
-            android:layout_margin="10dp" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/user_create_service_provider_text_view"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:onClick="onSearchProviderClick"
+            android:hint="@string/choose_provider_text_view" />
 
         <TextView
             android:layout_width="wrap_content"

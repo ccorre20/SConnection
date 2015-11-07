@@ -76,6 +76,9 @@
         <service
             android:name=".connection.services.SetArrivalConfirmation"
             android:exported="false" />
+        <service
+            android:name=".connection.services.HttpRequest"
+            android:exported="false"/>
 
         <activity
             android:name=".Register"
@@ -104,14 +107,17 @@
         <activity android:name=".UserServiceDetail" >
         </activity>
         <activity
-            android:name=".dialogs.ConfirmArrival"
-            android:theme="@android:style/Theme.Dialog" >
+            android:name=".dialogs.ConfirmArrival">
         </activity>
         <activity android:name=".UserProviderSearchDetail" >
         </activity>
         <activity
             android:name=".ProviderRegister"
             android:label="@string/title_activity_provider_register" >
+        </activity>
+        <activity
+            android:name=".ServiceConfirm"
+            android:label="@string/title_activity_service_confirm" >
         </activity>
     </application>
 

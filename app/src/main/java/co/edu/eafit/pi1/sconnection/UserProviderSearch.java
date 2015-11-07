@@ -26,6 +26,8 @@ import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 public class UserProviderSearch extends AppCompatActivity implements Receiver {
 
+    final int CHOOSE_PROVIDER_REQUEST_CODE = 2;
+
     CSResultReceiver mReceiver;
     ProgressBar progressBar;
     ArrayAdapter<String> arrayAdapter;
@@ -72,6 +74,21 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
         startService(intent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == CHOOSE_PROVIDER_REQUEST_CODE) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                String providerNameData = data.getStringExtra("providerName");
+                Intent intent = new Intent();
+                intent.putExtra("providerName", providerNameData);
+                setResult(RESULT_OK, intent);
+                this.finish();
+            }
+        }
+    }
+
     public void onProviderClick(View view){
         String s = ((TextView)view).getText().toString();
         if (!s.equals("No hay servicios")){
@@ -84,7 +101,7 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
                 }
             }
             if (i !=  null){
-                startActivity(i);
+                startActivityForResult(i, CHOOSE_PROVIDER_REQUEST_CODE);
             }
         }
     }

@@ -40,7 +40,8 @@ public class RegisterConnectionService extends IntentService {
         Bundle bundle = new Bundle();
         StringBuffer sb = new StringBuffer();
         sb.append("name="+intent.getStringExtra("username")+"&");
-        sb.append("user_t="+intent.getStringExtra("type"));
+        sb.append("user_t="+intent.getStringExtra("type")+"&");
+        sb.append("password="+intent.getStringExtra("password"));
 
         boolean result;
 

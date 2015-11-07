@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">SC</string>
 
+    <string name="accpt">Aceptar</string>
+
     <string name="hello_world">Hello world!</string>
-    <string name="login">Iniciar sesion</string>
-    <string name="join">Registrarse</string>
+    <string name="login">Iniciar Sesion</string>
+    <string name="join">Crear Cuenta</string>
     <string name="verPos">Ver Posiciones</string>
     <string name="action_settings">Settings</string>
     <string name="connect">Conectar</string>
@@ -93,6 +95,19 @@
     <string name="user_confirm">Confirmar</string>
     <string name="which_user">¿Cual usuario?</string>
     <string name="user_name">Nombre del usuario</string>
+    <string name="alert_dialog_register_successful">Registro completado satisfactoriamente</string>
+    <string name="alert_dialog_confirmation_successful">El servicio se ha confirmado
+        satisfactoriamente.</string>
+    <string name="alert_dialog_register_fail">El registro ha fallado</string>
+    <string name="alert_dialog_rate_fail">No se ha procesado su solicitud</string>
+    <string name="alert_dialog_rate_successful">Se ha procesado su solicitud satisfactoriamente
+        </string>
+    <string name="alert_dialog_confirmation_fail">El servicio no ha podido ser confirmado.</string>
+    <string name="alert_dialog_login_fail">Usuario o contraseña erronea.</string>
+    <string name="alert_dialog_register_successful_warning">Aviso</string>
+    <string name="alert_dialog_error_title">Error</string>
+    <string name="alert_dialog_schedule_error">Error en el patron establecido para definir
+        el horario de disponibilidad.</string>
     <string name="dialog_accept">Aceptar</string>
     <string name="dialog_cancel">Cancelar</string>
     <string name="user_provider_detail_title">Proveedor</string>
@@ -105,5 +120,11 @@
     <string name="availability_time_schedule">Horario de disponibilidad</string>
     <string name="description_details">Breve descripcion sobre tu trabajo</string>
     <string name="schedule_text">Lunes 8 a 12 y 15 a 16: L8-12,L15-16</string>
+    <string name="title_activity_service_confirm">ServiceConfirm</string>
+    <string name="confirm_title">Confirma tu Servicio</string>
+    <string name="proveedor">Proveedor</string>
+    <string name="choose_provider">Solicitar servicio</string>
+    <string name="choose_provider_text_view">Elegir proveedor ...</string>
+    <string name="rate">Puntuar</string>
 </resources>
 

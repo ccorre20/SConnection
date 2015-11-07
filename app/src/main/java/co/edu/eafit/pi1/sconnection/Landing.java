@@ -1,5 +1,7 @@
 package co.edu.eafit.pi1.sconnection;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -62,7 +64,10 @@ public class Landing extends AppCompatActivity implements Receiver {
                 break;
             }
             case 2:{ //STATUS_NETWORK_ERROR
-
+                AlertDialog alertDialog =
+                        createAlertDialog(R.string.alert_dialog_register_successful_warning,
+                                R.string.alert_dialog_login_fail);
+                alertDialog.show();
                 break;
             }
             case 3:{ //STATUS_NAME_ERROR
@@ -122,6 +127,25 @@ public class Landing extends AppCompatActivity implements Receiver {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private AlertDialog createAlertDialog(int tittle, int message){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+
+        //Set the dialog characteristics
+        alertBuilder.setMessage(message)
+                .setTitle(tittle);
+
+        //Add the dialog buttons
+        alertBuilder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = alertBuilder.create();
+
+        return alertDialog;
     }
 
 }
