@@ -80,14 +80,14 @@ public class ServiceConfirm extends AppCompatActivity implements OnMapReadyCallb
                 if(resultData.getBoolean("result")){
                     AlertDialog alertDialog =
                             createAlertDialog(R.string.alert_dialog_register_successful_warning,
-                                    R.string.alert_dialog_register_successful);
+                                    R.string.alert_dialog_confirmation_successful);
                     alertDialog.show();
                     break;  //If an error does not occur, then case 4 is not verified
                 }
             case 4: //STATUS_GENERAL_ERROR
                 AlertDialog alertDialog =
                         createAlertDialog(R.string.alert_dialog_register_successful_warning,
-                                R.string.alert_dialog_register_fail);
+                                R.string.alert_dialog_confirmation_fail);
                 alertDialog.show();
         }
     }
