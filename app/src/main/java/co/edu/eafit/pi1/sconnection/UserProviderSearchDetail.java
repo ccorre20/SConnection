@@ -1,7 +1,9 @@
 package co.edu.eafit.pi1.sconnection;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,6 +43,13 @@ public class UserProviderSearchDetail extends Activity implements OnMapReadyCall
         }
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.user_provider_detail_fragment);
         mapFragment.getMapAsync(this);
+    }
+
+    public void onChooseProviderClick(View view){
+        Intent providerNameData = new Intent();
+        providerNameData.putExtra("providerName", t1.getText().toString());
+        setResult(RESULT_OK, providerNameData);
+        this.finish();
     }
 
     private void setMarker(){

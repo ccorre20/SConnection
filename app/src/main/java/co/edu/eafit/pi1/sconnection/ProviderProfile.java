@@ -25,7 +25,9 @@ public class ProviderProfile extends AppCompatActivity implements Receiver{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_profile);
+
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+
         CSResultReceiver mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
 
