@@ -14,7 +14,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserServiceDetail extends Activity implements OnMapReadyCallback {
+import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
+
+public class UserServiceDetail extends Activity implements OnMapReadyCallback, Receiver {
 
     TextView t1, t2, t3, t4;
     JSONObject jsonObject;
@@ -65,5 +67,10 @@ public class UserServiceDetail extends Activity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         setMarker();
+    }
+
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+
     }
 }

@@ -97,7 +97,7 @@ public class ServiceConfirm extends AppCompatActivity implements OnMapReadyCallb
                         .title("Lugar del servicio")
                         .position(latLng)
         );
-        gmap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
     }
 
     @Override
