@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import co.edu.eafit.pi1.sconnection.connection.services.SetServiceService;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 
@@ -31,6 +33,7 @@ public class UserCreateService extends Activity implements Receiver,
     EditText    latitude;
     EditText    message;
     EditText    type;
+    private CSResultReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class UserCreateService extends Activity implements Receiver,
         latitude    = (EditText)findViewById(R.id.user_create_service_latitude_edittext);
         message     = (EditText)findViewById(R.id.user_create_service_message_edittext);
         type        = (EditText)findViewById(R.id.user_create_service_type_edittext);
+        mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
     }
 
     @Override
@@ -67,6 +72,7 @@ public class UserCreateService extends Activity implements Receiver,
         intent.putExtra("latitude", latitude.getText().toString());
         intent.putExtra("message", message.getText().toString());
         intent.putExtra("type", type.getText().toString());
+        intent.putExtra("mReceiver", mReceiver);
         startService(intent);
     }
 
@@ -91,6 +97,7 @@ public class UserCreateService extends Activity implements Receiver,
                 text = "Enviado";
                 toast = Toast.makeText(context, text, duration);
                 toast.show();
+                this.finish();
                 break;
         }
     }
