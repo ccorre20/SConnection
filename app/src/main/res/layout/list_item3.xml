@@ -3,15 +3,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:clickable="false">
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:layout_gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView11"
+        android:layout_weight="0.1"
+        android:clickable="true"
+        android:enabled="true"
         android:editable="false"
-        android:layout_weight="0.1" />
+        android:onClick="onItemClick" />
 </LinearLayout>

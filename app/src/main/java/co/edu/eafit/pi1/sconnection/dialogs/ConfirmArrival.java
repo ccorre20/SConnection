@@ -59,7 +59,7 @@ public class ConfirmArrival extends AppCompatActivity implements Receiver{
     }
 
     public void onItemClick(View view) {
-        String s = ((TextView) view).getText().toString();
+        String s = ((TextView) view).getText().toString().split("\n")[1];
         if (!s.equals("No hay servicios")) {
             Intent i = null;
             for (String j : objs) {
@@ -95,7 +95,9 @@ public class ConfirmArrival extends AppCompatActivity implements Receiver{
                 for (String s : objs) {
                     try {
                         o = new JSONObject(s);
-                        prov_names.add(o.getString("message") + "\n" + o.getString("provider"));
+                        prov_names.add(o.getString("message")
+                                + "\n"
+                                + o.getJSONObject("provider").getString("name"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -104,7 +106,7 @@ public class ConfirmArrival extends AppCompatActivity implements Receiver{
                     arrayAdapter = new ArrayAdapter<String>(
                             this,
                             R.layout.list_item3,
-                            R.id.editText2,
+                            R.id.textView11,
                             prov_names);
                     listView.setAdapter(arrayAdapter);
                 } else {
@@ -112,7 +114,7 @@ public class ConfirmArrival extends AppCompatActivity implements Receiver{
                     arrayAdapter = new ArrayAdapter<String>(
                             this,
                             R.layout.list_item3,
-                            R.id.Desc,
+                            R.id.textView11,
                             prov_names);
                     listView.setAdapter(arrayAdapter);
                 }

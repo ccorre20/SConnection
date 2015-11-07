@@ -19,7 +19,7 @@ public class ProviderProfile extends AppCompatActivity implements Receiver{
     String username;
     Bundle extra;
     TextView userProvider;
-    RatingBar ratingBar;
+    RatingBar ratingBar = (RatingBar)findViewById(R.id.ratingBar);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
