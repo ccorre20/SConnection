@@ -98,6 +98,7 @@ public class UserServiceDetail extends Activity implements OnMapReadyCallback, R
                         createAlertDialog(R.string.alert_dialog_register_successful_warning,
                                 R.string.alert_dialog_rate_fail);
                 alertDialog.show();
+
         }
     }
 
