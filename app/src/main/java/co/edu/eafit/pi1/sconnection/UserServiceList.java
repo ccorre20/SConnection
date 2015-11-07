@@ -119,7 +119,7 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
                 if (!prov_names.isEmpty()) {
                     arrayAdapter = new ArrayAdapter<String>(
                             this,
-                            R.layout.list_item3,
+                            R.layout.list_item,
                             R.id.Desc,
                             prov_names);
                     listView.setAdapter(arrayAdapter);
@@ -127,7 +127,7 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
                     prov_names.add("No hay servicios");
                     arrayAdapter = new ArrayAdapter<String>(
                             this,
-                            R.layout.list_item3,
+                            R.layout.list_item,
                             R.id.Desc,
                             prov_names);
                     listView.setAdapter(arrayAdapter);
