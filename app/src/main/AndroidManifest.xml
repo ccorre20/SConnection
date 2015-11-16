@@ -78,7 +78,7 @@
             android:exported="false" />
         <service
             android:name=".connection.services.HttpRequest"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name=".Register"
@@ -106,8 +106,7 @@
         </activity>
         <activity android:name=".UserServiceDetail" >
         </activity>
-        <activity
-            android:name=".dialogs.ConfirmArrival">
+        <activity android:name=".dialogs.ConfirmArrival" >
         </activity>
         <activity android:name=".UserProviderSearchDetail" >
         </activity>
@@ -118,6 +117,10 @@
         <activity
             android:name=".ServiceConfirm"
             android:label="@string/title_activity_service_confirm" >
+        </activity>
+        <activity
+            android:name=".ServiceRate"
+            android:label="@string/title_activity_service_rate" >
         </activity>
     </application>
 
