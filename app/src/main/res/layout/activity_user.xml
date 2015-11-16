@@ -1,72 +1,45 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
     tools:context="co.edu.eafit.pi1.sconnection.User">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/user"
-        android:id="@+id/Top_User_txt"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <LinearLayout
-        android:orientation="vertical"
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/Top_User_txt"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp">
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/mapfragment"
+        android:layout_gravity="center_horizontal" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBottom="@+id/mapfragment"
+        android:layout_alignStart="@+id/mapfragment">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/user_search_button"
-            android:id="@+id/user_search_button"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:onClick="onProviderSearchClick" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/user_view_services_button"
-            android:id="@+id/user_view_services_button"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:onClick="onServiceListClick" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_red_dark"
+            android:textColor="@android:color/white"
             android:text="@string/user_create_service_button"
             android:id="@+id/user_create_service_button"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
             android:onClick="onServiceCreateClick" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/user_confirm"
-            android:id="@+id/user_confirm"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:onClick="confirmArrival" />
-
-        <fragment
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.google.android.gms.maps.MapFragment"
-            android:id="@+id/mapfragment"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#b3aa00"
+            android:textColor="@android:color/white"
+            android:text="@string/user_view_services_button"
+            android:id="@+id/user_view_services_button"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp" />
+            android:onClick="onServiceListClick" />
     </LinearLayout>
 
 </RelativeLayout>

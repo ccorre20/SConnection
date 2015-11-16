@@ -10,6 +10,7 @@ import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.NotificationCompat;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -51,7 +53,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         LocationListener,
         Receiver{
 
-    private Button              b, b2, b3, b4;
+    private Button              b2, b3;
     private GoogleMap           map;
     private String              username;
     private Bundle              extra;
@@ -75,10 +77,13 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        b  = (Button) findViewById(R.id.user_search_button);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("SConnection");
+
         b2 = (Button) findViewById(R.id.user_view_services_button);
         b3 = (Button) findViewById(R.id.user_create_service_button);
-        b4 = (Button) findViewById(R.id.user_confirm);
+
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfragment);
         mapFragment.getMapAsync(this);
         username = getIntent().getStringExtra("name");
@@ -87,6 +92,12 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         notificationHandler = new Handler();
         receiver = new CSResultReceiver(new Handler());
         receiver.setReceiver(this);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
         intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service_statuses/?");
@@ -105,11 +116,6 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     protected void onStart(){
         super.onStart();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
         mGoogleApiClient.connect();
     }
 
@@ -415,11 +421,6 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         mNotificationManager.notify(9999, mBuilder.build());
     }
 
-    public void onProviderSearchClick(View view){
-        Intent i = new Intent(this, UserProviderSearch.class);
-        startActivity(i);
-    }
-
     public void onServiceListClick(View view){
         Intent i = new Intent(this, UserServiceList.class);
         i.putExtra("username", username);
@@ -447,9 +448,14 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_confirmation:
+                Intent intent = new Intent(this, ConfirmArrival.class);
+                intent.putExtra("mReceiver", receiver);
+                intent.putExtra("username", username);
+                startActivity(intent);
+            case R.id.action_profile:
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
