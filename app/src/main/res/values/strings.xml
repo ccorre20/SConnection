@@ -127,5 +127,7 @@
     <string name="choose_provider_text_view">Elegir proveedor ...</string>
     <string name="rate">Puntuar</string>
     <string name="title_activity_service_rate">ServiceRate</string>
+    <string name="address">Ubicacion</string>
+    <string name="register_password">Contraseña</string>
 </resources>
 

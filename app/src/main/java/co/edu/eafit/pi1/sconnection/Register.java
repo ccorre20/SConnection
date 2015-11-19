@@ -2,6 +2,8 @@ package co.edu.eafit.pi1.sconnection;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,6 +31,10 @@ public class Register extends AppCompatActivity implements Receiver {
         passwd = (EditText) findViewById(R.id.password_edittext);
         userRButton = (RadioButton) findViewById(R.id.radioButton);
         providerRButton = (RadioButton) findViewById(R.id.radioButton2);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.register_title);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -98,7 +104,8 @@ public class Register extends AppCompatActivity implements Receiver {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         }
 

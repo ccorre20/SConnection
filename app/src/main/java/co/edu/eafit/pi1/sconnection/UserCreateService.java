@@ -2,35 +2,51 @@ package co.edu.eafit.pi1.sconnection;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import co.edu.eafit.pi1.sconnection.connection.services.SetServiceService;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 
-public class UserCreateService extends Activity implements Receiver,
+public class UserCreateService extends AppCompatActivity implements Receiver,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
 
     final int   SEARCH_PROVIDER_REQUEST_CODE = 1;
 
-    String      uname;
-    String      password;
-    TextView    provider;
-    EditText    longitude;
-    EditText    latitude;
-    EditText    message;
-    EditText    type;
+    private String              uname;
+    private TextView            provider;
+    private EditText            message;
+    private EditText            type;
+    private TextView            addressTV;
+    private ActionBar           actionBar;
+    private GoogleApiClient     mGoogleApiClient;
+    private Location            mLastLocation;
+    private Geocoder            geocoder;
+    private double              longitude;
+    private double              latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +54,22 @@ public class UserCreateService extends Activity implements Receiver,
         setContentView(R.layout.activity_user_create_service);
         uname       = getIntent().getStringExtra("username");
         provider    = (TextView)findViewById(R.id.user_create_service_provider_text_view);
-        longitude   = (EditText)findViewById(R.id.user_create_service_longitude_edittext);
-        latitude    = (EditText)findViewById(R.id.user_create_service_latitude_edittext);
+        addressTV   = (TextView)findViewById(R.id.user_create_service_address_textview);
         message     = (EditText)findViewById(R.id.user_create_service_message_edittext);
         type        = (EditText)findViewById(R.id.user_create_service_type_edittext);
+        geocoder    = new Geocoder(this, Locale.ENGLISH);
+        actionBar   = getSupportActionBar();
+
+        actionBar.setTitle(R.string.user_create_service_button);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        buildGoogleApiClient();
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        mGoogleApiClient.connect();
     }
 
     @Override
@@ -63,8 +91,8 @@ public class UserCreateService extends Activity implements Receiver,
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetServiceService.class);
         intent.putExtra("uname", uname);
         intent.putExtra("provider", provider.getText().toString());
-        intent.putExtra("longitude", longitude.getText().toString());
-        intent.putExtra("latitude", latitude.getText().toString());
+        intent.putExtra("longitude", String.valueOf(longitude));
+        intent.putExtra("latitude", String.valueOf(latitude));
         intent.putExtra("message", message.getText().toString());
         intent.putExtra("type", type.getText().toString());
         startService(intent);
@@ -95,9 +123,17 @@ public class UserCreateService extends Activity implements Receiver,
         }
     }
 
+    /**************************** Google Play services *******************************************/
     @Override
     public void onConnected(Bundle bundle) {
-
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null) {
+            latitude     = mLastLocation.getLatitude();
+            longitude    = mLastLocation.getLongitude();
+            String address = getAddressFromCoordinates(latitude, longitude);
+            addressTV.setText(address);
+        }
     }
 
     @Override
@@ -109,11 +145,12 @@ public class UserCreateService extends Activity implements Receiver,
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
+    /**************************** /Google Play services ******************************************/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_user, menu);
+        getMenuInflater().inflate(R.menu.menu_user_create_service, menu);
         return true;
     }
 
@@ -125,11 +162,39 @@ public class UserCreateService extends Activity implements Receiver,
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    private String getAddressFromCoordinates(double latitude, double longitude){
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if(addresses != null){
+                Address address = addresses.get(0);
+                StringBuffer strAddress = new StringBuffer();
+                for(int i=0; i<address.getMaxAddressLineIndex(); ++i){
+                    strAddress.append(address.getAddressLine(i));
+                }
+                return strAddress.toString();
+            }else{
+                return "No puede obtenerse direccion";
+            }
+        }catch(IOException ioe){
+            ioe.printStackTrace();
+            return "No puede obtenerse direccion";
+        }
     }
 
 }

@@ -53,10 +53,8 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         LocationListener,
         Receiver{
 
-    private Button              b2, b3;
     private GoogleMap           map;
     private String              username;
-    private Bundle              extra;
     private CSResultReceiver    mReceiver;
     private Location            lastKnownLocation;
     private LocationRequest     mLocationRequest;
@@ -66,6 +64,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     private Handler             handler;
     private Handler             notificationHandler;
     private boolean             mResolvingError = false;
+    private boolean             userok = false;
     private final int           REQUEST_RESOLVE_ERROR = 1001;
     public GoogleApiClient      mGoogleApiClient;
     CSResultReceiver receiver;
@@ -80,9 +79,6 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("SConnection");
-
-        b2 = (Button) findViewById(R.id.user_view_services_button);
-        b3 = (Button) findViewById(R.id.user_create_service_button);
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfragment);
         mapFragment.getMapAsync(this);
@@ -208,10 +204,11 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
                 intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service_statuses/?");
                 intent.putExtra("urlParams", "name=" + username + "&userok=true");
                 intent.putExtra("type", "POST");
+                userok = true;
                 startService(intent);
                 sendNotification();
                 return;
-            } else {
+            } else if (!userok){
                 final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
                 notificationHandler.postDelayed(new Runnable() {
                     @Override
