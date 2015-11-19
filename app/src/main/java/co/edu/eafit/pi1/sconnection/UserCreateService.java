@@ -96,7 +96,7 @@ public class UserCreateService extends AppCompatActivity implements Receiver,
         i.putExtra("urlParams", "name=" + uname + "&provider=" + provider.getText().toString() +
                 "&type=" + type.getText().toString() + "&latitude=" + String.valueOf(latitude) +
                 "&longitude=" + String.valueOf(longitude) + "&message=" + message.getText().toString());
-        i.putExtra("type", "POST");
+        i.putExtra("type", "POST"); // fixed
         i.putExtra("mReceiver", mReceiver);
         startService(i);
     }
