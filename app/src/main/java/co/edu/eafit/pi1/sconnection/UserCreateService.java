@@ -87,23 +87,15 @@ public class UserCreateService extends AppCompatActivity implements Receiver,
     }
 
     public void onSendClick(View view){
-       /* Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetServiceService.class);
-        intent.putExtra("uname", uname);
-        intent.putExtra("provider", provider.getText().toString());
-        intent.putExtra("longitude", String.valueOf(longitude));
-        intent.putExtra("latitude", String.valueOf(latitude));
-        intent.putExtra("message", message.getText().toString());
-        intent.putExtra("type", type.getText().toString());
-        startService(intent);*/
-
 
         CSResultReceiver mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
 
         Intent i = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
-        i.putExtra("url", "https://sc-b.herokuapp.com/api/v1/services/");
-        i.putExtra("urlParams", "name=" + uname + "&provider=" + provider + "&type=" + type +
-                "&latitude=" + latitude + "&longitude=" + longitude + "&message=" + message);
+        i.putExtra("url", "https://sc-b.herokuapp.com/api/v1/services/?");
+        i.putExtra("urlParams", "name=" + uname + "&provider=" + provider.getText().toString() +
+                "&type=" + type.getText().toString() + "&latitude=" + String.valueOf(latitude) +
+                "&longitude=" + String.valueOf(longitude) + "&message=" + message.getText().toString());
         i.putExtra("type", "POST");
         i.putExtra("mReceiver", mReceiver);
         startService(i);
