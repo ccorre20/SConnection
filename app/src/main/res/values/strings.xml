@@ -78,7 +78,7 @@
     <string name="user_create_service_title">Crear un Servicio</string>
     <string name="user_create_service_provider_edittext_hint"><![CDATA[<proveedor>]]></string>
     <string name="user_create_service_type_txt">Tipo de Servicio</string>
-    <string name="user_create_service_type_edittext_hint"><![CDATA[<tipo>]]></string>
+    <string name="user_create_service_type_edittext_hint"><![CDATA[Tipo]]></string>
     <string name="user_create_service_longitude_latitude_txt"><![CDATA[Longitud & Latitud]]></string>
     <string name="user_create_service_button_auto">Auto-Detect</string>
     <string name="user_create_service_message_txt">Mensaje</string>
