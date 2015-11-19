@@ -98,7 +98,7 @@ public class UserCreateService extends AppCompatActivity implements Receiver,
                 "&longitude=" + String.valueOf(longitude) + "&message=" + message.getText().toString());
         i.putExtra("type", "POST"); // fixed
         i.putExtra("mReceiver", mReceiver);
-        startService(i);
+        startService(i); // service
     }
 
     public void onSearchProviderClick(View view){
