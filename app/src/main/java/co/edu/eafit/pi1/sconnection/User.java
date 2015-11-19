@@ -133,8 +133,8 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         CharSequence text = "Cambio de ubicacion detectada...";
         int duration = Toast.LENGTH_LONG;
 
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
+        //Toast toast = Toast.makeText(context, text, duration);
+        //toast.show();
 
         if(mGoogleApiClient.isConnected() ){
 
@@ -179,7 +179,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
             text = "Conexion no disponible";
             duration = Toast.LENGTH_LONG;
 
-            toast = Toast.makeText(context, text, duration);
+            Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
     }
@@ -236,15 +236,15 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
                         + " Latitude: " + resultData.getString("latitude");
                 int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                //Toast toast = Toast.makeText(context, text, duration);
+                //toast.show();
                 break;
             case -1://username
                 Context ctext = getApplicationContext();
                 CharSequence cstext = "Cambio de ubicacion detectada...";
 
-                Toast ctoast = Toast.makeText(ctext, cstext, Toast.LENGTH_SHORT);
-                ctoast.show();
+                /*Toast ctoast = Toast.makeText(ctext, cstext, Toast.LENGTH_SHORT);
+                ctoast.show();*/
                 JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(resultData.getString("providers"));

@@ -104,7 +104,7 @@ public class ProviderRegister extends AppCompatActivity implements Receiver{
                     .setTitle(tittle);
 
         //Add the dialog buttons
-        alertBuilder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+        alertBuilder.setPositiveButton(R.string.accpt, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();

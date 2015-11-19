@@ -35,6 +35,7 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
     String only;
     ArrayList<String> objs;
     String msg;
+    boolean isProvider = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,10 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
         MOnCheckedChangeListener mOnCheckedChangeListener = new MOnCheckedChangeListener(this);
         rg.setOnCheckedChangeListener(mOnCheckedChangeListener);
         only = "sent";
+
+        if(getIntent().getBooleanExtra("provider", false)){
+            isProvider = true;
+        }
     }
 
     public void refresh(){
@@ -81,6 +86,7 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
                 if(j.contains(s)){
                     i = new Intent(this, UserServiceDetail.class);
                     i.putExtra("json", j);
+                    i.putExtra("isProvider", isProvider);
                     break;
                 }
             }
