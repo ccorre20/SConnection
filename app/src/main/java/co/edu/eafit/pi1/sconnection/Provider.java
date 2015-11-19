@@ -242,6 +242,7 @@ public class Provider extends AppCompatActivity implements Receiver,
     public void arrivedClickListener(View view){
         Intent intent = new Intent(this, ConfirmArrival.class);
         intent.putExtra("mReceiver", receiver);
+        intent.putExtra("username", username);
         startActivity(intent);
     }
 
