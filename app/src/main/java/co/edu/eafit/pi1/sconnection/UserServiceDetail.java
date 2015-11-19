@@ -4,10 +4,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -25,7 +33,7 @@ import co.edu.eafit.pi1.sconnection.connection.services.HttpRequest;
 import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
-public class UserServiceDetail extends Activity implements OnMapReadyCallback, Receiver {
+public class UserServiceDetail extends AppCompatActivity implements OnMapReadyCallback, Receiver {
 
     TextView t1, t2, t3, t4;
     JSONObject jsonObject;
@@ -33,6 +41,7 @@ public class UserServiceDetail extends Activity implements OnMapReadyCallback, R
     GoogleMap googleMap;
     Button rateButton;
     RatingBar ratingBar;
+    LinearLayout ratingLayout;
     boolean isProvider = false;
 
     @Override
@@ -45,6 +54,7 @@ public class UserServiceDetail extends Activity implements OnMapReadyCallback, R
         t4 = (TextView)findViewById(R.id.user_service_detail_service_status_txt);
         rateButton = (Button)findViewById(R.id.rate_button);
         ratingBar = (RatingBar)findViewById(R.id.service_ratingBar);
+        ratingLayout = (LinearLayout)findViewById(R.id.rating_linear_layout);
         try {
             jsonObject = new JSONObject(getIntent().getStringExtra("json"));
             t1.setText(jsonObject.getJSONObject("user").getString("name"));
@@ -62,16 +72,25 @@ public class UserServiceDetail extends Activity implements OnMapReadyCallback, R
         mapFragment.getMapAsync(this);
 
         if(getIntent().getBooleanExtra("isProvider", false)){
-            ratingBar.setEnabled(false);
-            ratingBar.setVisibility(View.INVISIBLE);
-            rateButton.setEnabled(false);
-            rateButton.setVisibility(View.INVISIBLE);
+            ratingLayout.setVisibility(View.GONE);
+            rateButton.setVisibility(View.GONE);
         }
+
+        Drawable drawable = ratingBar.getProgressDrawable();
+        drawable.setColorFilter(Color.parseColor("#00000000"), PorterDuff.Mode.SRC_ATOP);
+
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setTitle("Informacion del servicio");
     }
 
     @Override
     protected void onStart(){
         super.onStart();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     private void setMarker(){

@@ -107,7 +107,7 @@
             android:parentActivityName=".User"
             android:label="@string/title_activity_user_create_service">
         </activity>
-        <activity android:name=".UserServiceDetail" >
+        <activity android:name=".UserServiceDetail">
         </activity>
         <activity android:name=".dialogs.ConfirmArrival" >
         </activity>

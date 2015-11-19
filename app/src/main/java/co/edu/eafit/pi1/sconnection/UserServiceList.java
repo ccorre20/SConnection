@@ -2,6 +2,7 @@ package co.edu.eafit.pi1.sconnection;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -57,6 +58,9 @@ public class UserServiceList extends AppCompatActivity implements Receiver {
         if(getIntent().getBooleanExtra("provider", false)){
             isProvider = true;
         }
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.user_service_list_title);
     }
 
     public void refresh(){
