@@ -2,7 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="co.edu.eafit.pi1.sconnection.User">
+
+    <item
+        android:id="@+id/action_confirmation"
+        android:icon="@drawable/confirmation_icon"
+        android:title="Confirmation"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/profile_icon"
+        android:title="Profile"
+        app:showAsAction="ifRoom"/>
+    <!--
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+     -->
 </menu>

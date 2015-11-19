@@ -1,66 +1,46 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
     tools:context="co.edu.eafit.pi1.sconnection.Provider"
     android:id="@+id/provider_relative_layout">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/provider"
-        android:id="@+id/provider_textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/arrived"
-        android:id="@+id/provider_arrived_button"
-        android:onClick="arrivedClickListener"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_below="@+id/provider_services_button"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="15dp" />
-
     <fragment
-        android:layout_width="198dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:name="com.google.android.gms.maps.MapFragment"
         android:id="@+id/map"
+        android:layout_gravity="center_horizontal"/>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/provider_arrived_button"
-        android:layout_marginTop="35dp" />
+        android:layout_alignParentStart="true">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/profile"
-        android:id="@+id/provider_profile_button"
-        android:onClick="profileClickListener"
-        android:layout_below="@+id/provider_textView"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="15dp" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/arrived"
+            android:background="@android:color/holo_red_dark"
+            android:textColor="@android:color/white"
+            android:id="@+id/provider_arrived_button"
+            android:onClick="arrivedClickListener"
+            android:layout_gravity="center_horizontal" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/see_services"
-        android:id="@+id/provider_services_button"
-        android:onClick="servicesClickListener"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_below="@+id/provider_profile_button"
-        android:layout_centerHorizontal="true" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/see_services"
+            android:background="@color/reddark"
+            android:textColor="@android:color/white"
+            android:id="@+id/provider_services_button"
+            android:onClick="servicesClickListener"
+            android:layout_centerHorizontal="true" />
+
+    </LinearLayout>
 
 </RelativeLayout>

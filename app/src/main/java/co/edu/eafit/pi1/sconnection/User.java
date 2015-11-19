@@ -1,5 +1,8 @@
 package co.edu.eafit.pi1.sconnection;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,14 +10,17 @@ import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -35,6 +41,7 @@ import org.json.JSONObject;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import co.edu.eafit.pi1.sconnection.connection.services.HttpRequest;
 import co.edu.eafit.pi1.sconnection.connection.services.SetLocationConnectionService;
 import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
@@ -46,10 +53,8 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         LocationListener,
         Receiver{
 
-    private Button              b, b2, b3, b4;
     private GoogleMap           map;
     private String              username;
-    private Bundle              extra;
     private CSResultReceiver    mReceiver;
     private Location            lastKnownLocation;
     private LocationRequest     mLocationRequest;
@@ -57,7 +62,9 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     private String              latitude;
     private String              longitude;
     private Handler             handler;
+    private Handler             notificationHandler;
     private boolean             mResolvingError = false;
+    private boolean             userok = false;
     private final int           REQUEST_RESOLVE_ERROR = 1001;
     public GoogleApiClient      mGoogleApiClient;
     CSResultReceiver receiver;
@@ -69,17 +76,32 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        b = (Button) findViewById(R.id.user_search_button);
-        b2 = (Button) findViewById(R.id.user_view_services_button);
-        b3 = (Button) findViewById(R.id.user_create_service_button);
-        b4 = (Button) findViewById(R.id.user_confirm);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("SConnection");
+
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapfragment);
         mapFragment.getMapAsync(this);
         username = getIntent().getStringExtra("name");
         createLocationRequest();
-        handler = new Handler();
+        handler             = new Handler();
+        notificationHandler = new Handler();
         receiver = new CSResultReceiver(new Handler());
         receiver.setReceiver(this);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
+        intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service_statuses/?");
+        intent.putExtra("urlParams", "name=" + username);
+        intent.putExtra("type", "GET");
+        intent.putExtra("valuesToGet", new String[]{"providerok"});
+        intent.putExtra("mReceiver", receiver);
+        startService(intent);
 
         /* ----------------- JAIL ------------------- */
         scheduledExecutorService = Executors.newScheduledThreadPool(5);
@@ -90,11 +112,6 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     protected void onStart(){
         super.onStart();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
         mGoogleApiClient.connect();
     }
 
@@ -175,6 +192,40 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData){
+
+        //The following lines will verify if the first value on "result" is a boolean.
+        //In which case, it means that value corresponds to "providerok".
+
+        String result[] = resultData.getStringArray("result");
+        if(result != null && result.length == 1){
+            if(Boolean.parseBoolean(result[0])){
+                notificationHandler.removeCallbacksAndMessages(null);
+                Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
+                intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service_statuses/?");
+                intent.putExtra("urlParams", "name=" + username + "&userok=true");
+                intent.putExtra("type", "POST");
+                userok = true;
+                startService(intent);
+                sendNotification();
+                return;
+            } else if (!userok){
+                final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
+                notificationHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service_statuses/?");
+                        intent.putExtra("urlParams", "name=" + username);
+                        intent.putExtra("type", "GET");
+                        intent.putExtra("valuesToGet", new String[]{"providerok"});
+                        intent.putExtra("mReceiver", receiver);
+                        startService(intent);
+                        notificationHandler.postDelayed(this, 30000);
+                    }
+                }, 30000);
+                return;
+            }
+        }
+
         switch (resultCode){
             case 0:
 
@@ -337,9 +388,34 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         }
     }
 
-    public void onProviderSearchClick(View view){
-        Intent i = new Intent(this, UserProviderSearch.class);
-        startActivity(i);
+    public void sendNotification(){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.cast_ic_notification_0)
+                        .setContentTitle("SConnection")
+                        .setContentText("El proveedor a llegado");
+
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, ServiceRate.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // the application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(ServiceRate.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(9999, mBuilder.build());
     }
 
     public void onServiceListClick(View view){
@@ -369,9 +445,14 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_confirmation:
+                Intent intent = new Intent(this, ConfirmArrival.class);
+                intent.putExtra("mReceiver", receiver);
+                intent.putExtra("username", username);
+                startActivity(intent);
+            case R.id.action_profile:
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

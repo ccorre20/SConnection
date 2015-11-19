@@ -5,12 +5,14 @@ import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 import co.edu.eafit.pi1.sconnection.dialogs.ConfirmArrival;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -73,6 +75,9 @@ public class Provider extends AppCompatActivity implements Receiver,
         previous = null;
         receiver = new CSResultReceiver(new Handler());
         receiver.setReceiver(this);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("SConnection");
     }
 
     @Override
@@ -189,9 +194,10 @@ public class Provider extends AppCompatActivity implements Receiver,
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_profile_provider){
+            Intent i = new Intent(this, ProviderProfile.class);
+            i.putExtra("username", username);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

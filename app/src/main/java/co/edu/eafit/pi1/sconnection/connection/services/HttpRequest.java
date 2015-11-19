@@ -46,9 +46,11 @@ public class HttpRequest extends IntentService {
 
         url.append(intent.getStringExtra("url"));
 
-        receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
+        if(receiver != null)
+            receiver.send(NetworkOperationStatus.STATUS_RUNNING.code, Bundle.EMPTY);
+
         try{
-            if(type.equals("GET")){
+            if(receiver != null && type.equals("GET")){
                 valuesToGet = intent.getStringArrayExtra("valuesToGet");
                 if(valuesToGet.length > 0) {
                     String result[] = sendGetRequest();
@@ -59,9 +61,11 @@ public class HttpRequest extends IntentService {
                 }
             } else if(type.equals("POST")){
                 boolean result = sendPostRequest();
-                bundle.putBoolean("result", result);
-                receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
-            } else {
+                if(receiver != null) {
+                    bundle.putBoolean("result", result);
+                    receiver.send(NetworkOperationStatus.STATUS_FINISHED.code, bundle);
+                }
+            } else if(receiver != null){
                 receiver.send(NetworkOperationStatus.STATUS_GENERAL_ERROR.code, Bundle.EMPTY);
             }
         } catch (IOException e){

@@ -1,8 +1,30 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle"   tools:ignore="NewApi">@style/UserActionBar</item>
+        <item name="actionBarStyle">@style/UserActionBar</item>
+
     </style>
 
+    <style name="YellowActionBar" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle"   tools:ignore="NewApi">@style/YellowTheme</item>
+        <item name="actionBarStyle">@style/YellowTheme</item>
+
+    </style>
+
+    <!-- Custom action bar themes. -->
+    <style name="UserActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background"  tools:ignore="NewApi">@android:color/holo_red_dark</item>
+        <item name="background">@android:color/holo_red_dark</item>
+        <item name="android:actionBarItemBackground">@android:color/white</item>
+    </style>
+
+    <style name="YellowTheme" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background"  tools:ignore="NewApi">#b3aa00</item>
+        <item name="background">@color/DarkYellow</item>
+        <item name="android:actionBarItemBackground">@android:color/white</item>
+    </style>
 </resources>
