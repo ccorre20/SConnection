@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:sconnection="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_search"
-        android:icon="@android:drawable/ic_search_category_default"
-        android:title="@string/action_search"
-        sconnection:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_profile_provider"
+        android:icon="@drawable/profile_icon"
+        android:title="Profile"
+        app:showAsAction="ifRoom"/>
 
+    <!--
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         sconnection:showAsAction="never" />
+    -->
 </menu>
