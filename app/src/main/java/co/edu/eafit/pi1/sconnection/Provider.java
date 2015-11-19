@@ -29,7 +29,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,8 +44,10 @@ import org.json.JSONObject;
 public class Provider extends AppCompatActivity implements Receiver,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,
+        OnMapReadyCallback {
 
+    private GoogleMap map;
     private String              username;
     private Bundle              extra;
     private CSResultReceiver    mReceiver;
@@ -76,6 +83,9 @@ public class Provider extends AppCompatActivity implements Receiver,
         receiver = new CSResultReceiver(new Handler());
         receiver.setReceiver(this);
 
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("SConnection");
     }
@@ -107,15 +117,15 @@ public class Provider extends AppCompatActivity implements Receiver,
                                     + " Latitude: " + resultData.getString("latitude");
                 int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                //Toast toast = Toast.makeText(context, text, duration);
+                //toast.show();
                 break;
             case -1://username
                 Context ctext = getApplicationContext();
                 CharSequence cstext = "Cambio de ubicacion detectada...";
 
-                Toast ctoast = Toast.makeText(ctext, cstext, Toast.LENGTH_SHORT);
-                ctoast.show();
+                //Toast ctoast = Toast.makeText(ctext, cstext, Toast.LENGTH_SHORT);
+                //ctoast.show();
                 JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(resultData.getString("providers"));
@@ -178,6 +188,11 @@ public class Provider extends AppCompatActivity implements Receiver,
     }
 
     @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
@@ -208,6 +223,17 @@ public class Provider extends AppCompatActivity implements Receiver,
     @Override
     public void onLocationChanged(Location location) {
         lastKnownLocation = location;
+        lastKnownLocation = location;
+        getLocation();
+        LatLng loc = new LatLng(Double.parseDouble(latitude),Double.parseDouble(longitude));
+        if(loc != null && map != null){
+            map.clear();
+            map.addMarker(new MarkerOptions()
+                            .position(loc)
+                            .title("Lugar del Servicio")
+            );
+            map.animateCamera(CameraUpdateFactory.newLatLng(loc));
+        }
         getLocation();
         beginLocationShow();
     }
@@ -250,6 +276,7 @@ public class Provider extends AppCompatActivity implements Receiver,
 
         Intent i = new Intent(this, UserServiceList.class);
         i.putExtra("username", username);
+        i.putExtra("provider", true);
         startActivity(i);
 
     }
@@ -307,8 +334,8 @@ public class Provider extends AppCompatActivity implements Receiver,
         CharSequence text = "Cambio de ubicacion detectada...";
         int duration = Toast.LENGTH_LONG;
 
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
+        //Toast toast = Toast.makeText(context, text, duration);
+        //toast.show();
 
         if(mGoogleApiClient.isConnected() ){
 
@@ -352,7 +379,7 @@ public class Provider extends AppCompatActivity implements Receiver,
             text = "Conexion no disponible";
             duration = Toast.LENGTH_LONG;
 
-            toast = Toast.makeText(context, text, duration);
+            Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
     }

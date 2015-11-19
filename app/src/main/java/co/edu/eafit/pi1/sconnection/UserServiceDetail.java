@@ -33,6 +33,7 @@ public class UserServiceDetail extends Activity implements OnMapReadyCallback, R
     GoogleMap googleMap;
     Button rateButton;
     RatingBar ratingBar;
+    boolean isProvider = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,13 @@ public class UserServiceDetail extends Activity implements OnMapReadyCallback, R
         }
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.user_service_detail_fragment);
         mapFragment.getMapAsync(this);
+
+        if(getIntent().getBooleanExtra("isProvider", false)){
+            ratingBar.setEnabled(false);
+            ratingBar.setVisibility(View.INVISIBLE);
+            rateButton.setEnabled(false);
+            rateButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

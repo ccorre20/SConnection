@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import co.edu.eafit.pi1.sconnection.connection.services.HttpRequest;
 import co.edu.eafit.pi1.sconnection.connection.services.SetServiceService;
+import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
 
@@ -83,19 +86,27 @@ public class UserCreateService extends AppCompatActivity implements Receiver,
         }
     }
 
-    public void onAutoClick(View view){
-
-    }
-
     public void onSendClick(View view){
-        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetServiceService.class);
+       /* Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SetServiceService.class);
         intent.putExtra("uname", uname);
         intent.putExtra("provider", provider.getText().toString());
         intent.putExtra("longitude", String.valueOf(longitude));
         intent.putExtra("latitude", String.valueOf(latitude));
         intent.putExtra("message", message.getText().toString());
         intent.putExtra("type", type.getText().toString());
-        startService(intent);
+        startService(intent);*/
+
+
+        CSResultReceiver mReceiver = new CSResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
+
+        Intent i = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
+        i.putExtra("url", "https://sc-b.herokuapp.com/api/v1/services/");
+        i.putExtra("urlParams", "name=" + uname + "&provider=" + provider + "&type=" + type +
+                "&latitude=" + latitude + "&longitude=" + longitude + "&message=" + message);
+        i.putExtra("type", "POST");
+        i.putExtra("mReceiver", mReceiver);
+        startService(i);
     }
 
     public void onSearchProviderClick(View view){
@@ -119,6 +130,7 @@ public class UserCreateService extends AppCompatActivity implements Receiver,
                 text = "Enviado";
                 toast = Toast.makeText(context, text, duration);
                 toast.show();
+                this.finish();
                 break;
         }
     }
