@@ -131,6 +131,7 @@
                     android:id="@+id/radioButton"
                     android:checked="true"
                     android:textColor="@android:color/white"
+                    android:buttonTint="@android:color/white"
                     android:layout_margin="10dp" />
 
                 <RadioButton
@@ -140,6 +141,7 @@
                     android:id="@+id/radioButton2"
                     android:checked="false"
                     android:textColor="@android:color/white"
+                    android:buttonTint="@android:color/white"
                     android:layout_margin="10dp" />
 
                 </RadioGroup>
