@@ -2,6 +2,7 @@ package co.edu.eafit.pi1.sconnection;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -43,6 +44,7 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
         mReceiver.setReceiver(this);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         lv = (ListView) findViewById(R.id.listView);
+        lv.setBackgroundColor(getResources().getColor(R.color.white));
         editText = (EditText)findViewById(R.id.editText);
         editText.addTextChangedListener(new TextWatcher() {
 
@@ -64,6 +66,9 @@ public class UserProviderSearch extends AppCompatActivity implements Receiver {
                 // TODO Auto-generated method stub
             }
         });
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Elige un proveedor");
     }
 
     @Override

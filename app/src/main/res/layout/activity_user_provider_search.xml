@@ -4,6 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@android:color/holo_red_dark"
     tools:context="co.edu.eafit.pi1.sconnection.UserProviderSearch">
 
     <ListView
@@ -12,27 +13,49 @@
         android:id="@+id/listView"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/provider_search_layout"
         android:visibility="invisible" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/provider_search_title"
-        android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/provider_search_layout"
+            android:background="@drawable/round_rect"
+            android:padding="10dp"
+            android:layout_marginLeft="0.5dp"
+            android:layout_marginRight="0.5dp"
+            android:layout_marginBottom="5dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:hint="@string/provider_search_filter"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"
-        android:layout_alignEnd="@+id/listView" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/provider_search_title"
+                android:id="@+id/textView2"
+                android:textColor="@android:color/white"
+                android:textColorHint="#7cffffff"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <View android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#17000000"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText"
+                android:hint="@string/provider_search_filter"
+                android:layout_below="@+id/textView2"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#7cffffff"
+                android:background="@null"
+                android:layout_alignEnd="@+id/listView" />
+
+        </LinearLayout>
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"

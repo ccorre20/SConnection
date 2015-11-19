@@ -64,7 +64,6 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     private Handler             handler;
     private Handler             notificationHandler;
     private boolean             mResolvingError = false;
-    private boolean             userok = false;
     private final int           REQUEST_RESOLVE_ERROR = 1001;
     public GoogleApiClient      mGoogleApiClient;
     CSResultReceiver receiver;
@@ -99,7 +98,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service_statuses/?");
         intent.putExtra("urlParams", "name=" + username);
         intent.putExtra("type", "GET");
-        intent.putExtra("valuesToGet", new String[]{"providerok"});
+        intent.putExtra("valuesToGet", new String[]{"providerok", "userok"});
         intent.putExtra("mReceiver", receiver);
         startService(intent);
 
@@ -193,22 +192,23 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData){
 
-        //The following lines will verify if the first value on "result" is a boolean.
-        //In which case, it means that value corresponds to "providerok".
+        //The following lines will verify if the second value contained on "result"
+        //(which represents "userok") is false, which means that the current service has not
+        //been completed and it's imperative to confirm if the provider, associated with
+        //the aforementioned service, has announced his/her arrival.
 
         String result[] = resultData.getStringArray("result");
-        if(result != null && result.length == 1){
+        if(result != null && !Boolean.parseBoolean(result[1])){
             if(Boolean.parseBoolean(result[0])){
                 notificationHandler.removeCallbacksAndMessages(null);
                 Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
                 intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service_statuses/?");
                 intent.putExtra("urlParams", "name=" + username + "&userok=true");
                 intent.putExtra("type", "POST");
-                userok = true;
                 startService(intent);
                 sendNotification();
                 return;
-            } else if (!userok){
+            } else {
                 final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
                 notificationHandler.postDelayed(new Runnable() {
                     @Override

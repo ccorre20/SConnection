@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
@@ -16,7 +18,7 @@ import co.edu.eafit.pi1.sconnection.connection.services.HttpRequest;
 import co.edu.eafit.pi1.sconnection.connection.utils.CSResultReceiver;
 import co.edu.eafit.pi1.sconnection.connection.utils.Receiver;
 
-public class ProviderRegister extends Activity implements Receiver{
+public class ProviderRegister extends AppCompatActivity implements Receiver{
 
     EditText name;
     EditText description;
@@ -28,6 +30,9 @@ public class ProviderRegister extends Activity implements Receiver{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_register);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.provider_create_account_title);
 
         name        = (EditText) findViewById(R.id.complete_name_edit_text);
         description = (EditText) findViewById(R.id.description_edit_text);
