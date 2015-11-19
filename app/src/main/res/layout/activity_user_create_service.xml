@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:id="@+id/user_create_service_type_edittext"
-                android:hint="@string/user_create_service_type_edittext_hint"
+
                 android:textColor="@android:color/white"
                 android:textColorHint="#7cffffff"
                 android:background="@null"/>
@@ -124,8 +124,7 @@
                 android:onClick="onSearchProviderClick"
                 android:textColor="@android:color/white"
                 android:textColorHint="#7cffffff"
-                android:background="@null"
-                android:hint="@string/address" />
+                android:background="@null" />
         </LinearLayout>
 
         <LinearLayout
