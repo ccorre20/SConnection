@@ -451,8 +451,6 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
                 intent.putExtra("mReceiver", receiver);
                 intent.putExtra("username", username);
                 startActivity(intent);
-            case R.id.action_profile:
-                return true;
         }
 
         return super.onOptionsItemSelected(item);
