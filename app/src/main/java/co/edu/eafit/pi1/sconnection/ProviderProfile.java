@@ -1,6 +1,9 @@
 package co.edu.eafit.pi1.sconnection;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +30,8 @@ public class ProviderProfile extends AppCompatActivity implements Receiver{
         setContentView(R.layout.activity_provider_profile);
 
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+        Drawable drawable = ratingBar.getProgressDrawable();
+        drawable.setColorFilter(Color.parseColor("#00000000"), PorterDuff.Mode.SRC_ATOP);
 
         CSResultReceiver mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);

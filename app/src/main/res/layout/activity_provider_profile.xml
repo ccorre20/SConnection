@@ -4,72 +4,87 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@android:color/holo_red_dark"
     tools:context="co.edu.eafit.pi1.sconnection.ProviderProfile">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Usuario: "
-        android:id="@+id/uProv"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:textIsSelectable="false"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="#343232" />
+        android:id="@+id/provider_profile_username_layout"
+        android:orientation="vertical"
+        android:background="@drawable/round_rect"
+        android:padding="10dp"
+        android:layout_marginLeft="0.5dp"
+        android:layout_marginRight="0.5dp"
+        android:layout_marginBottom="5dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Usuario: "
+            android:id="@+id/uProv"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/white" />
+
+        <View android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#17000000"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/unameProvider"
+            android:textColor="@android:color/white"
+            android:typeface="serif"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/unameProvider"
-        android:layout_alignTop="@+id/uProv"
-        android:layout_toEndOf="@+id/uProv"
-        android:typeface="serif"
-        android:textIsSelectable="false"
-        android:textSize="18sp" />
+        android:orientation="vertical"
+        android:background="@drawable/round_rect"
+        android:padding="10dp"
+        android:id="@+id/provider_profile_name_layout"
+        android:layout_below="@+id/provider_profile_username_layout"
+        android:layout_marginLeft="0.5dp"
+        android:layout_marginRight="0.5dp"
+        android:layout_marginBottom="5dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nombre: "
         android:id="@+id/nView"
-        android:textSize="18sp"
-        android:textColor="#343232"
-        android:textStyle="bold"
-        android:layout_below="@+id/uProv"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="19dp" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="15dp" />
+
+        <View android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#17000000"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/nameView"
-        android:layout_alignTop="@+id/nView"
-        android:layout_toEndOf="@+id/unameProvider"
-        android:textSize="18sp" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Disponible "
-        android:id="@+id/switch1"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:checked="true"
-        android:textSize="18sp"
-        android:textColor="#343232"
-        android:textStyle="bold" />
+    </LinearLayout>
 
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ratingBar"
         android:isIndicator="true"
-        android:layout_below="@+id/nameView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
         android:numStars="5"
-        android:rating="3.5" />
+        android:rating="3.5"
+        android:layout_below="@+id/provider_profile_name_layout"
+        android:layout_centerHorizontal="true" />
 
     <fragment
         android:layout_width="wrap_content"
