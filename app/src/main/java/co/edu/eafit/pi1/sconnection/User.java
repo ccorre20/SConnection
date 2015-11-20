@@ -98,7 +98,7 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service_statuses/?");
         intent.putExtra("urlParams", "name=" + username);
         intent.putExtra("type", "GET");
-        intent.putExtra("valuesToGet", new String[]{"providerok", "userok"});
+        intent.putExtra("valuesToGet", new String[]{"providerok", "userok", "provider"});
         intent.putExtra("mReceiver", receiver);
         startService(intent);
 
@@ -200,13 +200,19 @@ public class User extends AppCompatActivity implements OnMapReadyCallback,
         String result[] = resultData.getStringArray("result");
         if(result != null && !Boolean.parseBoolean(result[1])){
             if(Boolean.parseBoolean(result[0])){
-                notificationHandler.removeCallbacksAndMessages(null);
-                Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
-                intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service_statuses/?");
-                intent.putExtra("urlParams", "name=" + username + "&userok=true");
-                intent.putExtra("type", "POST");
-                startService(intent);
-                sendNotification();
+                try {
+                    JSONObject obj = new JSONObject(result[2]);
+                    String provider = obj.getString("name");
+                    notificationHandler.removeCallbacksAndMessages(null);
+                    Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);
+                    intent.putExtra("url", "https://sc-b.herokuapp.com/api/v1/service_statuses/?");
+                    intent.putExtra("urlParams", "name=" + username + "&only=" + provider);
+                    intent.putExtra("type", "POST");
+                    startService(intent);
+                    sendNotification();
+                }catch(JSONException je){
+                    je.printStackTrace();
+                }
                 return;
             } else {
                 final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, HttpRequest.class);

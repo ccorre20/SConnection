@@ -5,6 +5,15 @@
     android:background="@android:color/holo_red_dark"
     tools:context="co.edu.eafit.pi1.sconnection.Landing">
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/logo"
+        android:id="@+id/logo_image_view"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -15,9 +24,10 @@
         android:background="@drawable/round_rect"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_below="@+id/progressBar2"
+        android:id="@+id/linearLayout"
+        android:layout_below="@+id/logo_image_view"
         android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout">
+        android:layout_marginTop="42dp">
 
         <EditText
             android:layout_width="fill_parent"
@@ -61,9 +71,9 @@
         android:clickable="true"
         android:enabled="true"
         android:onClick="userClick"
-        android:layout_marginTop="104dp"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignStart="@+id/textView" />
+        android:layout_below="@+id/progressBar2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="37dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -80,28 +90,17 @@
         android:layout_below="@+id/button_login"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/login"
-        android:textColor="@android:color/white"
-        android:id="@+id/textView"
-        android:layout_marginTop="54dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar2"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
         android:visibility="invisible"
         android:indeterminate="true"
         android:indeterminateBehavior="cycle"
-        android:indeterminateOnly="true" />
+        android:indeterminateOnly="true"
+        android:layout_marginTop="47dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
