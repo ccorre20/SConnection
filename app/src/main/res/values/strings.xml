@@ -3,6 +3,7 @@
 
     <string name="accpt">Aceptar</string>
     <string name="rating_tittle">Puntuar servicio</string>
+    <string name="confirm_arrival">Confirmar llegada</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="login">Iniciar Sesion</string>

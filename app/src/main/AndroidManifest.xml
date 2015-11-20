@@ -34,7 +34,7 @@
         <activity
             android:name=".Landing"
             android:label="@string/title_activity_landing"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/Theme.AppCompat.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

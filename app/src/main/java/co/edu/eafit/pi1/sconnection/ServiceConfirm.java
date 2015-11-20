@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -44,6 +45,8 @@ public class ServiceConfirm extends AppCompatActivity implements OnMapReadyCallb
         username = getIntent().getStringExtra("username");
         CSResultReceiver mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.confirm_title);
         try {
             jsonObject = new JSONObject(getIntent().getStringExtra("json"));
             if(jsonObject != null) {

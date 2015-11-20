@@ -3,6 +3,7 @@ package co.edu.eafit.pi1.sconnection.dialogs;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -48,6 +50,9 @@ public class ConfirmArrival extends AppCompatActivity implements Receiver{
         mReceiver = new CSResultReceiver(new Handler());
         mReceiver.setReceiver(this);
         only = "sent";
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.confirm_arrival);
     }
 
     private void go() {
